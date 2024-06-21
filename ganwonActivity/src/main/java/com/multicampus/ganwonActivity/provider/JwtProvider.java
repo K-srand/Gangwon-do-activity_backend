@@ -13,42 +13,45 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
-//토큰의 유효성을 검증하는 제공자
+// 토큰의 유효성을 검증하는 제공자
 @Component
 public class JwtProvider {
 
-    //임의로 지정하였음. 추후 수정
     @Value("${secret-key}")
-    private String secretKey; //application.properties 내에 있는 값을 불러옴
+    private String secretKey; // application.properties 내에 있는 값을 불러옴
 
-    //jwt 생성
-    public String create(String email){
+    private Key getSigningKey() {
+        return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+    }
+
+    // jwt 생성
+    public String create(String userId) {
         Date expiredDate = Date.from(Instant.now().plus(1, ChronoUnit.HOURS));
-        Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
-
+        Key key = getSigningKey();
 
         String jwt = Jwts.builder()
-                .signWith(SignatureAlgorithm.HS256, secretKey)
-                .setSubject(email)
-                .setIssuedAt(new Date()).setExpiration(expiredDate)
+                .signWith(key, SignatureAlgorithm.HS256)
+                .setSubject(userId)
+                .setIssuedAt(new Date())
+                .setExpiration(expiredDate)
                 .compact();
 
         return jwt;
     }
 
-    //jwt 만료일자
-    public String validate(String jwt){
+    // jwt 검증
+    public String validate(String jwt) {
         Claims claims = null;
-        Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+        Key key = getSigningKey();
 
         try {
             claims = Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(jwt)
-                    .getBody(); //signingkey의 만료 여부
-        }catch (Exception e){
-            e.printStackTrace();;
+                    .getBody(); // signingkey의 만료 여부
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
         return claims.getSubject();

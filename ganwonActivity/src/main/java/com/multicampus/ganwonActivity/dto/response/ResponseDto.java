@@ -20,4 +20,11 @@ public class ResponseDto {
 
     }
 
+    // 로그인 정보가 틀렸을때
+    public static ResponseEntity<ResponseDto> validationFailed(){
+        ResponseDto respoonseBody = new ResponseDto(ResponseCode.VALIDATION_FAILED, ResponseMessage.VALIDATION_FAILED);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(respoonseBody);
+
+    }
+
 }

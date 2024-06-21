@@ -35,59 +35,51 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
-        try{
+        try {
             String token = parseBearerToken(request);
 
-            if(token == null){
-                filterChain.doFilter(request,response);
-                return;
-
-            }
-            //userNo으로 할지 user Id로 할지
-            //ROLE_USER, ROLE_ADMIN
-            String userEmail = jwtProvider.validate(token);
-            if(userEmail == null){
+            if (token == null) {
                 filterChain.doFilter(request, response);
                 return;
             }
 
-//            AbstractAuthenticationToken authenticationToken =
-//                    new UsernamePasswordAuthenticationToken(userEmail, null, AuthorityUtils.NO_AUTHORITIES);
-//            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-//
-//            SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-//            securityContext.setAuthentication(authenticationToken);
-//
-//            SecurityContextHolder.setContext(securityContext);
+            // userId로 검증하기로 확정.
+            String userId = jwtProvider.validate(token);
+            if (userId == null) {
+                filterChain.doFilter(request, response);
+                return;
+            }
 
-            UserEntity userEntity = userRepository.findUserByUserEmail(userEmail);
-            String role = userEntity.getUserRole(); //role : ROLE_USER, ROLE_ADMIN
+            UserEntity userEntity = userRepository.findByUserId(userId);
+            if (userEntity == null) {
+                filterChain.doFilter(request, response);
+                return;
+            }
 
+            String role = userEntity.getUserRole(); // role: ROLE_USER, ROLE_ADMIN
 
-            //ROLE_USER, ROLE_ADMIN형태로
+            // ROLE_USER, ROLE_ADMIN 형태로
             List<GrantedAuthority> authorities = new ArrayList<>();
-            authorities.add(new SimpleGrantedAuthority(role)); //반드시 ROLE_형태
+            authorities.add(new SimpleGrantedAuthority(role)); // 반드시 ROLE_ 형태
 
-
-            //빈 securityContext 형성
+            // 빈 securityContext 형성
             SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-            // 비어있는 securityContext에 authenticationToken값을 넣어주는 과정
+            // 비어있는 securityContext에 authenticationToken 값을 넣어주는 과정
             AbstractAuthenticationToken authenticationToken =
-                    new UsernamePasswordAuthenticationToken(userEmail, null, authorities);
+                    new UsernamePasswordAuthenticationToken(userId, null, authorities); // 수정된 부분
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
             securityContext.setAuthentication(authenticationToken);
-            //등록 -> 이제 얘가 controller에 접근할수 있게
+            // 등록 -> 이제 얘가 controller에 접근할 수 있게
             SecurityContextHolder.setContext(securityContext);
 
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         filterChain.doFilter(request, response);
-
     }
+
 
     private String parseBearerToken(HttpServletRequest request){
         String authorization = request.getHeader("Authorization");
