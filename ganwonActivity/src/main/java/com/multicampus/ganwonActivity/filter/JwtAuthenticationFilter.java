@@ -36,10 +36,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-
-
-
-
         try{
             String token = parseBearerToken(request);
 
@@ -65,7 +61,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 //
 //            SecurityContextHolder.setContext(securityContext);
 
-            UserEntity userEntity = userRepository.findUserByuserEmail(userEmail);
+            UserEntity userEntity = userRepository.findUserByUserEmail(userEmail);
             String role = userEntity.getUserRole(); //role : ROLE_USER, ROLE_ADMIN
 
 
