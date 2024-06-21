@@ -21,13 +21,14 @@ public class JwtProvider {
     @Value("${secret-key}")
     private String secretKey; //application.properties 내에 있는 값을 불러옴
 
+    //jwt 생성
     public String create(String email){
         Date expiredDate = Date.from(Instant.now().plus(1, ChronoUnit.HOURS));
         Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
 
 
         String jwt = Jwts.builder()
-                .signWith(key, SignatureAlgorithm.HS256)
+                .signWith(SignatureAlgorithm.HS256, secretKey)
                 .setSubject(email)
                 .setIssuedAt(new Date()).setExpiration(expiredDate)
                 .compact();
@@ -35,7 +36,7 @@ public class JwtProvider {
         return jwt;
     }
 
-
+    //jwt 만료일자
     public String validate(String jwt){
         Claims claims = null;
         Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));

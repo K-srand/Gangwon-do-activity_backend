@@ -1,9 +1,12 @@
 package com.multicampus.ganwonActivity.service.implement;
 
+import com.multicampus.ganwonActivity.dto.request.auth.SignInRequestDto;
 import com.multicampus.ganwonActivity.dto.request.auth.SignUpRequestDto;
 import com.multicampus.ganwonActivity.dto.response.ResponseDto;
+import com.multicampus.ganwonActivity.dto.response.auth.SignInResponseDto;
 import com.multicampus.ganwonActivity.dto.response.auth.SignUpResponseDto;
 import com.multicampus.ganwonActivity.entity.UserEntity;
+import com.multicampus.ganwonActivity.provider.JwtProvider;
 import com.multicampus.ganwonActivity.repository.UserRepository;
 import com.multicampus.ganwonActivity.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -19,12 +22,13 @@ public class AuthServiceImpl implements AuthService {
 
 
     private final UserRepository userRepository;
-    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final JwtProvider jwtProvider;
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+
+    //회원가입 서비스 (JWT)
     @Override
     public ResponseEntity<? super SignUpResponseDto> signUp(SignUpRequestDto dto) {
-
-
-
         try{
             //제약조건 검사 과정
             String email = dto.getUserEmail();
@@ -58,5 +62,36 @@ public class AuthServiceImpl implements AuthService {
 
 
         return SignUpResponseDto.success();
+    }
+
+    //로그인 서비스(JWT)
+    @Override
+    public ResponseEntity<? super SignInResponseDto> signIn(SignInRequestDto dto) {
+        String token = null;
+
+        try{
+            String userId = dto.getUserId();
+            UserEntity userEntity = userRepository.findByUserId(userId);
+            if (userEntity == null) return  SignInResponseDto.signInFailed();
+
+            //평문 비번
+            String password = dto.getUserPassword();
+            //JWT암호화된 비번
+            String encodedPassword = userEntity.getUserPassword();
+
+            boolean isMatched = passwordEncoder.matches(password,encodedPassword);
+            if(!isMatched) return SignInResponseDto.signInFailed();
+
+            token = jwtProvider.create(userId);
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return  ResponseDto.databaseError();
+        }
+
+
+
+        return SignInResponseDto.success(token);
     }
 }

@@ -1,6 +1,8 @@
 package com.multicampus.ganwonActivity.controller;
 
+import com.multicampus.ganwonActivity.dto.request.auth.SignInRequestDto;
 import com.multicampus.ganwonActivity.dto.request.auth.SignUpRequestDto;
+import com.multicampus.ganwonActivity.dto.response.auth.SignInResponseDto;
 import com.multicampus.ganwonActivity.dto.response.auth.SignUpResponseDto;
 import com.multicampus.ganwonActivity.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,14 @@ public class AuthController {
             @RequestBody @Validated SignUpRequestDto requestBody
     ){
         ResponseEntity<? super SignUpResponseDto> response = authService.signUp(requestBody);
+        return response;
+    }
+
+    @PostMapping("/sign-in")
+    public  ResponseEntity<? super SignInResponseDto> signIn(
+            @RequestBody @Validated SignInRequestDto requestBody
+    ){
+        ResponseEntity<? super SignInResponseDto> response = authService.signIn(requestBody);
         return response;
     }
 
