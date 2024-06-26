@@ -5,6 +5,7 @@ import com.multicampus.ganwonActivity.dto.request.auth.SignUpRequestDto;
 import com.multicampus.ganwonActivity.dto.response.auth.SignInResponseDto;
 import com.multicampus.ganwonActivity.dto.response.auth.SignUpResponseDto;
 import com.multicampus.ganwonActivity.service.AuthService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -23,7 +24,7 @@ public class AuthController {
 
     @PostMapping("/sign-up")
     public ResponseEntity<? super SignUpResponseDto> signUp(
-            @RequestBody @Validated SignUpRequestDto requestBody
+            @RequestBody @Valid SignUpRequestDto requestBody
     ){
         ResponseEntity<? super SignUpResponseDto> response = authService.signUp(requestBody);
         return response;
@@ -31,7 +32,7 @@ public class AuthController {
 
     @PostMapping("/sign-in")
     public  ResponseEntity<? super SignInResponseDto> signIn(
-            @RequestBody @Validated SignInRequestDto requestBody
+            @RequestBody @Valid SignInRequestDto requestBody
     ){
         ResponseEntity<? super SignInResponseDto> response = authService.signIn(requestBody);
         return response;

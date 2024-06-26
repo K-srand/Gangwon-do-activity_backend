@@ -45,11 +45,13 @@ public class JwtProvider {
         Key key = getSigningKey();
 
         try {
+
             claims = Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(jwt)
                     .getBody(); // signingkey의 만료 여부
+
         } catch (Exception e) {
             e.printStackTrace();
             return null;
