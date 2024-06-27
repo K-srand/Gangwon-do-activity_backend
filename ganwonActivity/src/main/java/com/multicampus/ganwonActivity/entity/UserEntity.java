@@ -22,7 +22,6 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY) //=auto_Increment
     @Column(name="userNo")
     private Long userNo;
-
     private String userName;
     private String userId;
     private String userEmail;
