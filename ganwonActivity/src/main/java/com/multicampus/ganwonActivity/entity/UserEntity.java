@@ -8,6 +8,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "user")
 public class UserEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //=auto_Increment
     @Column(name="userNo")
     private Long userNo;
 
@@ -28,6 +32,9 @@ public class UserEntity {
     private Boolean userExit;
     private Boolean userBan;
     private String userRole;
+
+//    LocalDateTime now = LocalDateTime.now().format((DateTimeFormatter.ofPattern("yyyy-MM-dd HH:~~~~`")));
+
 
 
     public UserEntity(SignUpRequestDto dto){

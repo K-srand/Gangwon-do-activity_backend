@@ -38,13 +38,26 @@ dependencies {
 	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version : '0.11.2'
 	implementation group: 'io.jsonwebtoken', name: 'jjwt-impl', version : '0.11.2'
 	implementation group: 'io.jsonwebtoken', name: 'jjwt-jackson', version : '0.11.2'
-	compileOnly 'org.projectlombok:lombok'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.microsoft.sqlserver:mssql-jdbc'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+//	swagger
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+	implementation 'org.springdoc:springdoc-openapi-starter-common:2.0.2'
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-api:2.0.2'
+
+// selenium
+	implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
+
+//	json-parsing
+	implementation 'com.fasterxml.jackson.core:jackson-databind'
+	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
 }
 
 hibernate {

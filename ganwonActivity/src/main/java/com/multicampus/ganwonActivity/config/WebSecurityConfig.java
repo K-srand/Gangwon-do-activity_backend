@@ -33,6 +33,7 @@ public class WebSecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
+
     @Bean
     protected SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception{
         httpSecurity
@@ -44,7 +45,14 @@ public class WebSecurityConfig {
                 .sessionManagement(sessionManagement -> sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(request -> request //어떤 인증에 대해서 허용할건지 할건지
-                        .requestMatchers("/","/api/v1/auth/**", "/api/v1/search/**", "/file/**").permitAll()
+                        .requestMatchers("/",
+                                "/api/v1/auth/**",
+                                "/api/v1/search/**",
+                                "/file/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/api/v1/getjson").permitAll()
                         .requestMatchers("/api/v1/user/**").hasRole("USER")
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()

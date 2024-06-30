@@ -19,7 +19,7 @@ public class UserController {
 
     @GetMapping("")
     public ResponseEntity<? super GetSignInUserResponseDto> getSignInUser(
-            //email 꺼내오기 jwtAuthenticationFilter에서
+            //userId 꺼내오기 jwtAuthenticationFilter에서
             @AuthenticationPrincipal String userId
     ){
         ResponseEntity<? super GetSignInUserResponseDto> response = userService.getSignInUser(userId);
