@@ -8,13 +8,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @Getter
-public class DeleteBoardResponseDto extends ResponseDto {
-    private DeleteBoardResponseDto(){
+public class PostCommentResponseDto extends ResponseDto {
+
+    private PostCommentResponseDto(){
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
     }
 
-    public static ResponseEntity<DeleteBoardResponseDto> success(){
-        DeleteBoardResponseDto result = new DeleteBoardResponseDto();
+    public static ResponseEntity<PostCommentResponseDto> success(){
+        PostCommentResponseDto result = new PostCommentResponseDto();
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
@@ -23,14 +24,8 @@ public class DeleteBoardResponseDto extends ResponseDto {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
     }
 
-    public static  ResponseEntity<ResponseDto> noExistUser(){
+    public static ResponseEntity<ResponseDto> noExistUser() {
         ResponseDto result = new ResponseDto(ResponseCode.NOT_EXITSTED_USER, ResponseMessage.NOT_EXITSTED_USER);
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
     }
-
-    public static ResponseEntity<ResponseDto> noPermission(){
-        ResponseDto result = new ResponseDto(ResponseCode.NO_PERMISSION, ResponseMessage.NO_PERMISSION);
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(result);
-    }
-
 }

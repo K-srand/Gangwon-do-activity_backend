@@ -3,8 +3,11 @@ package com.multicampus.ganwonActivity.controller;
 
 import com.multicampus.ganwonActivity.dto.request.board.PatchBoardRequestDto;
 import com.multicampus.ganwonActivity.dto.request.board.PostBoardRequestDto;
+import com.multicampus.ganwonActivity.dto.request.board.PostCommentRequestDto;
+import com.multicampus.ganwonActivity.dto.response.board.DeleteBoardResponseDto;
 import com.multicampus.ganwonActivity.dto.response.board.PatchBoardResponseDto;
 import com.multicampus.ganwonActivity.dto.response.board.PostBoardResponseDto;
+import com.multicampus.ganwonActivity.dto.response.board.PostCommentResponseDto;
 import com.multicampus.ganwonActivity.entity.BoardEntity;
 import com.multicampus.ganwonActivity.service.BoardService;
 import jakarta.validation.Valid;
@@ -52,11 +55,25 @@ public class BoardController {
 
     }
 
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<String> deleteBoard(@AuthenticationPrincipal String id)
-//    {
-//        return ResponseEntity.ok(boardService.deleteBoard(id));
-//    }
+    @PatchMapping("/delete/{boardNo}")
+    public ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(
+            @PathVariable("boardNo") Long boardNo,
+            @AuthenticationPrincipal String id)
+
+    {
+        ResponseEntity<? super DeleteBoardResponseDto> deleteBoardResponseDto = boardService.deleteBoard(boardNo, id);
+        return deleteBoardResponseDto;
+    }
+
+    @PostMapping("/comment/{boardNo}")
+    public ResponseEntity<? super PostCommentResponseDto> postComment(
+            @PathVariable("boardNo") Long boardNo,
+            @AuthenticationPrincipal String id,
+            @RequestBody @Valid PostCommentRequestDto postCommentRequestDto
+    ){
+        ResponseEntity<? super PostCommentResponseDto> postCommentResponseDto = boardService.postComment(boardNo, postCommentRequestDto, id);
+        return postCommentResponseDto;
+    }
 
 
 
