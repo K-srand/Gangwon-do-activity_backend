@@ -1,0 +1,21 @@
+package com.multicampus.ganwonActivity.dto.response.board;
+
+import lombok.Getter;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
+public class GetBoardListResponseDto {
+    private int boardNo;
+    private int userNo;
+    private String boardTitle;
+    private String content;
+    private int countLikes;
+    private boolean hasImage;
+    private LocalDateTime writtenTime;
+    private Integer myCourseNo;
+    private boolean isReported;
+    private String userNick;
+}
