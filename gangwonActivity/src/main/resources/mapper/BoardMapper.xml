@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.multicampus.ganwonActivity.mapper.BoardMapper">
+<mapper namespace="com.multicampus.gangwonActivity.mapper.BoardMapper">
 
-    <select id="findAllWithUser" resultType="com.multicampus.ganwonActivity.dto.response.board.GetBoardListResponseDto">
+    <select id="findAllWithUser" resultType="com.multicampus.gangwonActivity.dto.response.board.GetBoardListResponseDto">
         SELECT b.boardNo, b.userNo, b.boardTitle, b.content, b.countLikes, b.hasImage, b.writtenTime, b.isReported, b.myCourseNo, u.userNick
         FROM board b LEFT JOIN user u ON b.userNo = u.userNo
     </select>
