@@ -43,11 +43,14 @@ public class AuthServiceImpl implements AuthService {
             boolean existedId = userRepository.existsByUserId(id);
             if(existedId) return SignUpResponseDto.duplicateId();
 
+
+
             //password를 평문으로 넣으면 안되니까
             String password = dto.getUserPassword();
             //암호화된 상태로 전달
             String encodedPassword = passwordEncoder.encode(password);
             dto.setUserPassword(encodedPassword);
+
 
             //DB에 보내기. dto(SignUpRequestDto 형식을 Entity에 담아서)
             UserEntity userEntity = new UserEntity(dto);
@@ -94,4 +97,16 @@ public class AuthServiceImpl implements AuthService {
 
         return SignInResponseDto.success(token);
     }
+
+    @Override
+    public Boolean checkId(String userId) {
+        return !userRepository.existsByUserId(userId);
+    }
+
+    @Override
+    public Boolean checkNickname(String userNick) {
+        return !userRepository.existsByUserNick(userNick);
+    }
+
+
 }

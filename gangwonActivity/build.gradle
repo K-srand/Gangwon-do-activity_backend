@@ -54,6 +54,13 @@ dependencies {
 // selenium
 	implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
 
+
+	// mybatis
+	implementation group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: '3.0.3'
+
+
+
+
 }
 
 hibernate {

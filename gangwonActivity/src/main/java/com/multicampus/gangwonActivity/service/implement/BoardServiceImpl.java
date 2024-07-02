@@ -2,18 +2,13 @@ package com.multicampus.gangwonActivity.service.implement;
 
 import com.multicampus.gangwonActivity.dto.request.board.PatchBoardRequestDto;
 import com.multicampus.gangwonActivity.dto.request.board.PostBoardRequestDto;
-import com.multicampus.gangwonActivity.dto.request.board.PostCommentRequestDto;
 import com.multicampus.gangwonActivity.dto.response.ResponseDto;
-import com.multicampus.gangwonActivity.dto.response.board.DeleteBoardResponseDto;
+import com.multicampus.gangwonActivity.dto.response.board.GetBoardListResponseDto;
 import com.multicampus.gangwonActivity.dto.response.board.PatchBoardResponseDto;
 import com.multicampus.gangwonActivity.dto.response.board.PostBoardResponseDto;
-import com.multicampus.gangwonActivity.dto.response.board.PostCommentResponseDto;
 import com.multicampus.gangwonActivity.entity.BoardEntity;
-import com.multicampus.gangwonActivity.entity.BoardImageEntity;
-import com.multicampus.gangwonActivity.entity.CommentEntity;
-import com.multicampus.gangwonActivity.repository.BoardImageRepository;
+import com.multicampus.gangwonActivity.mapper.BoardMapper;
 import com.multicampus.gangwonActivity.repository.BoardRepository;
-import com.multicampus.gangwonActivity.repository.CommentRepository;
 import com.multicampus.gangwonActivity.repository.UserRepository;
 import com.multicampus.gangwonActivity.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +31,8 @@ public class BoardServiceImpl implements BoardService {
 
 
     // 게시글 작성
+    private final BoardMapper boardMapper;
+
     @Override
     public ResponseEntity<? super PostBoardResponseDto> postBoard(PostBoardRequestDto dto, String id) {
 
@@ -114,18 +111,16 @@ public class BoardServiceImpl implements BoardService {
         return PatchBoardResponseDto.success();
     }
 
-    // 글 목록
     @Override
-    public List<BoardEntity> listBoard(){
+    public List<GetBoardListResponseDto> listBoard(){
 //        try {
 //
 //        } catch (Exception e){
 //            e.printStackTrace();
 //
 //        }
-        // deletedTime 데이터 활용
-
-        return  boardRepository.findAllButNotDeleted();
+//        return boardEntity~~~
+        return boardMapper.findAllWithUser();
     }
 
     // 게시글 삭제
@@ -204,6 +199,6 @@ public class BoardServiceImpl implements BoardService {
         }
         return PostCommentResponseDto.success();
 
-    }
+
 
 }

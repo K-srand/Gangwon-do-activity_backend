@@ -8,6 +8,9 @@ import com.multicampus.gangwonActivity.dto.response.board.PatchBoardResponseDto;
 import com.multicampus.gangwonActivity.dto.response.board.PostBoardResponseDto;
 import com.multicampus.gangwonActivity.dto.response.board.PostCommentResponseDto;
 import com.multicampus.gangwonActivity.entity.BoardEntity;
+import com.multicampus.gangwonActivity.dto.response.board.GetBoardListResponseDto;
+import com.multicampus.gangwonActivity.dto.response.board.PatchBoardResponseDto;
+import com.multicampus.gangwonActivity.dto.response.board.PostBoardResponseDto;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -17,8 +20,6 @@ public interface BoardService {
 
     ResponseEntity<? super PatchBoardResponseDto> patchBoard(Long boardNo, PatchBoardRequestDto dto, String id);
 
-    List<BoardEntity> listBoard();
-
     ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(Long boardNo, String id);
 
     ResponseEntity<? super PostCommentResponseDto> postComment(Long boardNo, PostCommentRequestDto dto, String id);
@@ -26,4 +27,7 @@ public interface BoardService {
 
 
 
+    List<GetBoardListResponseDto> listBoard();
+
+    void deleteBoard(String id);
 }

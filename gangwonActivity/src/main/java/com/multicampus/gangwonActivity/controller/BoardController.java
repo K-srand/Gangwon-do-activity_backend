@@ -3,6 +3,9 @@ package com.multicampus.gangwonActivity.controller;
 
 import com.multicampus.gangwonActivity.dto.request.board.PatchBoardRequestDto;
 import com.multicampus.gangwonActivity.dto.request.board.PostBoardRequestDto;
+import com.multicampus.gangwonActivity.dto.response.board.GetBoardListResponseDto;
+import com.multicampus.gangwonActivity.dto.response.board.PatchBoardResponseDto;
+import com.multicampus.gangwonActivity.dto.response.board.PostBoardResponseDto;
 import com.multicampus.gangwonActivity.dto.request.board.PostCommentRequestDto;
 import com.multicampus.gangwonActivity.dto.response.board.DeleteBoardResponseDto;
 import com.multicampus.gangwonActivity.dto.response.board.PatchBoardResponseDto;
@@ -49,8 +52,8 @@ public class BoardController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<BoardEntity>> listBoard(){
-        List<BoardEntity> boardEntityList = boardService.listBoard();
+    public ResponseEntity<List<GetBoardListResponseDto>> listBoard(){
+        List<GetBoardListResponseDto> boardEntityList = boardService.listBoard();
         return ResponseEntity.ok(boardEntityList);
 
     }

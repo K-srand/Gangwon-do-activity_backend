@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,9 +26,13 @@ public class UserEntity {
     @Column(name = "userPassword", length = 255)
     private String userPassword;
     private String userNick;
-    private Boolean userExit;
-    private Boolean userBan;
-    private String userRole;
+    private LocalDateTime userExitTime;
+    private LocalDateTime userBanTime;
+    private String userRole;    //ROLE_USER or ROLE_ADMIN
+    private LocalDateTime registerTime;
+
+//    LocalDateTime now = LocalDateTime.now().format((DateTimeFormatter.ofPattern("yyyy-MM-dd HH:~~~~`")));
+
 
 //    LocalDateTime now = LocalDateTime.now().format((DateTimeFormatter.ofPattern("yyyy-MM-dd HH:~~~~`")));
 
@@ -33,14 +40,17 @@ public class UserEntity {
 
     public UserEntity(SignUpRequestDto dto){
 
+        LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+
         this.userName = dto.getUserName();
         this.userId = dto.getUserId();
         this.userEmail = dto.getUserEmail();
         this.userPassword = dto.getUserPassword();
         this.userNick = dto.getUserNick();
-        this.userExit = dto.getUserExit();
-        this.userBan = dto.getUserBan();
-        this.userRole = dto.getUserRole();
+        this.userExitTime = null;
+        this.userBanTime = null;
+        this.userRole = "ROLE_USER";
+        this.registerTime = localDateTime;
     }
 
 }

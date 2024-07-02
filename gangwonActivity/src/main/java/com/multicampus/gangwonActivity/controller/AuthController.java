@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
@@ -35,6 +37,20 @@ public class AuthController {
     ){
         ResponseEntity<? super SignInResponseDto> response = authService.signIn(requestBody);
         return response;
+    }
+
+    @PostMapping("/check-id")
+    public Boolean checkId(@RequestBody Map<String, String> body) {
+        String userId = body.get("userId");
+        boolean isValid = authService.checkId(userId);
+        return isValid;
+    }
+
+    @PostMapping("/check-nickname")
+    public ResponseEntity<Boolean> checkNickname(@RequestBody Map<String, String> body) {
+        String userNick = body.get("userNick");
+        boolean isValid = authService.checkNickname(userNick);
+        return ResponseEntity.ok(isValid);
     }
 
 }
