@@ -3,7 +3,7 @@
 <mapper namespace="com.multicampus.gangwonActivity.mapper.BoardMapper">
 
     <select id="findAllWithUser" resultType="com.multicampus.gangwonActivity.dto.response.board.GetBoardListResponseDto">
-        SELECT b.boardNo, b.userNo, b.boardTitle, b.content, b.countLikes, b.hasImage, b.writtenTime, b.isReported, b.myCourseNo, u.userNick
+        SELECT b.boardNo, b.userNo, b.boardTitle, b.content, b.countLikes, b.deletedTime, b.writtenTime, b.isReported, b.myCourseNo, u.userNick
         FROM board b LEFT JOIN user u ON b.userNo = u.userNo
     </select>
 

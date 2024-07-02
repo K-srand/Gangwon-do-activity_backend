@@ -24,10 +24,6 @@ public interface BoardService {
 
     ResponseEntity<? super PostCommentResponseDto> postComment(Long boardNo, PostCommentRequestDto dto, String id);
 
-
-
-
     List<GetBoardListResponseDto> listBoard();
 
-    void deleteBoard(String id);
 }

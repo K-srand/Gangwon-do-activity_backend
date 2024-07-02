@@ -2,13 +2,16 @@ package com.multicampus.gangwonActivity.service.implement;
 
 import com.multicampus.gangwonActivity.dto.request.board.PatchBoardRequestDto;
 import com.multicampus.gangwonActivity.dto.request.board.PostBoardRequestDto;
+import com.multicampus.gangwonActivity.dto.request.board.PostCommentRequestDto;
 import com.multicampus.gangwonActivity.dto.response.ResponseDto;
-import com.multicampus.gangwonActivity.dto.response.board.GetBoardListResponseDto;
-import com.multicampus.gangwonActivity.dto.response.board.PatchBoardResponseDto;
-import com.multicampus.gangwonActivity.dto.response.board.PostBoardResponseDto;
+import com.multicampus.gangwonActivity.dto.response.board.*;
 import com.multicampus.gangwonActivity.entity.BoardEntity;
+import com.multicampus.gangwonActivity.entity.BoardImageEntity;
+import com.multicampus.gangwonActivity.entity.CommentEntity;
 import com.multicampus.gangwonActivity.mapper.BoardMapper;
+import com.multicampus.gangwonActivity.repository.BoardImageRepository;
 import com.multicampus.gangwonActivity.repository.BoardRepository;
+import com.multicampus.gangwonActivity.repository.CommentRepository;
 import com.multicampus.gangwonActivity.repository.UserRepository;
 import com.multicampus.gangwonActivity.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -167,18 +170,18 @@ public class BoardServiceImpl implements BoardService {
 
             // 사용자 존재 확인
             boolean isExistedUser = userRepository.existsByUserId(id);
-            if(!isExistedUser) return PostCommentResponseDto.noExistUser();
+            if (!isExistedUser) return PostCommentResponseDto.noExistUser();
 
 
             BoardEntity boardEntity = boardRepository.findByBoardNo(boardNo);
             // 게시글 존재 확인
-            if(boardEntity == null) {
+            if (boardEntity == null) {
                 System.out.println("존재하지 않는 게시글입니다.");
                 return PostCommentResponseDto.noExistBoard();
             }
 
             // 삭제 된 게시글인가
-            if(boardEntity.getDeletedTime() != null) {
+            if (boardEntity.getDeletedTime() != null) {
                 System.out.println("삭제 된 게시글입니다.");
                 return PostCommentResponseDto.noExistBoard();
             }
@@ -193,12 +196,12 @@ public class BoardServiceImpl implements BoardService {
 
             commentRepository.save(commentEntity);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.databaseError();
         }
         return PostCommentResponseDto.success();
 
-
+    }
 
 }
