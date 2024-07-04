@@ -217,8 +217,20 @@ public class Tour4_0Service {
         Pageable top2 = PageRequest.of(0, 2);
         List<Tour4_0Entity> results = new ArrayList<>();
 
+        if(cat2.equals("activity")) {
+            results.addAll(tour40Mapper.selectPlaceActivityWithDistance(mapx, mapy));
+        }
         if(cat2.equals("restaurant")) {
-            results.addAll(tour40Mapper.selectPlaceTitlesWithDistance(mapx, mapy));
+            results.addAll(tour40Mapper.selectPlaceRestaurantWithDistance(mapx, mapy));
+        }
+        if(cat2.equals("cafe")) {
+            results.addAll(tour40Mapper.selectPlaceCafeWithDistance(mapx, mapy));
+        }
+        if(cat2.equals("tour")) {
+            results.addAll(tour40Mapper.selectPlaceTourWithDistance(mapx, mapy));
+        }
+        if(cat2.equals("accommodation")) {
+            results.addAll(tour40Mapper.selectPlaceAccommodationWithDistance(mapx, mapy));
         }
         System.out.println(results);
         return results;
