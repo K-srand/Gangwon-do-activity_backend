@@ -60,9 +60,11 @@ public class WebSecurityConfig {
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
-                                "/api/v1/getjson",
+                                "/api/v1/getjson/**",
                                 "/api/v1/auth/check-id",
-                                "/api/v1/auth/check-nickname"
+                                "/api/v1/auth/check-nickname",
+                                "/api/v1/**",
+                                "/api/v1/weather/**"
                                 ).permitAll()
                         .requestMatchers("/api/v1/user/**").hasRole("USER")
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")

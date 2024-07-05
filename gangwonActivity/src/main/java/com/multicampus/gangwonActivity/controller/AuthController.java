@@ -7,6 +7,7 @@ import com.multicampus.gangwonActivity.dto.response.auth.SignUpResponseDto;
 import com.multicampus.gangwonActivity.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,14 +41,14 @@ public class AuthController {
     }
 
     @PostMapping("/check-id")
-    public Boolean checkId(@RequestBody Map<String, String> body) {
+    public ResponseEntity<Boolean> checkId(@NotNull @RequestBody Map<String, String> body) {
         String userId = body.get("userId");
         boolean isValid = authService.checkId(userId);
-        return isValid;
+        return ResponseEntity.ok(isValid);
     }
 
     @PostMapping("/check-nickname")
-    public ResponseEntity<Boolean> checkNickname(@RequestBody Map<String, String> body) {
+    public ResponseEntity<Boolean> checkNickname(@NotNull @RequestBody Map<String, String> body) {
         String userNick = body.get("userNick");
         boolean isValid = authService.checkNickname(userNick);
         return ResponseEntity.ok(isValid);

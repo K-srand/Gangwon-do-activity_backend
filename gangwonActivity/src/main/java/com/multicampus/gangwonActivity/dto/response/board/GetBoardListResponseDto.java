@@ -13,8 +13,8 @@ public class GetBoardListResponseDto {
     private String boardTitle;
     private String content;
     private int countLikes;
-    private LocalDateTime writtenTime;
     private LocalDateTime deletedTime;
+    private LocalDateTime writtenTime;
     private Integer myCourseNo;
     private boolean isReported;
     private String userNick;

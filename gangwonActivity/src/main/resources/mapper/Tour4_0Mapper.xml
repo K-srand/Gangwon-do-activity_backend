@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.multicampus.gangwonActivity.mapper.Tour4_0Mapper">
+
+    <select id="findEachTwoByRating" resultType="com.multicampus.gangwonActivity.entity.Tour4_0Entity">
+        (
+            SELECT * FROM place WHERE addr1 != "" AND rate != 0 AND cat2 = "A0301" ORDER BY rate DESC LIMIT 2
+        )
+        UNION ALL
+        (
+            SELECT * FROM place WHERE addr1 != "" AND rate != 0 AND cat2 = "A0302" ORDER BY rate DESC LIMIT 2
+        )
+        UNION ALL
+        (
+            SELECT * FROM place WHERE addr1 != "" AND rate != 0 AND cat2 = "A0303" ORDER BY rate DESC LIMIT 2
+        )
+        UNION ALL
+        (
+            SELECT * FROM place WHERE addr1 != "" AND rate != 0 AND cat2 = "A0304" ORDER BY rate DESC LIMIT 2
+        )
+        UNION ALL
+        (
+            SELECT * FROM place WHERE addr1 != "" AND rate != 0 AND cat2 = "A0305" ORDER BY rate DESC LIMIT 2
+        )
+        ORDER BY rate DESC;
+
+    </select>
+
+    <select id="selectPlaceTitlesWithDistance" resultType="map">
+        SELECT DISTINCT p1.*, st_distance_sphere(point(#{mapx}, #{mapy}), point(p1.mapx, p1.mapy)) AS distance
+        FROM place p1
+        JOIN (
+            SELECT mapx, mapy
+            FROM place
+            WHERE addr1 != ''
+              AND rate != 0
+              AND cat2 = 'A0301'
+            ORDER BY rate DESC
+        ) p2 ON 1=1
+        WHERE p1.rate != 0
+      AND p1.cat1 = 'A05'
+      AND p1.cat3 != 'A05020900'
+        ORDER BY distance ASC, rate DESC LIMIT 10
+    </select>
+
+    <insert id="saveAll" useGeneratedKeys="true" keyProperty="placeNo" keyColumn="placeNo">
+        INSERT INTO place (firstImage, firstImage2, mapx, mapy, addr1, addr2, cat1, tel, placeTitle, cat2, cat3, contentTypeId, rate)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.firstImage}, #{item.firstImage2}, #{item.mapx}, #{item.mapy}, #{item.addr1}, #{item.addr2}, #{item.cat1}, #{item.tel}, #{item.placeTitle}, #{item.cat2}, #{item.cat3}, #{item.contenttypeid}, #{item.rate})
+        </foreach>
+    </insert>
+
+
+</mapper>
