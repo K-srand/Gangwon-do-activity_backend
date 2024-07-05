@@ -34,12 +34,7 @@ public class UserEntity {
 //    LocalDateTime now = LocalDateTime.now().format((DateTimeFormatter.ofPattern("yyyy-MM-dd HH:~~~~`")));
 
 
-<<<<<<< HEAD
-//    LocalDateTime now = LocalDateTime.now().format((DateTimeFormatter.ofPattern("yyyy-MM-dd HH:~~~~`")));
 
-
-=======
->>>>>>> origin/feature/jungseok
 
     public UserEntity(SignUpRequestDto dto){
 
