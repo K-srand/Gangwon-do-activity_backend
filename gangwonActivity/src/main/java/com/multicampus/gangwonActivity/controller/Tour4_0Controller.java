@@ -39,7 +39,7 @@ public class Tour4_0Controller {
     }
 
     @PostMapping("/getplacecat")
-    public List<Tour4_0Entity> receivePlaceCat2(@RequestBody GetPlaceCatDto getPlaceCatDto) {
+    public List<Tour4_0Entity> receivePlaceCat(@RequestBody GetPlaceCatDto getPlaceCatDto) {
         return tour40Service.getPlaceCat(getPlaceCatDto);
     }
 }

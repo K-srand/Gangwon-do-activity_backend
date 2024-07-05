@@ -19,9 +19,6 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.PageRequest;
-
 
 @Service
 @RequiredArgsConstructor
@@ -194,9 +191,7 @@ public class Tour4_0Service {
 
     //10개의 액티비티
     public List<Tour4_0Entity> getPlace() {
-        Pageable top2 = PageRequest.of(0, 2);
         List<Tour4_0Entity> results = new ArrayList<>();
-
         results.addAll(tour40Mapper.findEachTwoByRating());
 
         return results;
@@ -214,7 +209,6 @@ public class Tour4_0Service {
     //카테고리
     public List<Tour4_0Entity> getPlaceCat(GetPlaceCatDto placeCatDto) {
         String cat2 = placeCatDto.getPlaceCat();
-        Pageable top2 = PageRequest.of(0, 2);
         List<Tour4_0Entity> results = new ArrayList<>();
 
         if(cat2.equals("activity")) {
