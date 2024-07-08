@@ -26,6 +26,7 @@
 
     </select>
 
+
     <select id="selectPlaceTitlesWithDistance" resultType="map">
         SELECT DISTINCT p1.*, st_distance_sphere(point(#{mapx}, #{mapy}), point(p1.mapx, p1.mapy)) AS distance
         FROM place p1
@@ -51,5 +52,46 @@
         </foreach>
     </insert>
 
+
+
+    <select id="selectPlaceActivityWithDistance" resultType="map">
+        SELECT *,
+               ST_DISTANCE_SPHERE(POINT(#{mapx}, #{mapy}), POINT(mapx, mapy)) AS distance
+        FROM place
+        WHERE addr1 != '' AND rate != 0 AND cat1 = 'A03' AND (mapx != #{mapx} AND mapy != #{mapy})
+        ORDER BY distance ASC, rate DESC LIMIT 10;
+    </select>
+
+    <select id="selectPlaceRestaurantWithDistance" resultType="map">
+        SELECT *,
+               ST_DISTANCE_SPHERE(POINT(#{mapx}, #{mapy}), POINT(mapx, mapy)) AS distance
+        FROM place
+        WHERE addr1 != '' AND rate != 0 AND cat1 = 'A05' AND cat3 != 'A05020900'
+            ORDER BY distance ASC, rate DESC LIMIT 10;
+    </select>
+
+    <select id="selectPlaceCafeWithDistance" resultType="map">
+        SELECT *,
+               ST_DISTANCE_SPHERE(POINT(#{mapx}, #{mapy}), POINT(mapx, mapy)) AS distance
+        FROM place
+        WHERE addr1 != '' AND rate != 0 AND cat1 = 'A05' AND cat3 = 'A05020900'
+        ORDER BY distance ASC, rate DESC LIMIT 10;
+    </select>
+
+    <select id="selectPlaceTourWithDistance" resultType="map">
+        SELECT *,
+               ST_DISTANCE_SPHERE(POINT(#{mapx}, #{mapy}), POINT(mapx, mapy)) AS distance
+        FROM place
+        WHERE addr1 != '' AND rate != 0 AND cat1 = 'A02'
+        ORDER BY distance ASC, rate DESC LIMIT 10;
+    </select>
+
+    <select id="selectPlaceAccommodationWithDistance" resultType="map">
+        SELECT *,
+               ST_DISTANCE_SPHERE(POINT(#{mapx}, #{mapy}), POINT(mapx, mapy)) AS distance
+        FROM place
+        WHERE addr1 != '' AND rate != 0 AND cat1 = 'B02'
+        ORDER BY distance ASC, rate DESC LIMIT 10;
+    </select>
 
 </mapper>

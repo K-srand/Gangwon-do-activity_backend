@@ -12,10 +12,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @MapperScan("com.multicampus.gangwonActivity.mapper")
 public class GanwonActivityApplication {
 
-
-
-
-
 	public static void main(String[] args) {
 		SpringApplication.run(GanwonActivityApplication.class, args);
 	}

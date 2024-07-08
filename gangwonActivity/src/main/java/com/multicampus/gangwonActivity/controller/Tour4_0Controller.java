@@ -1,7 +1,9 @@
 package com.multicampus.gangwonActivity.controller;
 
+
 import com.multicampus.gangwonActivity.dto.request.api.GetPlaceCatDto;
 import com.multicampus.gangwonActivity.dto.request.api.GetPlaceTitleDto;
+
 import com.multicampus.gangwonActivity.entity.Tour4_0Entity;
 import com.multicampus.gangwonActivity.service.Tour4_0Service;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +41,7 @@ public class Tour4_0Controller {
     }
 
     @PostMapping("/getplacecat")
-    public List<Tour4_0Entity> receivePlaceCat2(@RequestBody GetPlaceCatDto getPlaceCatDto) {
+    public List<Tour4_0Entity> receivePlaceCat(@RequestBody GetPlaceCatDto getPlaceCatDto) {
         return tour40Service.getPlaceCat(getPlaceCatDto);
     }
 }

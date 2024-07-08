@@ -2,16 +2,15 @@ package com.multicampus.gangwonActivity.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.multicampus.gangwonActivity.dto.request.api.Tour4_0Dto;
 import com.multicampus.gangwonActivity.dto.request.api.GetPlaceCatDto;
 import com.multicampus.gangwonActivity.dto.request.api.GetPlaceTitleDto;
 import com.multicampus.gangwonActivity.entity.Tour4_0Entity;
 import com.multicampus.gangwonActivity.mapper.Tour4_0Mapper;
 import com.multicampus.gangwonActivity.repository.Tour4_0Repository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
+
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -22,13 +21,10 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.PageRequest;
 
-
+//@Transactional
 @Service
 @RequiredArgsConstructor
-//@Transactional
 public class Tour4_0Service {
 
     private final Tour4_0Repository tour40Repository;
@@ -45,6 +41,7 @@ public class Tour4_0Service {
 
         while (check) {
             String result = "";
+
             String cntStr = String.valueOf(intTmp);
 
             String apiKeyHeader = "https://apis.data.go.kr/B551011/KorService1/areaBasedList1?serviceKey=mzWVwvXH8qzITnKhZ39yP88AfyALFqD5x0iaWepPqERWAT9YivmAxmpgBarKqfOZQdBfSySdtczc%2BTO%2BAFKV0Q%3D%3D&numOfRows=1000&pageNo=";
@@ -54,6 +51,7 @@ public class Tour4_0Service {
 
             URL url = new URL(apiKey);
             BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
+
 
             result = br.readLine();
 
@@ -73,13 +71,19 @@ public class Tour4_0Service {
             JsonNode array = parseItems.get("item");
 
             if (parseItems.isEmpty()) {
+
 //                check = false;
                 break;
             }
 
+
+            Thread.sleep(100);
+
+
             intTmp++;
 
             List<Tour4_0Entity> list = new ArrayList<>();
+
 
             for (JsonNode tmp : array) {
                 Tour4_0Dto tour40Dto = new Tour4_0Dto();
@@ -113,9 +117,8 @@ public class Tour4_0Service {
                         .build();
                 list.add(tour40Entity);
             }
-                tour40Mapper.saveAll(list);
+            tour40Mapper.saveAll(list);
 
-            System.out.println("Processed page: " + intTmp);
         }
         return "tourApi";
     }
@@ -191,7 +194,6 @@ public class Tour4_0Service {
 
     //10개의 액티비티
     public List<Tour4_0Entity> getPlace() {
-        Pageable top2 = PageRequest.of(0, 2);
         List<Tour4_0Entity> results = new ArrayList<>();
 
         results.addAll(tour40Mapper.findEachTwoByRating());
@@ -211,16 +213,30 @@ public class Tour4_0Service {
     //카테고리
     public List<Tour4_0Entity> getPlaceCat(GetPlaceCatDto placeCatDto) {
         String cat2 = placeCatDto.getPlaceCat();
-        Pageable top2 = PageRequest.of(0, 2);
+
         List<Tour4_0Entity> results = new ArrayList<>();
 
-        if(cat2.equals("restaurant")) {
+        if (cat2.equals("restaurant")) {
             results.addAll(tour40Mapper.selectPlaceTitlesWithDistance(mapx, mapy));
+        }
+        if (cat2.equals("activity")) {
+            results.addAll(tour40Mapper.selectPlaceActivityWithDistance(mapx, mapy));
+        }
+        if (cat2.equals("restaurant")) {
+            results.addAll(tour40Mapper.selectPlaceRestaurantWithDistance(mapx, mapy));
+        }
+        if (cat2.equals("cafe")) {
+            results.addAll(tour40Mapper.selectPlaceCafeWithDistance(mapx, mapy));
+        }
+        if (cat2.equals("tour")) {
+            results.addAll(tour40Mapper.selectPlaceTourWithDistance(mapx, mapy));
+        }
+        if (cat2.equals("accommodation")) {
+            results.addAll(tour40Mapper.selectPlaceAccommodationWithDistance(mapx, mapy));
+
         }
         System.out.println(results);
         return results;
-    }
-
-
+        }
 
 }
