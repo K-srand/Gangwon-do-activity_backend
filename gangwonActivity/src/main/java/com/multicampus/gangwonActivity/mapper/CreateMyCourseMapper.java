@@ -27,4 +27,12 @@ public interface CreateMyCourseMapper {
     void saveMyCourse(MyCourseEntity myCourseEntity);
 
     void saveMyCourseMapping(MyCourseMappingEntity myCourseMappingEntity);
+
+    boolean selectExistsMyCourse(
+            @Param("userNo") Long userNo,
+            @Param("placeNo1") Long placeNo1, @Param("orderNo1") int orderNo1,
+            @Param("placeNo2") Long placeNo2, @Param("orderNo2") int orderNo2,
+            @Param("placeNo3") Long placeNo3, @Param("orderNo3") int orderNo3,
+            @Param("placeNo4") Long placeNo4, @Param("orderNo4") int orderNo4
+    );
 }

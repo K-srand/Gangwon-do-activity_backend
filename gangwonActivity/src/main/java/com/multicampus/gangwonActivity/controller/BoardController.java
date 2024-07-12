@@ -62,8 +62,8 @@ public class BoardController {
 
     @GetMapping("/") //list 변경
     public ResponseEntity<PageImpl<GetBoardListResponseDto>> listBoard(
-            @RequestParam(required = false, defaultValue = "0") int page,
-            @RequestParam(required = false, defaultValue = "6") int size){ //페이지 번호와 페이지 당 항목 수를 포함
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "6") int size){ //페이지 번호와 페이지 당 항목 수를 포함
 
         SearchPageDto searchPageDto = new SearchPageDto();
         searchPageDto.setPage(page);

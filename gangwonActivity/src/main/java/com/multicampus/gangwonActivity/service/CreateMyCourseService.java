@@ -61,6 +61,23 @@ public class CreateMyCourseService {
             throw new IllegalArgumentException("Invalid user ID");
         }
 
+        // 플레이스 4개 모두 일치할 때 예외처리
+        List<GetMyCourseMappingDto> courseList = getMyCourseDto.getCourseData();
+        if (courseList.size() != 4) {
+            throw new IllegalArgumentException("Course data must contain exactly 4 items.");
+        }
+
+        boolean isCourseExists = createMyCourseMapper.selectExistsMyCourse(
+                userNo,
+                courseList.get(0).getPlaceNo(), courseList.get(0).getOrderNo(),
+                courseList.get(1).getPlaceNo(), courseList.get(1).getOrderNo(),
+                courseList.get(2).getPlaceNo(), courseList.get(2).getOrderNo(),
+                courseList.get(3).getPlaceNo(), courseList.get(3).getOrderNo()
+        );
+        if (isCourseExists) {
+            return "Course already exists.";
+        }
+
         MyCourseEntity myCourseEntity = MyCourseEntity.builder()
                 .userNo(userNo)
                 .writtenTime(now)
@@ -71,8 +88,7 @@ public class CreateMyCourseService {
         Long myCourseNo = myCourseEntity.getMyCourseNo();
         LocalDateTime writtenTime = myCourseEntity.getWrittenTime();
 
-        List<GetMyCourseMappingDto> courseList = getMyCourseDto.getCourseData();
-        courseList.forEach(System.out::println); // Debugging: print each course entry
+        courseList.forEach(System.out::println);
 
         for (GetMyCourseMappingDto course : courseList) {
             MyCourseMappingEntity myCourseMappingEntity = MyCourseMappingEntity.builder()

@@ -23,9 +23,9 @@ public interface BoardMapper {
 
     Integer countAllWithComment(@Param("boardNo") Long boardNo);
 
-    List<String> findAllImage(@Param("boardNo")Long boardNo);
+    List<String> findAllImage(@Param("boardNo") Long boardNo);
 
-    void incrementViewsByBoardNo(@Param("boardNo")Long boardNo);
+    void incrementViewsByBoardNo(@Param("boardNo") Long boardNo);
 
     List<GetBoardListResponseDto> getBestPosts();
 }

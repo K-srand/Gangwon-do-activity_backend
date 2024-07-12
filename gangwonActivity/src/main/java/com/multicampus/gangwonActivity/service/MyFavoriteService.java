@@ -16,6 +16,11 @@ public class MyFavoriteService {
     public String getMyFavorite(GetMyFavoritesMappingDto getMyFavoritesMappingDto) {
         Long userNo = myFavoriteMapper.selectUserNo(getMyFavoritesMappingDto.getUserId());
 
+        boolean isFavoriteExists = myFavoriteMapper.selectExistsFavorite(userNo, getMyFavoritesMappingDto.getPlaceNo());
+        if (isFavoriteExists) {
+            return "already favorited";
+        }
+
         MyFavoritesEntity myFavoritesEntity = MyFavoritesEntity.builder()
                 .userNo(userNo)
                 .placeNo(getMyFavoritesMappingDto.getPlaceNo())

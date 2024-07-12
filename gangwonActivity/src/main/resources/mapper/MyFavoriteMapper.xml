@@ -12,5 +12,9 @@
         INSERT INTO myFavoritesMappingTable (userNo, placeNo)
         VALUES (#{userNo}, #{placeNo})
     </insert>
+    <select id="selectExistsFavorite" resultType="boolean">
+        SELECT EXISTS(SELECT 1 FROM myFavoritesMappingTable WHERE userNo = #{userNo} AND placeNo = #{placeNo}) AS ischeck
+    </select>
+
 
 </mapper>
