@@ -3,9 +3,11 @@ package com.multicampus.gangwonActivity.dto.response.board;
 import com.multicampus.gangwonActivity.common.ResponseCode;
 import com.multicampus.gangwonActivity.common.ResponseMessage;
 import com.multicampus.gangwonActivity.dto.response.ResponseDto;
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+@Getter
 public class BoardLikesResponseDto extends ResponseDto {
 
     private BoardLikesResponseDto() { super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);}
@@ -29,6 +31,9 @@ public class BoardLikesResponseDto extends ResponseDto {
         ResponseDto result = new ResponseDto(ResponseCode.ALREADY_LIKED, ResponseMessage.ALREADY_LIKED);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
     }
+
+    private Long boardNo;
+    private Long userNo;
 
 
 

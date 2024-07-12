@@ -134,7 +134,8 @@ public class BoardServiceImpl implements BoardService {
     // 게시글 삭제
     @Override
     public ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(Long boardNo, String id){
-          LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+
+        LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         try{
             BoardEntity boardEntity = boardRepository.findByBoardNo(boardNo);
 

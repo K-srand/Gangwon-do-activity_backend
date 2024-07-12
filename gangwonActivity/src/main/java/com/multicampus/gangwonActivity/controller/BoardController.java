@@ -62,8 +62,8 @@ public class BoardController {
 
     @GetMapping("/") //list 변경
     public ResponseEntity<PageImpl<GetBoardListResponseDto>> listBoard(
-            @RequestParam(required = false, defaultValue = "0") int page,
-            @RequestParam(required = false, defaultValue = "6") int size){ //페이지 번호와 페이지 당 항목 수를 포함
+            @RequestParam(required = false, defaultValue = "0", value = "page") int page,
+            @RequestParam(required = false, defaultValue = "6", value = "size") int size){ //페이지 번호와 페이지 당 항목 수를 포함
 
         SearchPageDto searchPageDto = new SearchPageDto();
         searchPageDto.setPage(page);
@@ -75,6 +75,7 @@ public class BoardController {
                 //리스트의 데이터(정보) / searchPageDto.getPage(): 0 /  searchPageDto.getSize()): 현재 페이지 / 리스트 전체 수
                 new PageImpl<>(boardEntityList, PageRequest.of(searchPageDto.getPage(), searchPageDto.getSize()), boardCount));
     }
+
 
     @PatchMapping("/delete/{boardNo}")
     public ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(
@@ -115,8 +116,8 @@ public class BoardController {
     //댓글 리스트 불러오기
     @GetMapping("/commentList/{boardNo}")
     public ResponseEntity<PageImpl<GetBoardCommentListResponseDto>> getBoardCommentListBoard(
-            @RequestParam(required = false, defaultValue = "0") int page,
-            @RequestParam(required = false, defaultValue = "5") int size,
+            @RequestParam(required = false, defaultValue = "0", value="page") int page,
+            @RequestParam(required = false, defaultValue = "5", value="size") int size,
             @PathVariable("boardNo") Long boardNo
     ) {
         SearchPageDto searchPageDto = new SearchPageDto();

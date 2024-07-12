@@ -31,5 +31,11 @@ public class FileController {
         }
     }
 
+    @DeleteMapping("/{fileUrl}")
+    public void deleteFile(@PathVariable String fileUrl) throws IOException {
+        s3Service.deleteFile(fileUrl);
+
+    }
+
 
 }
