@@ -130,6 +130,8 @@ public class AuthServiceImpl implements AuthService {
 //            System.out.println(session.getAttribute("email"));
 //            System.out.println(session.getAttribute("certificationNumber"));
 
+
+
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.databaseError();
@@ -150,7 +152,6 @@ public class AuthServiceImpl implements AuthService {
             System.out.println("check Certification Session Email: " + sessionEmail);
             System.out.println("check Certification Session Certification Number: " + sessionCertificationNumber);
 
-
             if (sessionEmail == null || sessionCertificationNumber == null) {
                 return CheckCertificationResponseDto.certificationFail();
             }
@@ -159,6 +160,9 @@ public class AuthServiceImpl implements AuthService {
             if (!isMatch) {
                 return CheckCertificationResponseDto.certificationFail();
             }
+
+            boolean checkFind = dto.getUserName() != null || dto.getUserId() != null;
+            if(!checkFind) session.invalidate();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -198,6 +202,8 @@ public class AuthServiceImpl implements AuthService {
 
             boolean isSuccessed = emailProvider.sendFindIdMail(email, userName, userEntity.getUserId());
             if (!isSuccessed) return EmailCertificationResponseDto.mailSendFail();
+
+            session.invalidate();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -244,8 +250,7 @@ public class AuthServiceImpl implements AuthService {
             userEntity.TempPassword(encodedTempPassword);
             userRepository.save(userEntity);
 
-
-
+            session.invalidate();
 
         } catch (Exception e) {
             e.printStackTrace();
