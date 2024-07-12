@@ -116,10 +116,6 @@ public class AuthServiceImpl implements AuthService {
             String email = dto.getEmail();
             String certificationNumber = CertificationNumber.getCertificationNumber();
 
-            UserEntity userEntity = userRepository.findByUserEmail(email);
-            if(email==null||userEntity == null){
-                return CheckCertificationResponseDto.notExistUser();
-            }
 
             boolean isSuccessed = emailProvider.sendCertificationMail(email, certificationNumber);
             if (!isSuccessed) return EmailCertificationResponseDto.mailSendFail();

@@ -10,10 +10,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @SpringBootApplication
 
 @MapperScan("com.multicampus.gangwonActivity.mapper")
-public class GanwonActivityApplication {
+public class GangwonActivityApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(GanwonActivityApplication.class, args);
+		SpringApplication.run(GangwonActivityApplication.class, args);
 	}
 
 @Bean
