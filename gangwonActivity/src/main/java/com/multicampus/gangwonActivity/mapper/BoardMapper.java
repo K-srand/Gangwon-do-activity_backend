@@ -13,19 +13,21 @@ import java.util.List;
 public interface BoardMapper {
     List<GetBoardListResponseDto> findAllWithUser(SearchPageDto searchPageDto);
 
-    Boolean alreadyLiked(@Param("boardNo") Long boardNo, @Param("userNo") Long userNo);
+    Boolean alreadyLiked(@Param("boardNo") Long boardNo, @Param("userNo")Long userNo);
 
-    List<GetBoardCommentListResponseDto> findCommentsByBoardNo(@Param("boardNo") Long boardNo, @Param("searchPageDto") SearchPageDto searchPageDto);
+    List<GetBoardCommentListResponseDto> findCommentsByBoardNo(@Param("boardNo")Long boardNo, @Param("searchPageDto")SearchPageDto searchPageDto);
 
-    GetBoardDetailResponseDto findBoardDetailWithUser(@Param("boardNo") Long boardNo);
+    GetBoardDetailResponseDto findBoardDetailWithUser(@Param("boardNo")Long boardNo);
 
     Integer countAllWithBoard();
 
-    Integer countAllWithComment(@Param("boardNo") Long boardNo);
+    Integer countAllWithComment(@Param("boardNo")Long boardNo);
 
     List<String> findAllImage(@Param("boardNo") Long boardNo);
 
     void incrementViewsByBoardNo(@Param("boardNo") Long boardNo);
 
     List<GetBoardListResponseDto> getBestPosts();
+
+    void deleteImageFile(@Param("imageAddress")String imageAddress);
 }
