@@ -23,11 +23,13 @@ public class NaverMapService {
     @Value("${naver.client.secret}")
     private String clientSecret;
 
+    //네이버 맵 API 호출
     public String getNaverMapScript() {
         String fullUrl = apiUrl + "?ncpClientId=" + clientId + "&submodules=geocoder";
         return fullUrl;
     }
 
+    //소요시간 호출
     public String getDrivingDuration(GetNaverMapDto getNaverMapDto) {
         RestTemplate restTemplate = new RestTemplate();
         String url = directionsApiUrl + "?start=" + getNaverMapDto.getStartLng() + "," + getNaverMapDto.getStartLat() + "&goal="

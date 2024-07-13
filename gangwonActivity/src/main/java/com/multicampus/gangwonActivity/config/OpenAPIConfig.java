@@ -9,6 +9,7 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+//강원액티비티 API 호출
 @Configuration
 @SecurityScheme(
         name = "bearerAuth",

@@ -4,8 +4,6 @@ import com.multicampus.gangwonActivity.dto.request.board.PatchBoardRequestDto;
 import com.multicampus.gangwonActivity.dto.request.board.PostBoardRequestDto;
 import com.multicampus.gangwonActivity.dto.request.board.PostCommentRequestDto;
 import com.multicampus.gangwonActivity.dto.response.board.*;
-import com.multicampus.gangwonActivity.dto.response.board.*;
-import com.multicampus.gangwonActivity.entity.BoardEntity;
 import com.multicampus.gangwonActivity.dto.response.board.PatchBoardResponseDto;
 import com.multicampus.gangwonActivity.dto.response.board.PostBoardResponseDto;
 import org.springframework.http.ResponseEntity;

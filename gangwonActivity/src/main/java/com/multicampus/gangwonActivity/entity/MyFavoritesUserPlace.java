@@ -11,7 +11,7 @@ import lombok.*;
 @Entity(name = "myFavoritesMappingTable")
 @Table(name = "myFavoritesMappingTable")
 @Builder
-public class MyFavoritesEntity {
+public class MyFavoritesUserPlace {
     @Id
 
     @Column(name="userNo")

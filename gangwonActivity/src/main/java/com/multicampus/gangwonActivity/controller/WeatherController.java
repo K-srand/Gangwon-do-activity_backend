@@ -1,7 +1,7 @@
 package com.multicampus.gangwonActivity.controller;
 
 
-import com.multicampus.gangwonActivity.entity.WeatherEntity;
+import com.multicampus.gangwonActivity.entity.Weather;
 import com.multicampus.gangwonActivity.repository.WeatherRepository;
 import com.multicampus.gangwonActivity.service.WeatherService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +23,7 @@ public class WeatherController {
     private final WeatherService weatherService;
     private final WeatherRepository weatherRepository;
 
+    //날씨 API 저장 서비스 호출
     @GetMapping("")
     public String getWeatherInDataBase() throws IOException,InterruptedException{
 
@@ -30,18 +31,19 @@ public class WeatherController {
         return weatherService.save();
     }
 
+    //날씨 데이터 가져오기 서비스 호출
     @GetMapping("/data")
     public List<Map<String, Object>> getWeatherData() {
-        WeatherEntity weatherEntity = weatherRepository.findTopByOrderByWeatherNoDesc();
+        Weather weather = weatherRepository.findTopByOrderByWeatherNoDesc();
 
         List<Map<String, Object>> weatherData = new ArrayList<>();
         for (int i = 1; i <= 10; i++) {
             Map<String, Object> dayData = new HashMap<>();
             dayData.put("date", LocalDate.now().plusDays(i - 1).toString());
-            dayData.put("taMax", weatherEntity.getTaMax(i));
-            dayData.put("taMin", weatherEntity.getTaMin(i));
-            dayData.put("rnSt", weatherEntity.getRnSt(i));
-            dayData.put("weather", weatherEntity.getWf(i));
+            dayData.put("taMax", weather.getTaMax(i));
+            dayData.put("taMin", weather.getTaMin(i));
+            dayData.put("rnSt", weather.getRnSt(i));
+            dayData.put("weather", weather.getWf(i));
             weatherData.add(dayData);
         }
 

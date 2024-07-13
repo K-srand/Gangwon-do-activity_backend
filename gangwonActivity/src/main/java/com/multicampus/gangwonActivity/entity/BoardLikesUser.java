@@ -14,7 +14,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table (name="boardLikesMappingTable")
-public class BoardLikesMappingTableEntity {
+public class BoardLikesUser {
 
     @EmbeddedId
     private BoardLikesPK boardLikesPK;

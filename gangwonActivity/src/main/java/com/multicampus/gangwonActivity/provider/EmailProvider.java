@@ -11,10 +11,12 @@ public class EmailProvider {
 
     private final JavaMailSender javaMailSender;
 
+    //이메일 제목
     private final String title = "[강원 액티비티 강추!] 인증메일입니다.";
     private final String findIdTitle = "[강원 액티비티 강추!] 아이디찾기 메일입니다.";
     private final String findPwdTitle = "[강원 액티비티 강추!] 임시비밀번호 발급 메일입니다.";
 
+    //인증번호 발송
     public Boolean sendCertificationMail(String email, String certificationNumber) {
 
         try {
@@ -36,6 +38,7 @@ public class EmailProvider {
         return true;
     }
 
+    //아이디 발송
     public Boolean sendFindIdMail(String email,String userName, String userId) {
         try {
             MimeMessage message = javaMailSender.createMimeMessage();
@@ -57,6 +60,7 @@ public class EmailProvider {
 
     }
 
+    //변경된 비밀번호 발송
     public Boolean sendFindPwdMail(String email, String userId, String userPassword) {
         try {
             MimeMessage message = javaMailSender.createMimeMessage();
@@ -78,7 +82,7 @@ public class EmailProvider {
 
     }
 
-
+    //인증번호 발송 내용
     private String getCertificationMessage(String certificationNumber) {
 
         String certificationMessage = "";
@@ -102,6 +106,7 @@ public class EmailProvider {
         return certificationMessage;
     }
 
+    //찾은 사용자의 발송 내용
     private String getFindMessage(String userInfo, String userSub) {
 
         String certificationMessage = "";

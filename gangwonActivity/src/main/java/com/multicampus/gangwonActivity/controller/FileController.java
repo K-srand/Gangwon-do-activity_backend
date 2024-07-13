@@ -21,6 +21,7 @@ public class FileController {
 
     private final S3Service s3Service;
 
+    // 작성글 이미지 업로드 서비스 호출
     @PostMapping("/upload")
     public ResponseEntity<String> uploadFile(@RequestParam(value="file") MultipartFile uploadedfile) {
         try {
@@ -31,6 +32,7 @@ public class FileController {
         }
     }
 
+    //작성글 이미지 삭제 서비스 호출
     @DeleteMapping("/{fileUrl}")
     public void deleteFile(@PathVariable String fileUrl) throws IOException {
         s3Service.deleteFile(fileUrl);

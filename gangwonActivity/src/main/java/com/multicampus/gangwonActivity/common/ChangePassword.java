@@ -2,7 +2,8 @@ package com.multicampus.gangwonActivity.common;
 
 import java.security.SecureRandom;
 
-public class TemporaryPassword {
+//새 비밀번호 생성
+public class ChangePassword {
 
     private static final String Char = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_+=<>?";
 

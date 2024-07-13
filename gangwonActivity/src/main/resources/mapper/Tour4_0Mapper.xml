@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.multicampus.gangwonActivity.mapper.Tour4_0Mapper">
 
-    <select id="findEachTwoByRating" resultType="com.multicampus.gangwonActivity.entity.Tour4_0Entity">
+    <select id="findEachTwoByRating" resultType="com.multicampus.gangwonActivity.entity.Tour4_0">
         (
             SELECT * FROM place WHERE addr1 != "" AND rate != 0 AND cat2 = "A0301" ORDER BY rate DESC LIMIT 2
         )

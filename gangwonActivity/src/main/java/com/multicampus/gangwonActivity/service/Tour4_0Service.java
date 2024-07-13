@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.multicampus.gangwonActivity.dto.request.api.Tour4_0Dto;
 import com.multicampus.gangwonActivity.dto.request.api.GetPlaceCatDto;
 import com.multicampus.gangwonActivity.dto.request.api.GetPlaceTitleDto;
-import com.multicampus.gangwonActivity.entity.Tour4_0Entity;
+import com.multicampus.gangwonActivity.entity.Tour4_0;
 import com.multicampus.gangwonActivity.mapper.Tour4_0Mapper;
 import com.multicampus.gangwonActivity.repository.Tour4_0Repository;
 import lombok.RequiredArgsConstructor;
@@ -82,7 +82,7 @@ public class Tour4_0Service {
 
             intTmp++;
 
-            List<Tour4_0Entity> list = new ArrayList<>();
+            List<Tour4_0> list = new ArrayList<>();
 
 
             for (JsonNode tmp : array) {
@@ -100,7 +100,7 @@ public class Tour4_0Service {
                 tour40Dto.setCat3(tmp.path("cat3").asText(null));
                 tour40Dto.setContenttypeid(tmp.path("contenttypeid").asText(null));
 
-                Tour4_0Entity tour40Entity = Tour4_0Entity.builder()
+                Tour4_0 tour40Entity = Tour4_0.builder()
                         .firstImage(tour40Dto.getFirstimage())
                         .firstImage2(tour40Dto.getFirstimage2())
                         .mapx(Double.parseDouble(tour40Dto.getMapx()))
@@ -127,10 +127,10 @@ public class Tour4_0Service {
     public String rating() throws IOException, InterruptedException {
         String result = "";
 
-        List<Tour4_0Entity> allEntities = tour40Repository.findAll();
+        List<Tour4_0> allEntities = tour40Repository.findAll();
         ObjectMapper objectMapper = new ObjectMapper();
 
-        for (Tour4_0Entity ratelist : allEntities) {
+        for (Tour4_0 ratelist : allEntities) {
 
             String placeTitle = ratelist.getPlaceTitle();
 
@@ -193,8 +193,8 @@ public class Tour4_0Service {
     }
 
     //10개의 액티비티
-    public List<Tour4_0Entity> getPlace() {
-        List<Tour4_0Entity> results = new ArrayList<>();
+    public List<Tour4_0> getPlace() {
+        List<Tour4_0> results = new ArrayList<>();
 
         results.addAll(tour40Mapper.findEachTwoByRating());
 
@@ -211,10 +211,10 @@ public class Tour4_0Service {
     }
 
     //카테고리
-    public List<Tour4_0Entity> getPlaceCat(GetPlaceCatDto placeCatDto) {
+    public List<Tour4_0> getPlaceCat(GetPlaceCatDto placeCatDto) {
         String cat2 = placeCatDto.getPlaceCat();
 
-        List<Tour4_0Entity> results = new ArrayList<>();
+        List<Tour4_0> results = new ArrayList<>();
 
         if (cat2.equals("restaurant")) {
             results.addAll(tour40Mapper.selectPlaceTitlesWithDistance(mapx, mapy));

@@ -1,6 +1,6 @@
 package com.multicampus.gangwonActivity.filter;
 
-import com.multicampus.gangwonActivity.entity.UserEntity;
+import com.multicampus.gangwonActivity.entity.User;
 import com.multicampus.gangwonActivity.provider.JwtProvider;
 import com.multicampus.gangwonActivity.repository.UserRepository;
 import jakarta.servlet.FilterChain;
@@ -49,13 +49,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 return;
             }
 
-            UserEntity userEntity = userRepository.findByUserId(userId);
-            if (userEntity == null) {
+            User user = userRepository.findByUserId(userId);
+            if (user == null) {
                 filterChain.doFilter(request, response);
                 return;
             }
 
-            String role = userEntity.getUserRole(); // role: ROLE_USER, ROLE_ADMIN
+            String role = user.getUserRole(); // role: ROLE_USER, ROLE_ADMIN
 
             // ROLE_USER, ROLE_ADMIN 형태로
             List<GrantedAuthority> authorities = new ArrayList<>();

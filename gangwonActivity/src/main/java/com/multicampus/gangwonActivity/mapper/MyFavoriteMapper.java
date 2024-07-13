@@ -1,6 +1,6 @@
 package com.multicampus.gangwonActivity.mapper;
 
-import com.multicampus.gangwonActivity.entity.MyFavoritesEntity;
+import com.multicampus.gangwonActivity.entity.MyFavoritesUserPlace;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Param;
 public interface MyFavoriteMapper {
     Long selectUserNo(@Param("userId") String userId);
 
-    void saveFavorite(MyFavoritesEntity myFavoritesEntity);
+    void saveFavorite(MyFavoritesUserPlace myFavoritesUserPlace);
 
     boolean selectExistsFavorite(@Param("userNo") Long userNo, @Param("placeNo") Long placeNo);
 }

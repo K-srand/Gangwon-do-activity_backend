@@ -3,14 +3,13 @@ package com.multicampus.gangwonActivity.service;
 import com.multicampus.gangwonActivity.dto.request.mycourse.GetMyCourseDto;
 import com.multicampus.gangwonActivity.dto.request.mycourse.GetMyCourseMappingDto;
 import com.multicampus.gangwonActivity.dto.request.mycourse.GetMyFavoritesDto;
-import com.multicampus.gangwonActivity.entity.MyCourseEntity;
-import com.multicampus.gangwonActivity.entity.MyCourseMappingEntity;
-import com.multicampus.gangwonActivity.entity.MyFavoritesEntity;
+import com.multicampus.gangwonActivity.entity.MyCourse;
+import com.multicampus.gangwonActivity.entity.MyCoursePlace;
+import com.multicampus.gangwonActivity.entity.MyFavoritesUserPlace;
 import com.multicampus.gangwonActivity.mapper.CreateMyCourseMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +21,9 @@ public class CreateMyCourseService {
     private final CreateMyCourseMapper createMyCourseMapper;
 
     // 카테고리별 찜 리스트
-    public List<MyFavoritesEntity> getPlaceCat(GetMyFavoritesDto getMyFavoritesDto) {
+    public List<MyFavoritesUserPlace> getPlaceCat(GetMyFavoritesDto getMyFavoritesDto) {
         String cat2 = getMyFavoritesDto.getPlaceCat();
-        List<MyFavoritesEntity> results = new ArrayList<>();
+        List<MyFavoritesUserPlace> results = new ArrayList<>();
 
         Long userNo = createMyCourseMapper.selectUserNo(getMyFavoritesDto.getUserId());
 
@@ -78,26 +77,26 @@ public class CreateMyCourseService {
             return "Course already exists.";
         }
 
-        MyCourseEntity myCourseEntity = MyCourseEntity.builder()
+        MyCourse myCourse = MyCourse.builder()
                 .userNo(userNo)
                 .writtenTime(now)
                 .build();
-        createMyCourseMapper.saveMyCourse(myCourseEntity);
+        createMyCourseMapper.saveMyCourse(myCourse);
 
         // MyCourseEntity 저장 후 myCourseNo 가져오기
-        Long myCourseNo = myCourseEntity.getMyCourseNo();
-        LocalDateTime writtenTime = myCourseEntity.getWrittenTime();
+        Long myCourseNo = myCourse.getMyCourseNo();
+        LocalDateTime writtenTime = myCourse.getWrittenTime();
 
         courseList.forEach(System.out::println);
 
         for (GetMyCourseMappingDto course : courseList) {
-            MyCourseMappingEntity myCourseMappingEntity = MyCourseMappingEntity.builder()
+            MyCoursePlace myCoursePlace = MyCoursePlace.builder()
                     .myCourseNo(myCourseNo)
                     .placeNo(course.getPlaceNo())
                     .orderNo(course.getOrderNo())
                     .writtenTime(writtenTime)
                     .build();
-            createMyCourseMapper.saveMyCourseMapping(myCourseMappingEntity);
+            createMyCourseMapper.saveMyCourseMapping(myCoursePlace);
         }
 
         return "Course saved successfully.";

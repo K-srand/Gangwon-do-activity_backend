@@ -10,7 +10,7 @@ import lombok.*;
 @Entity(name="boardImage")
 @Table(name="boardImage")
 @Builder
-public class BoardImageEntity {
+public class BoardImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

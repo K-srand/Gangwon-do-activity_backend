@@ -1,7 +1,7 @@
 package com.multicampus.gangwonActivity.service.implement;
 
 import com.multicampus.gangwonActivity.common.CertificationNumber;
-import com.multicampus.gangwonActivity.common.TemporaryPassword;
+import com.multicampus.gangwonActivity.common.ChangePassword;
 import com.multicampus.gangwonActivity.dto.request.auth.CheckCertificationRequestDto;
 import com.multicampus.gangwonActivity.dto.request.auth.EmailCertificationRequestDto;
 import com.multicampus.gangwonActivity.dto.request.auth.SignInRequestDto;
@@ -11,7 +11,7 @@ import com.multicampus.gangwonActivity.dto.response.auth.CheckCertificationRespo
 import com.multicampus.gangwonActivity.dto.response.auth.EmailCertificationResponseDto;
 import com.multicampus.gangwonActivity.dto.response.auth.SignInResponseDto;
 import com.multicampus.gangwonActivity.dto.response.auth.SignUpResponseDto;
-import com.multicampus.gangwonActivity.entity.UserEntity;
+import com.multicampus.gangwonActivity.entity.User;
 import com.multicampus.gangwonActivity.provider.EmailProvider;
 import com.multicampus.gangwonActivity.provider.JwtProvider;
 import com.multicampus.gangwonActivity.repository.CertificationRepository;
@@ -64,8 +64,8 @@ public class AuthServiceImpl implements AuthService {
 
 
             //DB에 보내기. dto(SignUpRequestDto 형식을 Entity에 담아서)
-            UserEntity userEntity = new UserEntity(dto);
-            userRepository.save(userEntity);
+            User user = new User(dto);
+            userRepository.save(user);
 
 
         }catch (Exception e){
@@ -85,13 +85,13 @@ public class AuthServiceImpl implements AuthService {
 
         try{
             String userId = dto.getUserId();
-            UserEntity userEntity = userRepository.findByUserId(userId);
-            if (userEntity == null) return  SignInResponseDto.signInFailed();
+            User user = userRepository.findByUserId(userId);
+            if (user == null) return  SignInResponseDto.signInFailed();
 
             //평문 비번
             String password = dto.getUserPassword();
             //JWT암호화된 비번
-            String encodedPassword = userEntity.getUserPassword();
+            String encodedPassword = user.getUserPassword();
 
             boolean isMatched = passwordEncoder.matches(password,encodedPassword);
             if(!isMatched) return SignInResponseDto.signInFailed();
@@ -116,7 +116,7 @@ public class AuthServiceImpl implements AuthService {
             String email = dto.getEmail();
             String certificationNumber = CertificationNumber.getCertificationNumber();
 
-
+            //이메일 전송
             boolean isSuccessed = emailProvider.sendCertificationMail(email, certificationNumber);
             if (!isSuccessed) return EmailCertificationResponseDto.mailSendFail();
 
@@ -152,15 +152,18 @@ public class AuthServiceImpl implements AuthService {
             System.out.println("check Certification Session Email: " + sessionEmail);
             System.out.println("check Certification Session Certification Number: " + sessionCertificationNumber);
 
+            //세션 예외 처리
             if (sessionEmail == null || sessionCertificationNumber == null) {
                 return CheckCertificationResponseDto.certificationFail();
             }
 
+            //인증번호 확인
             boolean isMatch = sessionEmail.equals(email) && sessionCertificationNumber.equals(certificationNumber);
             if (!isMatch) {
                 return CheckCertificationResponseDto.certificationFail();
             }
 
+            //회원가입 판별
             boolean checkFind = dto.getUserName() != null || dto.getUserId() != null;
             if(!checkFind) session.invalidate();
 
@@ -185,24 +188,28 @@ public class AuthServiceImpl implements AuthService {
             System.out.println("Session Email: " + sessionEmail);
             System.out.println("Session Certification Number: " + sessionCertificationNumber);
 
-            UserEntity userEntity =userRepository.findByUserEmail(email);
-            if (userEntity == null) return CheckCertificationResponseDto.notExistUser();
+            User user =userRepository.findByUserEmail(email);
+            if (user == null) return CheckCertificationResponseDto.notExistUser();
 
             if (sessionEmail == null || sessionCertificationNumber == null) {
                 return CheckCertificationResponseDto.certificationFail();
             }
 
-            boolean nameNatch = userEntity.getUserName().equals(userName);
+            //이름 유저 정보 확인
+            boolean nameNatch = user.getUserName().equals(userName);
             if (!nameNatch) return  CheckCertificationResponseDto.notExistUser();
 
+            //인증번호 확인
             boolean isMatch = sessionEmail.equals(email) && sessionCertificationNumber.equals(certificationNumber);
             if (!isMatch) {
                 return CheckCertificationResponseDto.certificationFail();
             }
 
-            boolean isSuccessed = emailProvider.sendFindIdMail(email, userName, userEntity.getUserId());
+            //아이디 이메일 전송
+            boolean isSuccessed = emailProvider.sendFindIdMail(email, userName, user.getUserId());
             if (!isSuccessed) return EmailCertificationResponseDto.mailSendFail();
 
+            //세션 삭제
             session.invalidate();
 
         } catch (Exception e) {
@@ -231,25 +238,30 @@ public class AuthServiceImpl implements AuthService {
                 return CheckCertificationResponseDto.certificationFail();
             }
 
-            UserEntity userEntity = userRepository.findByUserId(userId);
-            if (userEntity == null) return CheckCertificationResponseDto.notExistUser();
+            User user = userRepository.findByUserId(userId);
+            if (user == null) return CheckCertificationResponseDto.notExistUser();
 
-            boolean idMatch = userEntity.getUserId().equals(userId);
+            //아이디 유저 정보 확인
+            boolean idMatch = user.getUserId().equals(userId);
             if (!idMatch) return CheckCertificationResponseDto.notExistUser();
 
+            //인증번호 확인
             boolean isMatch = sessionEmail.equals(email) && sessionCertificationNumber.equals(certificationNumber);
             if (!isMatch) {
                 return CheckCertificationResponseDto.certificationFail();
             }
 
-            String tempPassword = TemporaryPassword.generateTemporaryPassword();
+            //비밀번호 변경 및 변경 된 비밀번호 이메일 전송
+            String tempPassword = ChangePassword.generateTemporaryPassword();
             boolean isSuccessed = emailProvider.sendFindPwdMail(email, userId ,tempPassword);
             if (!isSuccessed) return EmailCertificationResponseDto.mailSendFail();
 
+            //jwt 변환 및 유저 정보 저장
             String encodedTempPassword = passwordEncoder.encode(tempPassword);
-            userEntity.TempPassword(encodedTempPassword);
-            userRepository.save(userEntity);
+            user.TempPassword(encodedTempPassword);
+            userRepository.save(user);
 
+            //세션 삭제
             session.invalidate();
 
         } catch (Exception e) {

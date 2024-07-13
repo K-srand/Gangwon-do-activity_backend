@@ -15,6 +15,7 @@ public class MyFavoritesController {
 
     private final MyFavoriteService myFavoriteService;
 
+    //찜 리스트 가져오기 서비스 호출
     @PostMapping("")
     public String getMyFavorite(@RequestBody GetMyFavoritesMappingDto getMyFavoritesMappingDto) {
         return myFavoriteService.getMyFavorite(getMyFavoritesMappingDto);

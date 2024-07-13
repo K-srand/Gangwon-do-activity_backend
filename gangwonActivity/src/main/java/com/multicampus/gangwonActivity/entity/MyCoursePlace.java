@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Entity(name = "myCourseMappingTable")
 @Table(name = "myCourseMappingTable")
 @Builder
-public class MyCourseMappingEntity {
+public class MyCoursePlace {
 
     @Id
 

@@ -79,6 +79,7 @@ public class WebSecurityConfig {
 
     }
 
+    //CORS 정책허용
     @Bean
     protected CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration corsConfiguration = new CorsConfiguration();

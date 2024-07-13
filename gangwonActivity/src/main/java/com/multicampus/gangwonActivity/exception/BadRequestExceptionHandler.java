@@ -9,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+//Validation ERROR 처리 서비스 호출
 @RestControllerAdvice
 public class BadRequestExceptionHandler {
 

@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.Arrays;
 
+
 @OpenAPIDefinition(
         info = @Info(title = "강원 액티비티 API 명세서",
             description = " 서비스 API 명세서",

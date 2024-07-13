@@ -3,7 +3,7 @@ package com.multicampus.gangwonActivity.dto.response.user;
 import com.multicampus.gangwonActivity.common.ResponseCode;
 import com.multicampus.gangwonActivity.common.ResponseMessage;
 import com.multicampus.gangwonActivity.dto.response.ResponseDto;
-import com.multicampus.gangwonActivity.entity.UserEntity;
+import com.multicampus.gangwonActivity.entity.User;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,15 +14,15 @@ public class GetSignInUserResponseDto extends ResponseDto {
     private String nickname;
 //    private String profileImage;
 
-    private GetSignInUserResponseDto(UserEntity userEntity){
+    private GetSignInUserResponseDto(User user){
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
-        this.id = userEntity.getUserId();
-        this.nickname = userEntity.getUserNick();
+        this.id = user.getUserId();
+        this.nickname = user.getUserNick();
 //        this.profileImage = userEntity.getUserProfileImage();
     }
 
-    public static ResponseEntity<GetSignInUserResponseDto> success(UserEntity userEntity){
-        GetSignInUserResponseDto result = new GetSignInUserResponseDto(userEntity);
+    public static ResponseEntity<GetSignInUserResponseDto> success(User user){
+        GetSignInUserResponseDto result = new GetSignInUserResponseDto(user);
         return  ResponseEntity.status(HttpStatus.OK).body(result);
     }
 

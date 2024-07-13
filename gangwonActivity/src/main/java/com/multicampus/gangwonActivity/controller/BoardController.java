@@ -26,6 +26,7 @@ public class BoardController {
 
     private final BoardService boardService;
 
+    //글작성 서비스 호출
     @PostMapping("")
     public ResponseEntity<? super PostBoardResponseDto> postBoard(
             @RequestBody @Valid PostBoardRequestDto postBoardRequestDto,
@@ -37,7 +38,7 @@ public class BoardController {
 
     }
 
-
+    //작성글 서비스 호출
     @GetMapping("/{boardNo}")
     public ResponseEntity<GetBoardDetailResponseDto> getBoardDetail(
             @PathVariable("boardNo") Long boardNo,
@@ -48,7 +49,7 @@ public class BoardController {
     }
 
 
-
+    //작성글 수정 서비스 호출
     @PatchMapping("/patch/{boardNo}")
     public ResponseEntity<? super PatchBoardResponseDto> patchBoard(
             @PathVariable("boardNo") Long boardNo,
@@ -60,6 +61,7 @@ public class BoardController {
 
     }
 
+    //작성글 목록 서비스 호출
     @GetMapping("/") //list 변경
     public ResponseEntity<PageImpl<GetBoardListResponseDto>> listBoard(
             @RequestParam(value = "page", defaultValue = "0") int page,
@@ -76,6 +78,7 @@ public class BoardController {
                 new PageImpl<>(boardEntityList, PageRequest.of(searchPageDto.getPage(), searchPageDto.getSize()), boardCount));
     }
 
+    //작성글 삭제 서비스 호출
     @PatchMapping("/delete/{boardNo}")
     public ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(
             @PathVariable("boardNo") Long boardNo,
@@ -86,6 +89,7 @@ public class BoardController {
         return deleteBoardResponseDto;
     }
 
+    //댓글 작성 서비스 호출
     @PostMapping("/comment/{boardNo}")
     public ResponseEntity<? super PostCommentResponseDto> postComment(
             @PathVariable("boardNo") Long boardNo,
@@ -96,6 +100,7 @@ public class BoardController {
         return postCommentResponseDto;
     }
 
+    //좋아요 서비스 호출
     @PostMapping("/likes/{boardNo}")
     public ResponseEntity<? super BoardLikesResponseDto> likesBoard(
             @PathVariable("boardNo") Long boardNo,
@@ -105,14 +110,14 @@ public class BoardController {
         return boardLikesResponseDto;
     }
 
-
+    //이미지 업로드 서비스 호출
     @GetMapping("/image/{boardNo}")
     public List<String> getImage(@PathVariable("boardNo") Long boardNo){
         List<String> imageAddress = boardService.getImageAddress(boardNo);
         return imageAddress;
     }
 
-    //댓글 리스트 불러오기
+    //댓글 목록 서비스 호출
     @GetMapping("/commentList/{boardNo}")
     public ResponseEntity<PageImpl<GetBoardCommentListResponseDto>> getBoardCommentListBoard(
             @RequestParam(required = false, defaultValue = "0") int page,
@@ -128,6 +133,7 @@ public class BoardController {
         return ResponseEntity.ok(new PageImpl<>(boardCommentList, PageRequest.of(page, size), commentCount));
     }
 
+    //추천글 서비스 호출
     @GetMapping("/best")
     public ResponseEntity<List<GetBoardListResponseDto>> getBestPosts() {
         List<GetBoardListResponseDto> bestPosts = boardService.getBestPosts();

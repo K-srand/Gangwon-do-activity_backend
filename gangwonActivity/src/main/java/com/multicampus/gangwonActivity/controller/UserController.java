@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     private final UserService userService;
 
-
+    //유저 정보 서비스 호출
     @GetMapping("")
     public ResponseEntity<? super GetSignInUserResponseDto> getSignInUser(
             //userId 꺼내오기 jwtAuthenticationFilter에서

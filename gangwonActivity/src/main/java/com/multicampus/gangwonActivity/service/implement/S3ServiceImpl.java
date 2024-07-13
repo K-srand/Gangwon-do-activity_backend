@@ -24,6 +24,7 @@ public class S3ServiceImpl implements S3Service {
     @Value("${cloud.aws.s3.bucketName}")
     private String bucket;
 
+    //S3에 이미지 업로드
     @Override
     public String uploadFile(MultipartFile multipartFile) throws IOException {
 
@@ -40,6 +41,8 @@ public class S3ServiceImpl implements S3Service {
 
         return fileUrl;
     }
+
+    //S3 이미지 삭제
     @Override
     public void deleteFile(String fileUrl) throws IOException {
         try{

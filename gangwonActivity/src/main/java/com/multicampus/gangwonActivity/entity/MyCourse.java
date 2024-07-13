@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Entity(name = "myCourse")
 @Table(name = "myCourse")
 @Builder
-public class MyCourseEntity {
+public class MyCourse {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //=auto_Increment
     @Column(name = "myCourseNo")

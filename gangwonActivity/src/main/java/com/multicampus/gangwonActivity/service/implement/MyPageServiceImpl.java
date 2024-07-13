@@ -1,7 +1,6 @@
 package com.multicampus.gangwonActivity.service.implement;
 
 import com.multicampus.gangwonActivity.dto.response.mypage.MyPageResponseDto;
-import com.multicampus.gangwonActivity.entity.BoardEntity;
 import com.multicampus.gangwonActivity.repository.BoardRepository;
 import com.multicampus.gangwonActivity.repository.UserRepository;
 import com.multicampus.gangwonActivity.service.MyPageService;

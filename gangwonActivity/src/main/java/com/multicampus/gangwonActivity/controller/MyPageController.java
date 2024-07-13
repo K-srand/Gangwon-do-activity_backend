@@ -17,6 +17,7 @@ public class MyPageController {
 
     private final MyPageService myPageService;
 
+    //마이페이지 서비스 호출
     @GetMapping("")
     public ResponseEntity<? super MyPageResponseDto> getMyPage(
             @AuthenticationPrincipal String id

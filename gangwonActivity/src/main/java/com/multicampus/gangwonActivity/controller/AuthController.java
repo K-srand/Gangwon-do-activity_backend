@@ -37,6 +37,7 @@ public class AuthController {
     private final AuthService authService;
 //    private HttpSession httpSession;
 
+    //회원가입 서비스 호출
     @PostMapping("/sign-up")
     public ResponseEntity<? super SignUpResponseDto> signUp(
             @RequestBody @Valid SignUpRequestDto requestBody
@@ -45,6 +46,7 @@ public class AuthController {
         return response;
     }
 
+    //로그인 서비스 호출
     @PostMapping("/sign-in")
     public  ResponseEntity<? super SignInResponseDto> signIn(
             @RequestBody @Valid SignInRequestDto requestBody
@@ -53,6 +55,7 @@ public class AuthController {
         return response;
     }
 
+    //아이디 중복 서비스 호출
     @PostMapping("/check-id")
     public ResponseEntity<Boolean> checkId(@NotNull @RequestBody Map<String, String> body) {
         String userId = body.get("userId");
@@ -60,6 +63,7 @@ public class AuthController {
         return ResponseEntity.ok(isValid);
     }
 
+    //닉네임 중복 서비스 호출
     @PostMapping("/check-nickname")
     public ResponseEntity<Boolean> checkNickname(@NotNull @RequestBody Map<String, String> body) {
         String userNick = body.get("userNick");
@@ -67,6 +71,7 @@ public class AuthController {
         return ResponseEntity.ok(isValid);
     }
 
+    //이메일 인증 서비스 호출
     @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
     @PostMapping("/email-certification")
     public ResponseEntity<? super EmailCertificationResponseDto> emailCertification(
@@ -83,6 +88,7 @@ public class AuthController {
         return authService.emailCertification(requestBody, session);
     }
 
+    //인증번호 확인 서비스 호출
     @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
     @PostMapping("/check-certification")
     public ResponseEntity<? super CheckCertificationResponseDto> checkCertification(
@@ -96,6 +102,7 @@ public class AuthController {
     }
 
 
+    //아이디 찾기 서비스 호출
     @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
     @PostMapping("/findId-certification")
     public ResponseEntity<? super CheckCertificationResponseDto> findIdCertification(
@@ -107,6 +114,7 @@ public class AuthController {
         return response;
     }
 
+    //새 비밀번호 발급 서비스 호출
     @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
     @PostMapping("/findPwd-certification")
     public ResponseEntity<? super CheckCertificationResponseDto> findPwdCertification(

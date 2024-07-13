@@ -1,5 +1,6 @@
 package com.multicampus.gangwonActivity.common;
 
+//인증번호 생성
 public class CertificationNumber {
 
     public static String getCertificationNumber(){

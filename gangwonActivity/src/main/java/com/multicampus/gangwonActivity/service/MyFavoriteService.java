@@ -1,7 +1,7 @@
 package com.multicampus.gangwonActivity.service;
 
 import com.multicampus.gangwonActivity.dto.request.mycourse.GetMyFavoritesMappingDto;
-import com.multicampus.gangwonActivity.entity.MyFavoritesEntity;
+import com.multicampus.gangwonActivity.entity.MyFavoritesUserPlace;
 import com.multicampus.gangwonActivity.mapper.MyFavoriteMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,11 +21,11 @@ public class MyFavoriteService {
             return "already favorited";
         }
 
-        MyFavoritesEntity myFavoritesEntity = MyFavoritesEntity.builder()
+        MyFavoritesUserPlace myFavoritesUserPlace = MyFavoritesUserPlace.builder()
                 .userNo(userNo)
                 .placeNo(getMyFavoritesMappingDto.getPlaceNo())
                 .build();
-        myFavoriteMapper.saveFavorite(myFavoritesEntity);
+        myFavoriteMapper.saveFavorite(myFavoritesUserPlace);
 
         return "success favorite";
     }

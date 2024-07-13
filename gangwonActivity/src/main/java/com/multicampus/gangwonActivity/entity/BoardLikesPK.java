@@ -19,9 +19,9 @@ import java.io.Serializable;
 public class BoardLikesPK implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="boardNo", nullable = false)
-    private BoardEntity boardNo;
+    private Board boardNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userNo", nullable = false)
-    private UserEntity userNo;
+    private User userNo;
 }

@@ -10,7 +10,7 @@ import lombok.*;
 @Entity(name = "place")
 @Table(name = "place")
 @Builder
-public class Tour4_0Entity {
+public class Tour4_0 {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //=auto_Increment

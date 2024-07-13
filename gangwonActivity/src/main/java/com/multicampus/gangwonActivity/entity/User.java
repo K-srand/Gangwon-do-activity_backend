@@ -15,7 +15,7 @@ import java.time.ZoneId;
 @AllArgsConstructor
 @Entity(name = "user")
 @Table(name = "user")
-public class UserEntity {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //=auto_Increment
     @Column(name="userNo")
@@ -34,7 +34,7 @@ public class UserEntity {
 //    LocalDateTime now = LocalDateTime.now().format((DateTimeFormatter.ofPattern("yyyy-MM-dd HH:~~~~`")));
 
 
-    public UserEntity(SignUpRequestDto dto){
+    public User(SignUpRequestDto dto){
 
         LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
 

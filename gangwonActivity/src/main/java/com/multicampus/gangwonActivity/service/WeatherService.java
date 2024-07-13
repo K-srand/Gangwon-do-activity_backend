@@ -5,11 +5,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.multicampus.gangwonActivity.dto.request.weather.WeatherEnum;
 import com.multicampus.gangwonActivity.dto.request.weather.WeatherRequestDto;
-import com.multicampus.gangwonActivity.entity.WeatherEntity;
+import com.multicampus.gangwonActivity.entity.Weather;
 import com.multicampus.gangwonActivity.repository.WeatherRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -18,8 +16,6 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -190,7 +186,7 @@ public class WeatherService {
         }
 
 
-        WeatherEntity weatherEntity = WeatherEntity.builder()
+        Weather weather = Weather.builder()
                 .taMax1(weatherRequestDto.getTaMax1())
                 .taMin1(weatherRequestDto.getTaMin1())
                 .taMax2(weatherRequestDto.getTaMax2())
@@ -233,7 +229,7 @@ public class WeatherService {
                 .wf10(weatherRequestDto.getWf10())
                 .build();
 
-        weatherRepository.save(weatherEntity);
+        weatherRepository.save(weather);
         return "done";
     }
 }
