@@ -23,6 +23,8 @@ public interface BoardService {
 
     ResponseEntity<? super BoardLikesResponseDto> likesBoard(Long boardNo, String id);
 
+    ResponseEntity<? super BoardLikesResponseDto> dislikesBoard(Long boardNo, String id);
+
     List<String> getImageAddress(Long boardNo);
 
     List<GetBoardCommentListResponseDto> getBoardCommentList(Long boardNo, SearchPageDto searchPageDto);
@@ -36,4 +38,8 @@ public interface BoardService {
     void incrementViews(Long boardNo);
 
     List<GetBoardListResponseDto> getBestPosts();
+
+    void like(Long boardNo, String id);
+
+    void disLike(Long boardNo, String id);
 }

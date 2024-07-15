@@ -223,13 +223,45 @@ public class BoardServiceImpl implements BoardService {
             if( boardMapper.alreadyLiked(boardNo, userNo) ) return BoardLikesResponseDto.alreadyLiked();
 
             //좋아요 수 증가
-            board.setCountLikes(board.getCountLikes()+1);
+            like(boardNo, id);
+            String check = boardMapper.likeChecked(boardNo, userNo);
+            if(check.equals("likes")){
+                board.setCountLikes(board.getCountLikes()+1);
+            }
+            boardRepository.save(board);
 
-            //데이터 베이스 저장
-            User user = userRepository.findByUserId(id);
-            BoardLikesPK boardLikesPK = new BoardLikesPK(board, user);
-            BoardLikesUser boardLikesUser = new BoardLikesUser(boardLikesPK);
-            boardLikesMappingTableRepository.save(boardLikesUser);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+
+        }
+
+        return BoardLikesResponseDto.success();
+    }
+
+    // 싫어요 기능
+    @Override
+    public ResponseEntity<? super BoardLikesResponseDto> dislikesBoard(Long boardNo, String id) {
+
+        try {
+            // 사용자 존재 확인
+            boolean isExistedUser = userRepository.existsByUserId(id);
+            if(!isExistedUser) return BoardLikesResponseDto.noExistUser();
+
+            // 게시글 존재 확인
+            Board board = boardRepository.findByBoardNo(boardNo);
+            if(board == null) return BoardLikesResponseDto.noExistBoard();
+
+            // 좋아요 한 번 제한
+            Long userNo = userRepository.findUserNoByUserId(id);
+            if( boardMapper.alreadyLiked(boardNo, userNo) ) return BoardLikesResponseDto.alreadyLiked();
+
+            // 싫어요 수 증가
+            disLike(boardNo, id);
+            String check = boardMapper.likeChecked(boardNo, userNo);
+            if(check.equals("dislikes")){
+                board.setCountLikes(board.getCountLikes()-1);
+            }
             boardRepository.save(board);
 
         }catch (Exception e){
@@ -250,7 +282,6 @@ public class BoardServiceImpl implements BoardService {
 
         //작성글 댓글 목록 조회
         List<GetBoardCommentListResponseDto> comments = boardMapper.findCommentsByBoardNo(boardNo, new SearchPageDto());
-
         boardDetail.setComments(comments);
         incrementViews(boardNo);
         return boardDetail;
@@ -291,6 +322,18 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public List<GetBoardListResponseDto> getBestPosts() {
         return boardMapper.getBestPosts();
+    }
+
+    @Override
+    public void like(Long boardNo, String id) {
+        Long userNo = userRepository.findUserNoByUserId(id);
+        boardMapper.like(boardNo,userNo);
+    }
+
+    @Override
+    public void disLike(Long boardNo, String id) {
+        Long userNo = userRepository.findUserNoByUserId(id);
+        boardMapper.dislike(boardNo, userNo);
     }
 
 }

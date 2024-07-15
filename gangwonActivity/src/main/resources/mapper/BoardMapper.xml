@@ -27,7 +27,7 @@
 
     <select id="alreadyLiked" resultType="boolean" parameterType="map">
         SELECT EXISTS(
-        SELECT 1 FROM boardLikesMappingTable
+        SELECT 1 FROM boardLikesUser
         WHERE boardNo = #{boardNo} AND userNo = #{userNo}
         )
     </select>
@@ -83,5 +83,21 @@
         ON b.boardImageNo = sub.boardImageNo;
 
     </delete>
+
+    <!-- 좋아요-->
+    <insert id="like" parameterType="map">
+        insert into boardLikesUser (boardNo, userNo, likeCheck) values (#{boardNo}, #{userNo}, 'likes')
+    </insert>
+
+    <!-- 싫어요-->
+    <insert id="dislike" parameterType="map">
+        insert into boardLikesUser (boardNo, userNo, likeCheck) values (#{boardNo}, #{userNo}, 'dislikes')
+    </insert>
+
+    <select id="likeChecked" resultType="String" parameterType="map">
+        select likeCheck
+        from boardLikesUser
+        where boardNo = #{boardNo} and userNo = #{userNo}
+    </select>
 
 </mapper>

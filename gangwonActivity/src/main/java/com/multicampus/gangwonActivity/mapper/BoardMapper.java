@@ -30,4 +30,10 @@ public interface BoardMapper {
     List<GetBoardListResponseDto> getBestPosts();
 
     void deleteImageFile(@Param("imageAddress")String imageAddress);
+
+    void like(@Param("boardNo") Long boardNo,@Param("userNo") Long userNo);
+
+    void dislike(@Param("boardNo") Long boardNo,@Param("userNo") Long userNo);
+
+    String likeChecked(@Param("boardNo") Long boardNo, @Param("userNo") Long userNo);
 }
