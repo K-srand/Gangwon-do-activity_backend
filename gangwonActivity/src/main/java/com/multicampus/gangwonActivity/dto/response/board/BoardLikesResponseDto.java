@@ -27,15 +27,12 @@ public class BoardLikesResponseDto extends ResponseDto {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
     }
 
-    public static ResponseEntity<ResponseDto> alreadyLiked() {
-        ResponseDto result = new ResponseDto(ResponseCode.ALREADY_LIKED, ResponseMessage.ALREADY_LIKED);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
-    }
+//    public static ResponseEntity<ResponseDto> alreadyLiked() {
+//        ResponseDto result = new ResponseDto(ResponseCode.ALREADY_LIKED, ResponseMessage.ALREADY_LIKED);
+//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+//    }
 
     private Long boardNo;
     private Long userNo;
-
-
-
 
 }

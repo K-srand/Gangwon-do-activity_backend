@@ -140,4 +140,17 @@ public class BoardController {
         return ResponseEntity.ok(bestPosts);
     }
 
+    // 좋아요
+    @PostMapping("/like/{boardNo}")
+    public ResponseEntity<?> likeBoard(@PathVariable("boardNo") Long boardNo, @AuthenticationPrincipal String id) {
+        return boardService.likesBoard(boardNo, id);
+    }
+
+    // 싫어요
+    @PostMapping("/dislike/{boardNo}")
+    public ResponseEntity<?> dislikeBoard(@PathVariable("boardNo") Long boardNo, @AuthenticationPrincipal String id) {
+        return boardService.dislikesBoard(boardNo, id);
+    }
+
+
 }

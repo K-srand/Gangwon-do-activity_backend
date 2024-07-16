@@ -45,7 +45,7 @@ public class BoardServiceImpl implements BoardService {
 
             //일반 유저
             boolean isExistedId = userRepository.existsByUserId(id);
-            if(!isExistedId) return PostBoardResponseDto.notExistUser();
+            if (!isExistedId) return PostBoardResponseDto.notExistUser();
             LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
 //            String time = localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss:SSS"));
 
@@ -78,7 +78,7 @@ public class BoardServiceImpl implements BoardService {
             }
             boardImageRepository.saveAll(imageEntities);
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.databaseError();
         }
@@ -94,15 +94,15 @@ public class BoardServiceImpl implements BoardService {
 
             // 사용자 여부 확인
             boolean isExistedId = userRepository.existsByUserId(id);
-            if(!isExistedId) return PatchBoardResponseDto.noExistUser();
+            if (!isExistedId) return PatchBoardResponseDto.noExistUser();
 
             // 작성글 여부 확인
-            if(board ==null) return PatchBoardResponseDto.noExistBoard();
+            if (board == null) return PatchBoardResponseDto.noExistBoard();
 
             Long userNo = userRepository.findUserNoByUserId(id);
 
             // 나의 글 확인
-            if(board.getUserNo() != userNo) return PatchBoardResponseDto.noPermission();
+            if (board.getUserNo() != userNo) return PatchBoardResponseDto.noPermission();
 
             //수정된 데이터 저장
             board.setBoardTitle(dto.getTitle());
@@ -111,7 +111,7 @@ public class BoardServiceImpl implements BoardService {
 
             List<String> boardImageList = dto.getBoardImageList();
             List<BoardImage> imageEntities = new ArrayList<>();
-            if(boardImageList != null) {
+            if (boardImageList != null) {
                 for (String image : boardImageList) {
                     BoardImage imageEntity = BoardImage.builder()
                             .imageAddress(image)
@@ -122,7 +122,7 @@ public class BoardServiceImpl implements BoardService {
 
             boardImageRepository.saveAll(imageEntities);
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.databaseError();
         }
@@ -131,28 +131,28 @@ public class BoardServiceImpl implements BoardService {
 
     //작성글 목록
     @Override
-    public List<GetBoardListResponseDto> listBoard(SearchPageDto searchPageDto){
+    public List<GetBoardListResponseDto> listBoard(SearchPageDto searchPageDto) {
         return boardMapper.findAllWithUser(searchPageDto);
     }
 
     //작성글 삭제
     @Override
-    public ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(Long boardNo, String id){
+    public ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(Long boardNo, String id) {
 
         LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
-        try{
+        try {
             Board board = boardRepository.findByBoardNo(boardNo);
 
             // 사용자 여부 확인
             boolean isExistedId = userRepository.existsByUserId(id);
-            if(!isExistedId) return DeleteBoardResponseDto.noExistUser();
+            if (!isExistedId) return DeleteBoardResponseDto.noExistUser();
 
             // 보드 존재 여부 확인
-            if(board ==null) return DeleteBoardResponseDto.noExistBoard();
+            if (board == null) return DeleteBoardResponseDto.noExistBoard();
             Long userNo = userRepository.findUserNoByUserId(id);
 
             // 나의 글 확인
-            if(board.getUserNo() != userNo) return DeleteBoardResponseDto.noPermission();
+            if (board.getUserNo() != userNo) return DeleteBoardResponseDto.noPermission();
 
             // 글 삭제 시 이미지와 댓글 같이 삭제
 //            boardImageRepository.deleteByBoardNo(boardNo);
@@ -161,7 +161,7 @@ public class BoardServiceImpl implements BoardService {
             boardRepository.save(board);
 
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.databaseError();
         }
@@ -208,34 +208,69 @@ public class BoardServiceImpl implements BoardService {
     // 좋아요 기능
     @Override
     public ResponseEntity<? super BoardLikesResponseDto> likesBoard(Long boardNo, String id) {
-
         try {
-            // 사용자 존재 확인
             boolean isExistedUser = userRepository.existsByUserId(id);
-            if(!isExistedUser) return BoardLikesResponseDto.noExistUser();
+            if (!isExistedUser) return BoardLikesResponseDto.noExistUser();
 
-            // 게시글 존재 확인
             Board board = boardRepository.findByBoardNo(boardNo);
-            if(board == null) return BoardLikesResponseDto.noExistBoard();
+            if (board == null) return BoardLikesResponseDto.noExistBoard();
 
-            // 좋아요 한 번 제한
             Long userNo = userRepository.findUserNoByUserId(id);
-            if( boardMapper.alreadyLiked(boardNo, userNo) ) return BoardLikesResponseDto.alreadyLiked();
+            String check = boardMapper.likeChecked(boardNo, userNo);
 
-            //좋아요 수 증가
-            board.setCountLikes(board.getCountLikes()+1);
+            if ("likes".equals(check)) {
+                // 이미 좋아요 상태인 경우 좋아요 취소
+                unlike(boardNo, id);
+                board.setCountLikes(board.getCountLikes() - 1);
+                boardRepository.save(board);
+            } else {
+                // 그게 아니면 좋아요
+                like(boardNo, id);
+                board.setCountLikes(board.getCountLikes() + 1);
+                boardRepository.save(board);
+            }
 
-            //데이터 베이스 저장
-            User user = userRepository.findByUserId(id);
-            BoardLikesPK boardLikesPK = new BoardLikesPK(board, user);
-            BoardLikesUser boardLikesUser = new BoardLikesUser(boardLikesPK);
-            boardLikesMappingTableRepository.save(boardLikesUser);
-            boardRepository.save(board);
-
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.databaseError();
+        }
 
+        return BoardLikesResponseDto.success();
+    }
+
+    // 싫어요 기능
+    @Override
+    public ResponseEntity<? super BoardLikesResponseDto> dislikesBoard(Long boardNo, String id) {
+        try {
+            // 사용자 존재 여부 확인
+            boolean isExistedUser = userRepository.existsByUserId(id);
+            if (!isExistedUser) return BoardLikesResponseDto.noExistUser();
+
+            // 게시글 존재 여부 확인
+            Board board = boardRepository.findByBoardNo(boardNo);
+            if (board == null) return BoardLikesResponseDto.noExistBoard();
+
+            Long userNo = userRepository.findUserNoByUserId(id);
+            String check = boardMapper.likeChecked(boardNo, userNo);
+
+            if ("dislikes".equals(check)) {
+                // 이미 싫어요 상태인 경우 싫어요 취소
+                undislike(boardNo, id);
+                board.setCountLikes(board.getCountLikes() + 1);
+                boardRepository.save(board);
+            } else {
+                // 그게 아니면 싫어요
+                dislike(boardNo, id);
+                board.setCountLikes(board.getCountLikes() - 1);
+                boardRepository.save(board);
+            }
+
+            // 데이터 베이스 저장
+            boardRepository.save(board);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
         }
 
         return BoardLikesResponseDto.success();
@@ -293,4 +328,32 @@ public class BoardServiceImpl implements BoardService {
         return boardMapper.getBestPosts();
     }
 
+    @Override
+    public void like(Long boardNo, String id) {
+        Long userNo = userRepository.findUserNoByUserId(id);
+        boardMapper.like(boardNo, userNo);
+    }
+
+    @Override
+    public void dislike(Long boardNo, String id) {
+        Long userNo = userRepository.findUserNoByUserId(id);
+        boardMapper.dislike(boardNo, userNo);
+    }
+
+    @Override
+    public String likeChecked(long boardNo, long userNo) {
+        return boardMapper.likeChecked(boardNo, userNo);
+    }
+
+    @Override
+    public void unlike(long boardNo, String id) {
+        Long userNo = userRepository.findUserNoByUserId(id);
+        boardMapper.unlike(boardNo, userNo);
+    }
+
+    @Override
+    public void undislike(long boardNo, String id) {
+        Long userNo = userRepository.findUserNoByUserId(id);
+        boardMapper.undislike(boardNo, userNo);
+    }
 }

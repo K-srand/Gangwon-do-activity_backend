@@ -4,6 +4,7 @@ import com.multicampus.gangwonActivity.dto.response.board.GetBoardCommentListRes
 import com.multicampus.gangwonActivity.dto.response.board.GetBoardDetailResponseDto;
 import com.multicampus.gangwonActivity.dto.response.board.GetBoardListResponseDto;
 import com.multicampus.gangwonActivity.dto.response.board.SearchPageDto;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -30,4 +31,14 @@ public interface BoardMapper {
     List<GetBoardListResponseDto> getBestPosts();
 
     void deleteImageFile(@Param("imageAddress")String imageAddress);
+
+    void like(@Param("boardNo") Long boardNo, @Param("userNo") Long userNo);
+
+    void dislike(@Param("boardNo") Long boardNo, @Param("userNo")Long userNo);
+
+    String likeChecked(@Param("boardNo") Long boardNo, @Param("userNo")Long userNo);
+
+    void unlike(@Param("boardNo") long boardNo, @Param("userNo") long userNo);
+
+    void undislike(@Param("boardNo") long boardNo, @Param("userNo") long userNo);
 }
