@@ -209,9 +209,11 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public ResponseEntity<? super BoardLikesResponseDto> likesBoard(Long boardNo, String id) {
         try {
+            //사용자 존재 여부 확인
             boolean isExistedUser = userRepository.existsByUserId(id);
             if (!isExistedUser) return BoardLikesResponseDto.noExistUser();
 
+            //작성글 존재 여부 확인
             Board board = boardRepository.findByBoardNo(boardNo);
             if (board == null) return BoardLikesResponseDto.noExistBoard();
 
@@ -225,6 +227,11 @@ public class BoardServiceImpl implements BoardService {
                 boardRepository.save(board);
             } else {
                 // 그게 아니면 좋아요
+                if ("dislikes".equals(check)) {
+                    // 싫어요 상태인 경우 싫어요를 취소하고 좋아요
+                    undislike(boardNo, id);
+                    board.setCountLikes(board.getCountLikes() + 1);
+                }
                 like(boardNo, id);
                 board.setCountLikes(board.getCountLikes() + 1);
                 boardRepository.save(board);
@@ -246,7 +253,7 @@ public class BoardServiceImpl implements BoardService {
             boolean isExistedUser = userRepository.existsByUserId(id);
             if (!isExistedUser) return BoardLikesResponseDto.noExistUser();
 
-            // 게시글 존재 여부 확인
+            // 작성글 존재 여부 확인
             Board board = boardRepository.findByBoardNo(boardNo);
             if (board == null) return BoardLikesResponseDto.noExistBoard();
 
@@ -260,13 +267,15 @@ public class BoardServiceImpl implements BoardService {
                 boardRepository.save(board);
             } else {
                 // 그게 아니면 싫어요
+                if ("likes".equals(check)) {
+                    // 좋아요 상태인 경우 좋아요를 취소하고 싫어요
+                    unlike(boardNo, id);
+                    board.setCountLikes(board.getCountLikes() - 1);
+                }
                 dislike(boardNo, id);
                 board.setCountLikes(board.getCountLikes() - 1);
                 boardRepository.save(board);
             }
-
-            // 데이터 베이스 저장
-            boardRepository.save(board);
 
         } catch (Exception e) {
             e.printStackTrace();
