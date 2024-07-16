@@ -36,4 +36,9 @@ public interface BoardService {
     void incrementViews(Long boardNo);
 
     List<GetBoardListResponseDto> getBestPosts();
+
+
+
+
+
 }

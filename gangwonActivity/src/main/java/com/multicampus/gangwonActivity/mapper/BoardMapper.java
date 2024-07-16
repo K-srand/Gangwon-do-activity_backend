@@ -4,6 +4,7 @@ import com.multicampus.gangwonActivity.dto.response.board.GetBoardCommentListRes
 import com.multicampus.gangwonActivity.dto.response.board.GetBoardDetailResponseDto;
 import com.multicampus.gangwonActivity.dto.response.board.GetBoardListResponseDto;
 import com.multicampus.gangwonActivity.dto.response.board.SearchPageDto;
+import com.multicampus.gangwonActivity.entity.Board;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -30,4 +31,10 @@ public interface BoardMapper {
     List<GetBoardListResponseDto> getBestPosts();
 
     void deleteImageFile(@Param("imageAddress")String imageAddress);
+
+    List<Board> getBoardListByUserNo(Long userNo);
+
+    //    Integer countBoardByUserNo(Long userNo);
+    List<GetBoardListResponseDto> getBoardListByUserNoPaged(@Param("userNo") Long userNo,@Param("searchPageDto")  SearchPageDto searchPageDto);
+
 }

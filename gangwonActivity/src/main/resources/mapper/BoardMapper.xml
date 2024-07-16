@@ -84,4 +84,16 @@
 
     </delete>
 
+    <!--    userNo로 BoardList 가져오기-->
+    <select id="getBoardListByUserNo" parameterType="java.lang.Long" resultType="Board">
+        select * from board where userNo = #{userNo}
+    </select>
+
+    <select id="getBoardListByUserNoPaged" resultType="com.multicampus.gangwonActivity.dto.response.board.GetBoardListResponseDto">
+        select boardTitle, writtenTime from board
+        where userNo = #{userNo}
+        limit  #{searchPageDto.size}
+        offset #{searchPageDto.offset}
+    </select>
+
 </mapper>

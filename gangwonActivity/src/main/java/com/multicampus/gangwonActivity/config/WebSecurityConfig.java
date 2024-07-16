@@ -59,6 +59,7 @@ public class WebSecurityConfig {
                                 "/file/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
+                                "/api/v1/mypage/**",
                                 "/swagger-ui.html",
                                 "/api/v1/getjson/**",
                                 "/api/v1/auth/check-id",
