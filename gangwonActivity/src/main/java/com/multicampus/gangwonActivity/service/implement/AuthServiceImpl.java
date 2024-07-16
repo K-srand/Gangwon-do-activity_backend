@@ -258,7 +258,7 @@ public class AuthServiceImpl implements AuthService {
 
             //jwt 변환 및 유저 정보 저장
             String encodedChangePassword = passwordEncoder.encode(changePassword);
-            user.TempPassword(encodedChangePassword);
+            user.ModifyPassword(encodedChangePassword);
             userRepository.save(user);
 
             //세션 삭제

@@ -1,15 +1,14 @@
 package com.multicampus.gangwonActivity.service;
 
 
+import com.multicampus.gangwonActivity.dto.request.mypage.ModifyMyInfoRequestDto;
 import com.multicampus.gangwonActivity.dto.response.board.GetBoardListResponseDto;
 import com.multicampus.gangwonActivity.dto.response.board.SearchPageDto;
 import com.multicampus.gangwonActivity.dto.response.mypage.GetMyFavoritesListResponseDto;
+import com.multicampus.gangwonActivity.dto.response.mypage.ModMyInfoResponseDto;
+import com.multicampus.gangwonActivity.dto.response.mypage.ModifyMyInfoResponseDto;
 import com.multicampus.gangwonActivity.dto.response.mypage.MyPageResponseDto;
-import com.multicampus.gangwonActivity.entity.Board;
-import lombok.RequiredArgsConstructor;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -24,4 +23,12 @@ public interface MyPageService {
     Integer countBoardByUserId(String id);
 
     ResponseEntity<? super MyPageResponseDto> deleteMyFavorites(Long placeNo);
+
+    ResponseEntity<? super ModifyMyInfoResponseDto> modifyMyInfo(String id, ModifyMyInfoRequestDto dto);
+
+    ResponseEntity<? super ModifyMyInfoResponseDto> deleteMyInfo(String id);
+
+    public ModMyInfoResponseDto modMyInfo(String id);
+
+
 }

@@ -49,10 +49,15 @@ public class User {
         this.registerTime = localDateTime;
     }
 
-    public void TempPassword(String tempPassword){
+    public void ModifyPassword(String userPassword){
 
-        this.userPassword = tempPassword;
+        this.userPassword = userPassword;
 
     }
 
+    public void ModifyUserNick(String userNick){
+
+        this.userNick = userNick;
+
+    }
 }
