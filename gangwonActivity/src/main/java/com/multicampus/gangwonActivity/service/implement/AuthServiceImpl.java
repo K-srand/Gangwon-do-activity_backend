@@ -252,13 +252,13 @@ public class AuthServiceImpl implements AuthService {
             }
 
             //비밀번호 변경 및 변경 된 비밀번호 이메일 전송
-            String tempPassword = ChangePassword.generateTemporaryPassword();
-            boolean isSuccessed = emailProvider.sendFindPwdMail(email, userId ,tempPassword);
+            String changePassword = ChangePassword.generateChangePassword();
+            boolean isSuccessed = emailProvider.sendFindPwdMail(email, userId ,changePassword);
             if (!isSuccessed) return EmailCertificationResponseDto.mailSendFail();
 
             //jwt 변환 및 유저 정보 저장
-            String encodedTempPassword = passwordEncoder.encode(tempPassword);
-            user.TempPassword(encodedTempPassword);
+            String encodedChangePassword = passwordEncoder.encode(changePassword);
+            user.TempPassword(encodedChangePassword);
             userRepository.save(user);
 
             //세션 삭제
