@@ -33,4 +33,10 @@ public class SignInResponseDto extends ResponseDto {
     }
 
 
+    public static ResponseEntity<ResponseDto> adminSignInFailed(){
+        ResponseDto result = new ResponseDto(ResponseCode.AUTHORIZATION_FAIL, ResponseMessage.AUTHORIZATION_FAIL);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
+    }
+
+
 }

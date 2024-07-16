@@ -7,7 +7,7 @@ public class ChangePassword {
 
     private static final String Char = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_+=<>?";
 
-    public static String generateTemporaryPassword() {
+    public static String generateChangePassword() {
         SecureRandom random = new SecureRandom();
         StringBuilder password = new StringBuilder(15);
 
