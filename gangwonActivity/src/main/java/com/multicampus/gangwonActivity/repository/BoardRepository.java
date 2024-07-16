@@ -13,6 +13,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
     Board findByBoardNo(Long boardNo);
 
+    Boolean existsByBoardNo(Long boardNo);
 
     @Query(value = "select * from board where deletedTime is null", nativeQuery = true)
     List<Board> findAllButNotDeleted();

@@ -33,4 +33,7 @@ public interface ResponseMessage {
     //인증번호 불일치
     String NUMBER_ERROR = "Cerfification number incorrect";
 
+    String NOT_EXISTED_CONTENT = "this content does not exist.";
+
+    String ALREADY_REPORTED_CONTENT = "this content already reported by you!";
 }

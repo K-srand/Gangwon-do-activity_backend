@@ -37,4 +37,6 @@ public interface BoardMapper {
     //    Integer countBoardByUserNo(Long userNo);
     List<GetBoardListResponseDto> getBoardListByUserNoPaged(@Param("userNo") Long userNo,@Param("searchPageDto")  SearchPageDto searchPageDto);
 
+    //
+
 }

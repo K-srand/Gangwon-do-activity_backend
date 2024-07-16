@@ -29,4 +29,6 @@ public interface ResponseCode {
 
     String NUMBER_ERROR = "NE";
 
+    String NOT_EXISTED_CONTENT = "NC";
+    String ALREADY_REPORTED_CONTENT = "AR";
 }
