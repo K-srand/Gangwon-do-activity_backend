@@ -45,7 +45,7 @@ public class BoardServiceImpl implements BoardService {
 
             //일반 유저
             boolean isExistedId = userRepository.existsByUserId(id);
-            if (!isExistedId) return PostBoardResponseDto.notExistUser();
+            if(!isExistedId) return PostBoardResponseDto.notExistUser();
             LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
 //            String time = localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss:SSS"));
 
@@ -78,7 +78,7 @@ public class BoardServiceImpl implements BoardService {
             }
             boardImageRepository.saveAll(imageEntities);
 
-        } catch (Exception e) {
+        }catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.databaseError();
         }
@@ -94,15 +94,15 @@ public class BoardServiceImpl implements BoardService {
 
             // 사용자 여부 확인
             boolean isExistedId = userRepository.existsByUserId(id);
-            if (!isExistedId) return PatchBoardResponseDto.noExistUser();
+            if(!isExistedId) return PatchBoardResponseDto.noExistUser();
 
             // 작성글 여부 확인
-            if (board == null) return PatchBoardResponseDto.noExistBoard();
+            if(board ==null) return PatchBoardResponseDto.noExistBoard();
 
             Long userNo = userRepository.findUserNoByUserId(id);
 
             // 나의 글 확인
-            if (board.getUserNo() != userNo) return PatchBoardResponseDto.noPermission();
+            if(board.getUserNo() != userNo) return PatchBoardResponseDto.noPermission();
 
             //수정된 데이터 저장
             board.setBoardTitle(dto.getTitle());
@@ -111,7 +111,7 @@ public class BoardServiceImpl implements BoardService {
 
             List<String> boardImageList = dto.getBoardImageList();
             List<BoardImage> imageEntities = new ArrayList<>();
-            if (boardImageList != null) {
+            if(boardImageList != null) {
                 for (String image : boardImageList) {
                     BoardImage imageEntity = BoardImage.builder()
                             .imageAddress(image)
@@ -122,7 +122,7 @@ public class BoardServiceImpl implements BoardService {
 
             boardImageRepository.saveAll(imageEntities);
 
-        } catch (Exception e) {
+        }catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.databaseError();
         }
@@ -131,28 +131,28 @@ public class BoardServiceImpl implements BoardService {
 
     //작성글 목록
     @Override
-    public List<GetBoardListResponseDto> listBoard(SearchPageDto searchPageDto) {
+    public List<GetBoardListResponseDto> listBoard(SearchPageDto searchPageDto){
         return boardMapper.findAllWithUser(searchPageDto);
     }
 
     //작성글 삭제
     @Override
-    public ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(Long boardNo, String id) {
+    public ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(Long boardNo, String id){
 
         LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
-        try {
+        try{
             Board board = boardRepository.findByBoardNo(boardNo);
 
             // 사용자 여부 확인
             boolean isExistedId = userRepository.existsByUserId(id);
-            if (!isExistedId) return DeleteBoardResponseDto.noExistUser();
+            if(!isExistedId) return DeleteBoardResponseDto.noExistUser();
 
             // 보드 존재 여부 확인
-            if (board == null) return DeleteBoardResponseDto.noExistBoard();
+            if(board ==null) return DeleteBoardResponseDto.noExistBoard();
             Long userNo = userRepository.findUserNoByUserId(id);
 
             // 나의 글 확인
-            if (board.getUserNo() != userNo) return DeleteBoardResponseDto.noPermission();
+            if(board.getUserNo() != userNo) return DeleteBoardResponseDto.noPermission();
 
             // 글 삭제 시 이미지와 댓글 같이 삭제
 //            boardImageRepository.deleteByBoardNo(boardNo);
@@ -161,7 +161,7 @@ public class BoardServiceImpl implements BoardService {
             boardRepository.save(board);
 
 
-        } catch (Exception e) {
+        }catch (Exception e){
             e.printStackTrace();
             return ResponseDto.databaseError();
         }
@@ -277,9 +277,10 @@ public class BoardServiceImpl implements BoardService {
                 boardRepository.save(board);
             }
 
-        } catch (Exception e) {
+        }catch (Exception e){
             e.printStackTrace();
             return ResponseDto.databaseError();
+
         }
 
         return BoardLikesResponseDto.success();
@@ -294,7 +295,6 @@ public class BoardServiceImpl implements BoardService {
 
         //작성글 댓글 목록 조회
         List<GetBoardCommentListResponseDto> comments = boardMapper.findCommentsByBoardNo(boardNo, new SearchPageDto());
-
         boardDetail.setComments(comments);
         incrementViews(boardNo);
         return boardDetail;

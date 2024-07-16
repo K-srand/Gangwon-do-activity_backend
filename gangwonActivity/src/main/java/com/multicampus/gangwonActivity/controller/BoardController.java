@@ -110,6 +110,16 @@ public class BoardController {
         return boardLikesResponseDto;
     }
 
+    //싫어요 서비스 호출
+    @PostMapping("/dislikes/{boardNo}")
+    public ResponseEntity<? super BoardLikesResponseDto> dislikesBoard(
+            @PathVariable("boardNo") Long boardNo,
+            @AuthenticationPrincipal String id
+    ){
+        ResponseEntity<? super BoardLikesResponseDto> boardLikesResponseDto = boardService.dislikesBoard(boardNo, id);
+        return boardLikesResponseDto;
+    }
+
     //이미지 업로드 서비스 호출
     @GetMapping("/image/{boardNo}")
     public List<String> getImage(@PathVariable("boardNo") Long boardNo){
