@@ -4,6 +4,7 @@ import com.multicampus.gangwonActivity.dto.response.board.GetBoardCommentListRes
 import com.multicampus.gangwonActivity.dto.response.board.GetBoardDetailResponseDto;
 import com.multicampus.gangwonActivity.dto.response.board.GetBoardListResponseDto;
 import com.multicampus.gangwonActivity.dto.response.board.SearchPageDto;
+import com.multicampus.gangwonActivity.entity.Board;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -43,4 +44,12 @@ public interface BoardMapper {
     void deleteMyCourse(@Param("boardNo") Long boardNo);
 
     void updateMyCourse(@Param("boardNo") Long boardNo, @Param("myCourseNo") Long myCourseNo);
+
+    List<Board> getBoardListByUserNo(Long userNo);
+
+    //    Integer countBoardByUserNo(Long userNo);
+    List<GetBoardListResponseDto> getBoardListByUserNoPaged(@Param("userNo") Long userNo,@Param("searchPageDto")  SearchPageDto searchPageDto);
+
+    //
+
 }

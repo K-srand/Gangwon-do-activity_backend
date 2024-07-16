@@ -12,9 +12,32 @@
         INSERT INTO myFavoritesUserPlace (userNo, placeNo)
         VALUES (#{userNo}, #{placeNo})
     </insert>
+
     <select id="selectExistsFavorite" resultType="boolean">
         SELECT EXISTS(SELECT 1 FROM myFavoritesUserPlace WHERE userNo = #{userNo} AND placeNo = #{placeNo}) AS ischeck
     </select>
+
+    <!-- userNo로 내 찜목록 찾기    -->
+    <select id = "getMyFavoritesByUserNo" parameterType="java.lang.Long" resultType="com.multicampus.gangwonActivity.dto.response.mypage.GetMyFavoritesListResponseDto">
+        select p.placeTitle, p.firstImage, p.rate
+        from place p left join myfavoritesmappingtable m on p.placeNo = m.placeNo
+        where m.userNo=#{userNo};
+    </select>
+
+    <select id="findMyFavoritesByUserNo" parameterType="com.multicampus.gangwonActivity.dto.response.board.SearchPageDto"
+            resultType="com.multicampus.gangwonActivity.dto.response.mypage.GetMyFavoritesListResponseDto">
+        select p.placeNo, p.placeTitle, p.firstImage, p.rate from place p
+        left join myFavoritesMappingTable f on p.placeNo = f.placeNo
+        where f.userNo = #{userNo}
+        LIMIT #{searchPageDto.size}
+        OFFSET #{searchPageDto.offset}
+    </select>
+
+    <!--    내 찜목록 삭제-->
+    <delete id="deleteMyFavoritesByPlaceNo" parameterType="java.lang.Long" >
+            delete from myFavoritesMappingTable where placeNo = #{placeNo}
+    </delete>
+
 
 
 </mapper>
