@@ -46,9 +46,14 @@ public class S3ServiceImpl implements S3Service {
     @Override
     public void deleteFile(String fileUrl) throws IOException {
         try{
-            amazonS3.deleteObject(bucket,fileUrl);
-            boardMapper.deleteImageFile(fileUrl);
+            if(fileUrl != null) {
+                int index = fileUrl.lastIndexOf("com/");
+                String newFileName = fileUrl.substring(index + 4);
+                amazonS3.deleteObject(bucket, newFileName);
+                boardMapper.deleteImageFile(fileUrl);
+            }
         } catch (SdkClientException e){
+            System.out.println("error message" + e.getMessage());
             throw new IOException("S3 File Delete Error");
         }
     }

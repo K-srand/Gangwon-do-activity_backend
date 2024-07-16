@@ -117,6 +117,7 @@ public class BoardServiceImpl implements BoardService {
             if(boardImageList != null) {
                 for (String image : boardImageList) {
                     BoardImage imageEntity = BoardImage.builder()
+                            .boardNo(boardNo)
                             .imageAddress(image)
                             .build();
                     imageEntities.add(imageEntity);
@@ -213,27 +214,74 @@ public class BoardServiceImpl implements BoardService {
     public ResponseEntity<? super BoardLikesResponseDto> likesBoard(Long boardNo, String id) {
 
         try {
-            // 사용자 존재 확인
+            //사용자 존재 여부 확인
             boolean isExistedUser = userRepository.existsByUserId(id);
-            if(!isExistedUser) return BoardLikesResponseDto.noExistUser();
+            if (!isExistedUser) return BoardLikesResponseDto.noExistUser();
 
-            // 게시글 존재 확인
+            //작성글 존재 여부 확인
             Board board = boardRepository.findByBoardNo(boardNo);
-            if(board == null) return BoardLikesResponseDto.noExistBoard();
+            if (board == null) return BoardLikesResponseDto.noExistBoard();
+
+            Long userNo = userRepository.findUserNoByUserId(id);
+            String check = boardMapper.likeChecked(boardNo, userNo);
+
+            if ("likes".equals(check)) {
+                // 이미 좋아요 상태인 경우 좋아요 취소
+                unlike(boardNo, id);
+                board.setCountLikes(board.getCountLikes() - 1);
+                boardRepository.save(board);
+            } else {
+                // 그게 아니면 좋아요
+                if ("dislikes".equals(check)) {
+                    // 싫어요 상태인 경우 싫어요를 취소하고 좋아요
+                    undislike(boardNo, id);
+                    board.setCountLikes(board.getCountLikes() + 1);
+                }
+                like(boardNo, id);
+                board.setCountLikes(board.getCountLikes() + 1);
+                boardRepository.save(board);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return BoardLikesResponseDto.success();
+    }
+
+    // 싫어요 기능
+    @Override
+    public ResponseEntity<? super BoardLikesResponseDto> dislikesBoard(Long boardNo, String id) {
+        try {
+            // 사용자 존재 여부 확인
+            boolean isExistedUser = userRepository.existsByUserId(id);
+            if (!isExistedUser) return BoardLikesResponseDto.noExistUser();
+
+            // 작성글 존재 여부 확인
+            Board board = boardRepository.findByBoardNo(boardNo);
+            if (board == null) return BoardLikesResponseDto.noExistBoard();
 
             // 좋아요 한 번 제한
             Long userNo = userRepository.findUserNoByUserId(id);
-            if( boardMapper.alreadyLiked(boardNo, userNo) ) return BoardLikesResponseDto.alreadyLiked();
+            String check = boardMapper.likeChecked(boardNo, userNo);
 
-            //좋아요 수 증가
-            board.setCountLikes(board.getCountLikes()+1);
-
-            //데이터 베이스 저장
-            User user = userRepository.findByUserId(id);
-            BoardLikesPK boardLikesPK = new BoardLikesPK(board, user);
-            BoardLikesUser boardLikesUser = new BoardLikesUser(boardLikesPK);
-            boardLikesMappingTableRepository.save(boardLikesUser);
-            boardRepository.save(board);
+            if ("dislikes".equals(check)) {
+                // 이미 싫어요 상태인 경우 싫어요 취소
+                undislike(boardNo, id);
+                board.setCountLikes(board.getCountLikes() + 1);
+                boardRepository.save(board);
+            } else {
+                // 그게 아니면 싫어요
+                if ("likes".equals(check)) {
+                    // 좋아요 상태인 경우 좋아요를 취소하고 싫어요
+                    unlike(boardNo, id);
+                    board.setCountLikes(board.getCountLikes() - 1);
+                }
+                dislike(boardNo, id);
+                board.setCountLikes(board.getCountLikes() - 1);
+                boardRepository.save(board);
+            }
 
         }catch (Exception e){
             e.printStackTrace();
@@ -297,6 +345,37 @@ public class BoardServiceImpl implements BoardService {
         return boardMapper.getBestPosts();
     }
 
+    //예원
+    @Override
+    public void like(Long boardNo, String id) {
+        Long userNo = userRepository.findUserNoByUserId(id);
+        boardMapper.like(boardNo, userNo);
+    }
+
+    @Override
+    public void dislike(Long boardNo, String id) {
+        Long userNo = userRepository.findUserNoByUserId(id);
+        boardMapper.dislike(boardNo, userNo);
+    }
+
+    @Override
+    public String likeChecked(long boardNo, long userNo) {
+        return boardMapper.likeChecked(boardNo, userNo);
+    }
+
+    @Override
+    public void unlike(long boardNo, String id) {
+        Long userNo = userRepository.findUserNoByUserId(id);
+        boardMapper.unlike(boardNo, userNo);
+    }
+
+    @Override
+    public void undislike(long boardNo, String id) {
+        Long userNo = userRepository.findUserNoByUserId(id);
+        boardMapper.undislike(boardNo, userNo);
+    }
+
+    //낌&빡
     //나만의 코스 불러오기
     @Override
     public List<Map<String, Object>> getMyCourse(String userId) {

@@ -33,6 +33,7 @@ public interface BoardMapper {
 
     void deleteImageFile(@Param("imageAddress")String imageAddress);
 
+    //낌&빡
     Long selectUserNo(@Param("userId") String userId);
 
     List<Map<String, Object>> findMyCourse(@Param("userNo") Long userNo);
@@ -50,6 +51,15 @@ public interface BoardMapper {
     //    Integer countBoardByUserNo(Long userNo);
     List<GetBoardListResponseDto> getBoardListByUserNoPaged(@Param("userNo") Long userNo,@Param("searchPageDto")  SearchPageDto searchPageDto);
 
-    //
 
+    //예원 파트
+    void like(@Param("boardNo") Long boardNo, @Param("userNo") Long userNo);
+
+    void dislike(@Param("boardNo") Long boardNo, @Param("userNo")Long userNo);
+
+    String likeChecked(@Param("boardNo") Long boardNo, @Param("userNo")Long userNo);
+
+    void unlike(@Param("boardNo") long boardNo, @Param("userNo") long userNo);
+
+    void undislike(@Param("boardNo") long boardNo, @Param("userNo") long userNo);
 }

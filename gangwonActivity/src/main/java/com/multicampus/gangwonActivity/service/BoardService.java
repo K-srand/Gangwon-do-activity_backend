@@ -37,7 +37,19 @@ public interface BoardService {
     void incrementViews(Long boardNo);
 
     List<GetBoardListResponseDto> getBestPosts();
+    //예원
+    void like(Long boardNo, String id);
 
+    void dislike(Long boardNo, String id);
+
+    String likeChecked(long boardNo, long userNo);
+
+    ResponseEntity<? super BoardLikesResponseDto> dislikesBoard(Long boardNo, String id);
+    void unlike(long boardNo, String id);
+
+    void undislike(long boardNo, String id);
+
+    //낌&빡
     List<Map<String, Object>> getMyCourse(String userId);
 
     int countMyCourse(String userId);

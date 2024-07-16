@@ -18,5 +18,6 @@ public class BoardLikesUser {
 
     @EmbeddedId
     private BoardLikesPK boardLikesPK;
+    private String likeCheck;
 
 }
