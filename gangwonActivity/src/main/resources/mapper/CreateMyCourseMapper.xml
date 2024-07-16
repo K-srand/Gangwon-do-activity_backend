@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.multicampus.gangwonActivity.mapper.CreateMyCourseMapper">
+
+    <select id="selectMyFavoritesActivity" resultType="map">
+        SELECT m.userNo, m.placeNo, p.placeTitle, p.cat1, p.cat3, p.firstImage, p.firstImage2, p.mapx, p.mapy
+        FROM myFavoritesMappingTable m JOIN place p ON m.placeNo = p.placeNo
+        WHERE p.cat1 = 'A03';
+    </select>
+
+    <select id="selectMyFavoritesRestaurant" resultType="map">
+        SELECT m.userNo, m.placeNo, p.placeTitle, p.cat1, p.cat3, p.firstImage, p.firstImage2, p.mapx, p.mapy
+        FROM myFavoritesMappingTable m JOIN place p ON m.placeNo = p.placeNo
+        WHERE p.cat1 = 'A05' AND p.cat3 != 'A05020900';
+    </select>
+
+    <select id="selectMyFavoritesCafe" resultType="map">
+        SELECT m.userNo, m.placeNo, p.placeTitle, p.cat1, p.cat3, p.firstImage, p.firstImage2, p.mapx, p.mapy
+        FROM myFavoritesMappingTable m JOIN place p ON m.placeNo = p.placeNo
+        WHERE p.cat1 = 'A05' AND p.cat3 = 'A05020900';
+    </select>
+
+    <select id="selectMyFavoritesTour" resultType="map">
+        SELECT m.userNo, m.placeNo, p.placeTitle, p.cat1, p.cat3, p.firstImage, p.firstImage2, p.mapx, p.mapy
+        FROM myFavoritesMappingTable m JOIN place p ON m.placeNo = p.placeNo
+        WHERE p.cat1 = 'A02';
+    </select>
+
+    <select id="selectMyFavoritesAccommodation" resultType="map">
+        SELECT m.userNo, m.placeNo, p.placeTitle, p.cat1, p.cat3, p.firstImage, p.firstImage2, p.mapx, p.mapy
+        FROM myFavoritesMappingTable m JOIN place p ON m.placeNo = p.placeNo
+        WHERE p.cat1 = 'B02';
+    </select>
+
+    <insert id="saveMyCourse" useGeneratedKeys="true" keyProperty="myCourseNo" keyColumn="myCourseNo">
+        INSERT INTO myCourse (userNo, writtenTime)
+        VALUES (#{userNo}, #{writtenTime})
+    </insert>
+
+    <insert id="saveMyCourseMapping" useGeneratedKeys="true" keyProperty="myCourseNo" keyColumn="myCourseNo">
+        INSERT INTO myCourseMappingTable (myCourseNo, placeNo, orderNo, writtenTime)
+        VALUES (#{myCourseNo}, #{placeNo}, #{orderNo}, #{writtenTime})
+    </insert>
+
+    <select id="selectUserNo" resultType="long">
+        SELECT userNo
+        FROM user
+        WHERE userId = #{userId}
+    </select>
+
+    <select id="selectExistsMyCourse" resultType="boolean">
+        SELECT EXISTS(
+            SELECT mc.myCourseNo
+            FROM myCourseMappingTable mcm
+                     JOIN myCourse mc ON mc.myCourseNo = mcm.myCourseNo
+            WHERE mc.userNo = #{userNo}
+              AND (mcm.placeNo = #{placeNo1} AND mcm.orderNo = #{orderNo1})
+                OR (mcm.placeNo = #{placeNo2} AND mcm.orderNo = #{orderNo2})
+                OR (mcm.placeNo = #{placeNo3} AND mcm.orderNo = #{orderNo3})
+                OR (mcm.placeNo = #{placeNo4} AND mcm.orderNo = #{orderNo4})
+            GROUP BY mc.myCourseNo
+            HAVING COUNT(*) = 4
+        ) AS ischeck
+    </select>
+</mapper>
