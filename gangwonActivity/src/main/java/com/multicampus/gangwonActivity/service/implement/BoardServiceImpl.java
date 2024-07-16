@@ -114,6 +114,7 @@ public class BoardServiceImpl implements BoardService {
             if(boardImageList != null) {
                 for (String image : boardImageList) {
                     BoardImage imageEntity = BoardImage.builder()
+                            .boardNo(boardNo)
                             .imageAddress(image)
                             .build();
                     imageEntities.add(imageEntity);
