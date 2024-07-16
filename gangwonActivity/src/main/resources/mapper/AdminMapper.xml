@@ -12,4 +12,10 @@
         FROM user
     </select>
 
+    <select id="userInfo" resultType="com.multicampus.gangwonActivity.dto.response.mypage.ModMyInfoResponseDto" parameterType="long">
+        SELECT userName, userId, userEmail
+        FROM user
+        WHERE userNo = #{userNo}
+    </select>
+
 </mapper>
