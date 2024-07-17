@@ -1,6 +1,7 @@
 package com.multicampus.gangwonActivity.controller;
 
 
+import com.multicampus.gangwonActivity.dto.request.mypage.CheckPasswordRequestDto;
 import com.multicampus.gangwonActivity.dto.request.mypage.ModifyMyInfoRequestDto;
 import com.multicampus.gangwonActivity.dto.response.board.GetBoardListResponseDto;
 import com.multicampus.gangwonActivity.dto.response.board.SearchPageDto;
@@ -94,7 +95,13 @@ public class MyPageController {
         return ResponseEntity.ok(response);
     }
 
-
+    @PostMapping("/checkpassword")
+    public ResponseEntity<? super MyPageResponseDto> checkPassword(
+            @AuthenticationPrincipal String id, @RequestBody @Valid CheckPasswordRequestDto requestDto
+    ){
+        ResponseEntity<? super ModifyMyInfoResponseDto> response = myPageService.checkPassword(id, requestDto);
+        return (ResponseEntity<? super MyPageResponseDto>) response;
+    }
 
 }
 

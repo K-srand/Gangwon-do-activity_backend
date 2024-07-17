@@ -1,6 +1,7 @@
 package com.multicampus.gangwonActivity.service;
 
 
+import com.multicampus.gangwonActivity.dto.request.mypage.CheckPasswordRequestDto;
 import com.multicampus.gangwonActivity.dto.request.mypage.ModifyMyInfoRequestDto;
 import com.multicampus.gangwonActivity.dto.response.board.GetBoardListResponseDto;
 import com.multicampus.gangwonActivity.dto.response.board.SearchPageDto;
@@ -30,5 +31,6 @@ public interface MyPageService {
 
     public ModMyInfoResponseDto modMyInfo(String id);
 
+    ResponseEntity<? super ModifyMyInfoResponseDto> checkPassword(String id, CheckPasswordRequestDto dto);
 
 }
