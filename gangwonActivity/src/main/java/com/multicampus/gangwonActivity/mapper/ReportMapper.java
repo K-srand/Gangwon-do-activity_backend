@@ -4,8 +4,6 @@ import com.multicampus.gangwonActivity.entity.ReportedContent;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.time.LocalDateTime;
-
 @Mapper
 public interface ReportMapper {
 
@@ -19,12 +17,4 @@ public interface ReportMapper {
     Boolean alreadyReportedComment(@Param("commentNo") Long commentNo, @Param("userNo")Long userNo);
 
     void saveReportedComment(ReportedContent reportedContent);
-
-
-    // 제재 쪽인데 꼽사리좀 낄게요.... mapper 새로 만들기 귀찮아서 문의 :정석
-    Boolean alreadySanctionedUser(@Param("userNo")Long userNo);
-
-    void sanctionUser(@Param("userNo")Long userNo, @Param("localDateTime") LocalDateTime localDateTime);
-
-    void desanctionUser(@Param("userNo")Long userNo);
 }

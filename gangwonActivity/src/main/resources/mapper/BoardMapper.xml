@@ -180,4 +180,5 @@
         UPDATE board SET myCourseNo = #{myCourseNo}
         WHERE boardNo = #{boardNo}
     </update>
+
 </mapper>
