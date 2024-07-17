@@ -27,4 +27,24 @@
     <select id="findAllReportedContent" parameterType="java.lang.Long" resultType="Board">
         SELECT * FROM reportedContent WHERE userNo = #{userNo}
     </select>
+
+
+    <!--     제재 여부 판단 -->
+    <select id="alreadySanctionedUser" parameterType="java.lang.Long" resultType="java.lang.Boolean">
+        select exists (select 1 from reportedContent where userNo = #{userNo} and censoredTime is not null);
+    </select>
+
+    <!--    유저 제재-->
+    <update id="sanctionUser">
+        update reportedContent
+        set censoredTime = #{localDateTime}
+        where userNo = #{userNo}
+    </update>
+
+    <update id="desanctionUser">
+        update reportedContent
+        set censoredTime = null
+        where userNo = #{userNo}
+    </update>
+
 </mapper>

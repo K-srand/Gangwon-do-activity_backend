@@ -31,4 +31,6 @@ public interface ResponseCode {
 
     String NOT_EXISTED_CONTENT = "NC";
     String ALREADY_REPORTED_CONTENT = "AR";
+
+    String ALREADY_SANCTIONED_USER = "AS";
 }

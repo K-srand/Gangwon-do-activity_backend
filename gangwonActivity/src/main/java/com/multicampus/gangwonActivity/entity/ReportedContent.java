@@ -23,6 +23,7 @@ public class ReportedContent {
     private Long reportedContentNo;
     private Long userNo;
     private LocalDateTime reportedTime;
+    private LocalDateTime censoredTime;
     private Long commentNo;
     private Long boardNo;
 }

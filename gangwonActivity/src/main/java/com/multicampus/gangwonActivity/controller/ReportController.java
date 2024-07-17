@@ -19,8 +19,6 @@ public class ReportController {
     private final ReportService reportService;
 
 
-
-
     @PostMapping("/board/{boardNo}")
     public ResponseEntity<? super ReportedContentResponseDto> reportBoard(
         @AuthenticationPrincipal String id,

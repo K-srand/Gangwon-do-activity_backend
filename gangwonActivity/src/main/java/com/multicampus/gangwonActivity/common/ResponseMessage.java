@@ -36,4 +36,6 @@ public interface ResponseMessage {
     String NOT_EXISTED_CONTENT = "this content does not exist.";
 
     String ALREADY_REPORTED_CONTENT = "this content already reported by you!";
+
+    String ALREADY_SANCTIONED_USER = "this user already sanctioned";
 }
