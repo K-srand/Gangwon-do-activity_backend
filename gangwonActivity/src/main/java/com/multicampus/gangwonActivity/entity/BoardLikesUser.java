@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table (name="boardLikesMappingTable")
+@Table (name="boardLikesUser")
 public class BoardLikesUser {
 
     @EmbeddedId
