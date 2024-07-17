@@ -20,4 +20,5 @@
         WHERE mc.myCourseNo = #{myCourseNo}
     </select>
 
+
 </mapper>
