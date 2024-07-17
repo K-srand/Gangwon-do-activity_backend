@@ -11,6 +11,7 @@ import com.multicampus.gangwonActivity.dto.response.mypage.MyPageResponseDto;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface MyPageService {
@@ -30,5 +31,9 @@ public interface MyPageService {
 
     public ModMyInfoResponseDto modMyInfo(String id);
 
+    List<Map<String, Object>> getMyCourse(String userId);
 
+    int countMyCourse(String userId);
+
+   void deleteMyCourse(Long myCourseNo);
 }

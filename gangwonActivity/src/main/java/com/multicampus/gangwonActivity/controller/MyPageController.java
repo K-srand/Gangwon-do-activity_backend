@@ -1,6 +1,7 @@
 package com.multicampus.gangwonActivity.controller;
 
 
+import com.multicampus.gangwonActivity.dto.request.board.MyCourseUploadRequestDto;
 import com.multicampus.gangwonActivity.dto.request.mypage.ModifyMyInfoRequestDto;
 import com.multicampus.gangwonActivity.dto.response.board.GetBoardListResponseDto;
 import com.multicampus.gangwonActivity.dto.response.board.SearchPageDto;
@@ -19,6 +20,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/v1/mypage")
@@ -94,7 +96,25 @@ public class MyPageController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/mycourse")
+    public ResponseEntity<PageImpl<Map<String, Object>>> getMyCourse(
+            @RequestBody MyCourseUploadRequestDto myCourseUploadRequestDto,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "2") int size) {
+        SearchPageDto searchPageDto = new SearchPageDto();
+        searchPageDto.setPage(page);
+        searchPageDto.setSize(size);
+        List<Map<String, Object>> myCourse = myPageService.getMyCourse(myCourseUploadRequestDto.getUserId());
+        int myCourseCount = myPageService.countMyCourse(myCourseUploadRequestDto.getUserId());
+        return ResponseEntity.ok(
+                new PageImpl<>(myCourse, PageRequest.of(searchPageDto.getPage(), searchPageDto.getSize()), myCourseCount));
+    }
 
+    //작성글 코스 지우기
+    @DeleteMapping("/deletemycourse/{myCourseNo}")
+    public void deleteMyCourse(@PathVariable("myCourseNo") Long myCourseNo) {
+        myPageService.deleteMyCourse(myCourseNo);
+    }
 
 }
 
