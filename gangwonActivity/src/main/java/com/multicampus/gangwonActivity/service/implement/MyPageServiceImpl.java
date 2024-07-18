@@ -5,10 +5,7 @@ import com.multicampus.gangwonActivity.dto.request.mypage.ModifyMyInfoRequestDto
 import com.multicampus.gangwonActivity.dto.response.ResponseDto;
 import com.multicampus.gangwonActivity.dto.response.board.GetBoardListResponseDto;
 import com.multicampus.gangwonActivity.dto.response.board.SearchPageDto;
-import com.multicampus.gangwonActivity.dto.response.mypage.GetMyFavoritesListResponseDto;
-import com.multicampus.gangwonActivity.dto.response.mypage.ModMyInfoResponseDto;
-import com.multicampus.gangwonActivity.dto.response.mypage.ModifyMyInfoResponseDto;
-import com.multicampus.gangwonActivity.dto.response.mypage.MyPageResponseDto;
+import com.multicampus.gangwonActivity.dto.response.mypage.*;
 import com.multicampus.gangwonActivity.entity.User;
 import com.multicampus.gangwonActivity.mapper.AdminMapper;
 import com.multicampus.gangwonActivity.mapper.BoardMapper;
@@ -23,7 +20,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -53,7 +49,7 @@ public class MyPageServiceImpl implements MyPageService {
     public ResponseEntity<? super MyPageResponseDto> deleteMyFavorites(Long placeNo) {
         try{
 
-        myFavoriteMapper.deleteMyFavoritesByPlaceNo(placeNo);
+            myFavoriteMapper.deleteMyFavoritesByPlaceNo(placeNo);
 
         }catch (Exception e){
             e.printStackTrace();
@@ -138,11 +134,11 @@ public class MyPageServiceImpl implements MyPageService {
     @Override
     public ResponseEntity<? super ModifyMyInfoResponseDto> checkPassword(String id, CheckPasswordRequestDto dto) {
         try {
-        User user =userRepository.findByUserId(id);
-        if (user==null) return ModifyMyInfoResponseDto.notExistUser();
+            User user =userRepository.findByUserId(id);
+            if (user==null) return ModifyMyInfoResponseDto.notExistUser();
 
-        boolean isMatch = passwordEncoder.matches(dto.getUserPassword(), user.getUserPassword());
-        if(!isMatch) return ModifyMyInfoResponseDto.passwordInFailed();
+            boolean isMatch = passwordEncoder.matches(dto.getUserPassword(), user.getUserPassword());
+            if(!isMatch) return ModifyMyInfoResponseDto.passwordInFailed();
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.databaseError();
@@ -154,8 +150,9 @@ public class MyPageServiceImpl implements MyPageService {
 
     // 내 추천 코스 ( 민호형 & 수지 )
     @Override
-    public List<Map<String, Object>> getMyCourse(String userId) {
-        return myFavoriteMapper.findMyCourse(myFavoriteMapper.selectUserNo(userId));
+    public List<GetMyPageCourseResponseDto> getMyCourse(String userId) {
+        Long userNo = userRepository.findUserNoByUserId(userId);
+        return myFavoriteMapper.findMyCourse(userNo);
     }
 
     @Override
@@ -164,8 +161,15 @@ public class MyPageServiceImpl implements MyPageService {
     }
 
     @Override
-    public void deleteMyCourse(Long myCourseNo) {
-        myFavoriteMapper.deleteMyCourse(myCourseNo);
+    public ResponseEntity<? super MyPageResponseDto> deleteMyCourse(Long myCourseNo) {
+        try{
+            myFavoriteMapper.deleteMyCourse(myCourseNo);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return MyPageResponseDto.databaseError();
+        }
+        return MyPageResponseDto.success();
     }
 
 }

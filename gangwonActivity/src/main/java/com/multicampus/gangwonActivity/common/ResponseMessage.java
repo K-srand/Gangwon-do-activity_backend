@@ -40,4 +40,17 @@ public interface ResponseMessage {
     String ALREADY_SANCTIONED_USER = "this user already sanctioned";
     //id 불일치
     String ID_NOT_CORRECT ="id is not correct";
+
+
+    // 나만의 코스 만들기 찜 리스트 이미지 4개 미만 선택
+    String INVALID_COURSE_DATA = "Course data must contain exactly 4 items.";
+
+    // 미 로그인
+    String INVALID_USER = "Invalid user ID.";
+
+    // 코스 중복
+    String COURSE_EXISTS = "Course already exists.";
+
+    //찜 중복
+    String FAVORITE_EXISTS = "already favorited";
 }

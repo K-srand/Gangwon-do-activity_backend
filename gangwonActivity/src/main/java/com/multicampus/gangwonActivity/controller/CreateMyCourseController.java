@@ -3,8 +3,9 @@ package com.multicampus.gangwonActivity.controller;
 import com.multicampus.gangwonActivity.dto.request.mycourse.GetMyCourseDto;
 import com.multicampus.gangwonActivity.dto.request.mycourse.GetMyFavoritesDto;
 import com.multicampus.gangwonActivity.entity.MyFavoritesUserPlace;
-import com.multicampus.gangwonActivity.service.CreateMyCourseService;
+import com.multicampus.gangwonActivity.service.implement.CreateMyCourseServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,17 +14,17 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class CreateMyCourseController {
-    private final CreateMyCourseService createMyCourseService;
+    private final CreateMyCourseServiceImpl createMyCourseServiceImpl;
 
     //카테고리별 플레이스 서비스 호출
     @PostMapping("/getplacecat")
     public List<MyFavoritesUserPlace> receivePlaceCat(@RequestBody GetMyFavoritesDto getMyFavoritesDto) {
-        return createMyCourseService.getPlaceCat(getMyFavoritesDto);
+        return createMyCourseServiceImpl.getPlaceCat(getMyFavoritesDto);
     }
 
     //코스 저장 서비스 호출
     @PostMapping("/getcourse")
-    public String saveCourse(@RequestBody GetMyCourseDto getMyCourseDto) {
-        return createMyCourseService.getMyCourse(getMyCourseDto);
+    public ResponseEntity<?> saveCourse(@RequestBody GetMyCourseDto getMyCourseDto) {
+        return createMyCourseServiceImpl.getMyCourse(getMyCourseDto);
     }
 }
