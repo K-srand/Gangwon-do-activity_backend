@@ -4,6 +4,7 @@ import com.multicampus.gangwonActivity.dto.request.auth.SignInRequestDto;
 import com.multicampus.gangwonActivity.dto.response.admin.AdminUserListResponseDto;
 import com.multicampus.gangwonActivity.dto.response.auth.SignInResponseDto;
 import com.multicampus.gangwonActivity.dto.response.board.SearchPageDto;
+import com.multicampus.gangwonActivity.dto.response.sanction.SanctionContentResponseDto;
 import com.multicampus.gangwonActivity.dto.response.sanction.SanctionedUserResponseDto;
 import org.springframework.http.ResponseEntity;
 
@@ -19,4 +20,8 @@ public interface AdminService {
     ResponseEntity<? super SanctionedUserResponseDto> sanctionUser(String id, Long userNo);
 
     ResponseEntity<? super SanctionedUserResponseDto> disSanctionUser(String id, Long userNo);
+
+    ResponseEntity<? super SanctionContentResponseDto> sanctionContent(Long reportedContentNo);
+
+    ResponseEntity<? super SanctionContentResponseDto> disSanctionContent(Long reportedContentNo);
 }

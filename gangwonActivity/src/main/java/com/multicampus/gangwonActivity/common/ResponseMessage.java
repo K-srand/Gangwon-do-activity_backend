@@ -38,6 +38,8 @@ public interface ResponseMessage {
     String ALREADY_REPORTED_CONTENT = "this content already reported by you!";
     //제재
     String ALREADY_SANCTIONED_USER = "this user already sanctioned";
+    //콘텐츠 제재
+    String ALREADY_SANCTIONED_CONTENT = "this content already sanctioned";
     //id 불일치
     String ID_NOT_CORRECT ="id is not correct";
 }

@@ -26,11 +26,13 @@ public interface ReportMapper {
     void saveReportedComment(ReportedContent reportedContent);
 
 
-    // 제재 쪽인데 꼽사리좀 낄게요.... mapper 새로 만들기 귀찮아서 문의 :정석
+    // 제재 여부 판단
     Boolean alreadySanctionedUser(@Param("userNo")Long userNo);
 
+    //제재
     void sanctionUser(@Param("userNo")Long userNo, @Param("localDateTime") LocalDateTime localDateTime);
 
+    //제재 해제
     void desanctionUser(@Param("userNo")Long userNo);
 
     //신고 목록
@@ -38,4 +40,13 @@ public interface ReportMapper {
 
     //신고받은 글/댓글 삭제
     void deleteReport(@Param("reportedContentNo") Long reportedContentNo);
+
+    // 콘텐츠 제재 여부 판단
+    Boolean alreadySanctionContent(@Param("reportedContentNo")Long reportedContentNo);
+
+    //콘텐츠 제재
+    void sanctionContent(@Param("reportedContentNo")Long reportedContentNo, @Param("localDateTime") LocalDateTime localDateTime);
+
+    //콘텐츠 제재 해제
+    void  desanctionContent(@Param("reportedContentNo")Long reportedContentNo);
 }
