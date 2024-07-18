@@ -59,4 +59,9 @@
         DELETE FROM myCourse WHERE myCourseNo = #{myCourseNo}
     </delete>
 
+    <!-- 나의 경험치 -->
+    <select id="getMyExp" resultType="int" parameterType="long">
+        SELECT userExp FROM user WHERE userNo=#{userNo}
+    </select>
+
 </mapper>

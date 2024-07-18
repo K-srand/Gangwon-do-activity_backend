@@ -38,4 +38,6 @@ public interface MyPageService {
     int countMyCourse(String userId);
 
    void deleteMyCourse(Long myCourseNo);
+
+    int getUserExp(String id);
 }

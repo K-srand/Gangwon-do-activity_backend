@@ -125,5 +125,12 @@ public class MyPageController {
         myPageService.deleteMyCourse(myCourseNo);
     }
 
+    @GetMapping("/exp")
+    public ResponseEntity<? super GetMyExpResponseDto> getMyExp(
+            @AuthenticationPrincipal String id){
+        int rank = myPageService.getUserExp(id);
+        return ResponseEntity.ok(rank);
+    }
+
 }
 

@@ -165,4 +165,10 @@ public class MyPageServiceImpl implements MyPageService {
         myFavoriteMapper.deleteMyCourse(myCourseNo);
     }
 
+    @Override
+    public int getUserExp(String id) {
+        Long userNo = myFavoriteMapper.selectUserNo(id);
+        return myFavoriteMapper.getMyExp(userNo);
+    }
+
 }
