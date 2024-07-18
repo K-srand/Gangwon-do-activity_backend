@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.multicampus.gangwonActivity.mapper.AdminMapper">
+
+    <select id="allUserList"
+            resultType="com.multicampus.gangwonActivity.dto.response.admin.AdminUserListResponseDto">
+        SELECT userNo, userName, userId, userNick, userEmail from user
+    </select>
+
+    <select id="countAllUser" resultType="Integer">
+        SELECT count(*)
+        FROM user
+    </select>
+
+    <select id="userInfo" resultType="com.multicampus.gangwonActivity.dto.response.mypage.ModMyInfoResponseDto" parameterType="java.lang.Long">
+        SELECT userName, userId, userEmail
+        FROM user
+        WHERE userNo = #{userNo}
+    </select>
+
+</mapper>

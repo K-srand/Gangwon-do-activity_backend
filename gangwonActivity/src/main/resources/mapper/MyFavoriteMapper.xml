@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.multicampus.gangwonActivity.mapper.MyFavoriteMapper">
+
+    <select id="selectUserNo" resultType="long">
+        SELECT userNo
+        FROM user
+        WHERE userId = #{userId}
+    </select>
+
+    <insert id="saveFavorite">
+        INSERT INTO myFavoritesUserPlace (userNo, placeNo)
+        VALUES (#{userNo}, #{placeNo})
+    </insert>
+
+    <select id="selectExistsFavorite" resultType="boolean">
+        SELECT EXISTS(SELECT 1 FROM myFavoritesUserPlace WHERE userNo = #{userNo} AND placeNo = #{placeNo}) AS ischeck
+    </select>
+
+    <!-- userNo로 내 찜목록 찾기    -->
+    <select id = "getMyFavoritesByUserNo" parameterType="java.lang.Long" resultType="com.multicampus.gangwonActivity.dto.response.mypage.GetMyFavoritesListResponseDto">
+        select p.placeTitle, p.firstImage, p.rate
+        from place p left join myFavoritesUserPlace m on p.placeNo = m.placeNo
+        where m.userNo=#{userNo};
+    </select>
+
+    <select id="findMyFavoritesByUserNo" parameterType="com.multicampus.gangwonActivity.dto.response.board.SearchPageDto"
+            resultType="com.multicampus.gangwonActivity.dto.response.mypage.GetMyFavoritesListResponseDto">
+        select p.placeNo, p.placeTitle, p.firstImage, p.rate from place p
+        left join myFavoritesUserPlace f on p.placeNo = f.placeNo
+        where f.userNo = #{userNo}
+        LIMIT #{searchPageDto.size}
+        OFFSET #{searchPageDto.offset}
+    </select>
+
+    <!--    내 찜목록 삭제-->
+    <delete id="deleteMyFavoritesByPlaceNo" parameterType="java.lang.Long" >
+            delete from myFavoritesUserPlace where placeNo = #{placeNo}
+    </delete>
+
+    <!-- 나만의 코스 불러오기 -->
+    <select id="findMyCourse" resultType="map">
+        SELECT mc.myCourseNo, p.placeTitle, p.firstImage2
+        FROM myCourse mc
+                 JOIN myCoursePlace mcp ON mc.myCourseNo = mcp.myCourseNo
+                 JOIN place p ON mcp.placeNo = p.placeNo
+        WHERE mc.userNo = #{userNo}
+    </select>
+
+    <!-- 전체 나만의 코스 수 -->
+    <select id="countMyCourse" parameterType="long" resultType="int">
+        SELECT count(*)
+        FROM myCourse
+        WHERE userNo = #{userNo}
+    </select>
+
+    <!-- 나만의 코스 삭제 -->
+    <delete id="deleteMyCourse" parameterType="long">
+        DELETE FROM myCourse WHERE myCourseNo = #{myCourseNo}
+    </delete>
+
+</mapper>

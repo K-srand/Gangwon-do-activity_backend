@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.multicampus.gangwonActivity.mapper.ReportMapper">
+
+    <select id="alreadyReportedBoard" resultType="java.lang.Boolean" parameterType="map">
+        SELECT EXISTS (SELECT 1 FROM reportedContent WHERE userNo = #{userNo} AND boardNo = #{boardNo});
+    </select>
+
+
+    <insert id="saveReportedBoard" parameterType="com.multicampus.gangwonActivity.entity.ReportedContent">
+        insert into reportedContent (boardNo, commentNo, reportedTime, userNo)
+        values (#{boardNo}, #{commentNo}, #{reportedTime}, #{userNo})
+    </insert>
+
+    <!--댓글 신고를 이미 했다-->
+    <select id="alreadyReportedComment" resultType="java.lang.Boolean" parameterType="map">
+        SELECT EXISTS (SELECT 1 FROM reportedContent WHERE userNo = #{userNo} AND commentNo = #{commentNo});
+    </select>
+
+    <!-- 댓글 신고-->
+    <insert id="saveReportedComment" parameterType="com.multicampus.gangwonActivity.entity.ReportedContent">
+        insert into reportedContent (boardNo, commentNo, reportedTime, userNo)
+        values (#{boardNo}, #{commentNo}, #{reportedTime}, #{userNo})
+    </insert>
+
+    <!-- 신고 리스트 불러오기-->
+    <select id="findAllReportedContent"
+            resultType="com.multicampus.gangwonActivity.dto.response.report.ReportListResponseDto"
+            parameterType="com.multicampus.gangwonActivity.dto.response.board.SearchPageDto">
+        SELECT r.reportedContentNo, r.boardNo, r.commentNo, r.reportedTime, r.userNo, r.censoredTime, u.userId,
+        CASE
+        WHEN b.content IS NOT NULL THEN b.content
+        ELSE c.content END AS content
+        FROM reportedContent r
+        LEFT JOIN board b ON r.boardNo = b.boardNo
+        LEFT JOIN comment c ON r.commentNo = c.commentNo
+        LEFT JOIN user u ON r.userNo = u.userNo
+        where r.censoredTime is null
+        LIMIT #{searchPageDto.size}
+        OFFSET #{searchPageDto.offset}
+    </select>
+
+    <delete id="deleteReport" parameterType="map">
+        delete from reportedContent where reportedContentNo = #{reportedContentNo}
+    </delete>
+
+
+
+    <!--제재-->
+    <!--     제재 여부 판단 -->
+    <select id="alreadySanctionedUser" parameterType="java.lang.Long" resultType="java.lang.Boolean">
+        select exists (select 1 from reportedContent where userNo = #{userNo} and censoredTime is not null);
+    </select>
+
+    <!--    유저 제재-->
+    <update id="sanctionUser">
+        update reportedContent
+        set censoredTime = #{localDateTime}
+        where userNo = #{userNo}
+    </update>
+
+    <update id="desanctionUser">
+        update reportedContent
+        set censoredTime = null
+        where userNo = #{userNo}
+    </update>
+
+    <!-- 신고리스트 수(페이지네이션) -->
+    <select id="countReportedContent" parameterType="long" resultType="int">
+        SELECT count(*)
+        FROM reportedContent
+        WHERE censoredTime IS NULL
+    </select>
+
+    <!-- 콘텐츠 제재 여부 판단 -->
+    <select id="alreadySanctionContent" parameterType="java.lang.Long" resultType="java.lang.Boolean">
+        select exists (select 1 from reportedContent where reportedContentNo = #{reportedContentNo} and censoredTime is not null);
+    </select>
+
+    <!-- 콘텐츠 제재 -->
+    <update id="sanctionContent">
+        update reportedContent
+        set censoredTime = #{localDateTime}
+        where reportedContentNo = #{reportedContentNo}
+    </update>
+
+    <!-- 콘텐츠 제재 해제 -->
+    <update id="desanctionContent">
+        update reportedContent
+        set censoredTime = null
+        where reportedContentNo = #{reportedContentNo}
+    </update>
+
+</mapper>
