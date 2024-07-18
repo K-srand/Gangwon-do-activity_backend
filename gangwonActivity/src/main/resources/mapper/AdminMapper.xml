@@ -12,7 +12,7 @@
         FROM user
     </select>
 
-    <select id="userInfo" resultType="com.multicampus.gangwonActivity.dto.response.mypage.ModMyInfoResponseDto" parameterType="long">
+    <select id="userInfo" resultType="com.multicampus.gangwonActivity.dto.response.mypage.ModMyInfoResponseDto" parameterType="java.lang.Long">
         SELECT userName, userId, userEmail
         FROM user
         WHERE userNo = #{userNo}

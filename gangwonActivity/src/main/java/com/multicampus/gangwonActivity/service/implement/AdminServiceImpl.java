@@ -6,7 +6,6 @@ import com.multicampus.gangwonActivity.dto.response.admin.AdminUserListResponseD
 import com.multicampus.gangwonActivity.dto.response.auth.SignInResponseDto;
 import com.multicampus.gangwonActivity.dto.response.board.SearchPageDto;
 import com.multicampus.gangwonActivity.dto.response.sanction.SanctionedUserResponseDto;
-import com.multicampus.gangwonActivity.entity.User;
 import com.multicampus.gangwonActivity.mapper.AdminMapper;
 import com.multicampus.gangwonActivity.mapper.ReportMapper;
 import com.multicampus.gangwonActivity.provider.JwtProvider;
@@ -31,36 +30,6 @@ public class AdminServiceImpl implements AdminService {
     private final PasswordEncoder passwordEncoder;
     private final ReportMapper reportMapper;
 
-//    @Override
-//    public ResponseEntity<? super SignInResponseDto> AdminIn(SignInRequestDto dto) {
-//        String token = null;
-//
-//        try {
-//            String userId = dto.getUserId();
-//            User user = userRepository.findByUserId(userId);
-//            if (user == null) return SignInResponseDto.signInFailed();
-//
-//            if (!user.getUserRole().equals("ROLE_ADMIN")) {
-//                return SignInResponseDto.adminSignInFailed();
-//            }
-//
-//            // 평문 비번
-//            String password = dto.getUserPassword();
-//            // 암호화된 비번
-//            String encodedPassword = user.getUserPassword();
-//
-//            boolean isMatched = passwordEncoder.matches(password, encodedPassword);
-//            if (!isMatched) return SignInResponseDto.signInFailed();
-//
-//            token = jwtProvider.create(userId);
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return ResponseDto.databaseError();
-//        }
-//
-//        return SignInResponseDto.success(token);
-//    }
 
     @Override
     public List<AdminUserListResponseDto> userList(SearchPageDto searchPageDto) {
