@@ -39,7 +39,7 @@
     </delete>
 
     <!-- 나만의 코스 불러오기 -->
-    <select id="findMyCourse" resultType="map">
+    <select id="findMyCourse" resultType="com.multicampus.gangwonActivity.dto.response.mypage.GetMyPageCourseResponseDto">
         SELECT mc.myCourseNo, p.placeTitle, p.firstImage2
         FROM myCourse mc
                  JOIN myCoursePlace mcp ON mc.myCourseNo = mcp.myCourseNo

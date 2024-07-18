@@ -6,10 +6,7 @@ import com.multicampus.gangwonActivity.dto.request.board.MyCourseUploadRequestDt
 import com.multicampus.gangwonActivity.dto.request.mypage.ModifyMyInfoRequestDto;
 import com.multicampus.gangwonActivity.dto.response.board.GetBoardListResponseDto;
 import com.multicampus.gangwonActivity.dto.response.board.SearchPageDto;
-import com.multicampus.gangwonActivity.dto.response.mypage.GetMyFavoritesListResponseDto;
-import com.multicampus.gangwonActivity.dto.response.mypage.ModMyInfoResponseDto;
-import com.multicampus.gangwonActivity.dto.response.mypage.ModifyMyInfoResponseDto;
-import com.multicampus.gangwonActivity.dto.response.mypage.MyPageResponseDto;
+import com.multicampus.gangwonActivity.dto.response.mypage.*;
 import com.multicampus.gangwonActivity.entity.Board;
 import com.multicampus.gangwonActivity.service.MyPageService;
 import jakarta.validation.Valid;
@@ -107,18 +104,19 @@ public class MyPageController {
     }
     //내 추천코스 (민호형 & 수지)
 
-    @PostMapping("/mycourse")
-    public ResponseEntity<PageImpl<Map<String, Object>>> getMyCourse(
-            @RequestBody MyCourseUploadRequestDto myCourseUploadRequestDto,
+    @GetMapping("/mycourse")
+    public ResponseEntity<PageImpl<GetMyPageCourseResponseDto>> getMyCourse(
+            @AuthenticationPrincipal String id,
             @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "2") int size) {
+            @RequestParam(value = "size", defaultValue = "1") int size) {
         SearchPageDto searchPageDto = new SearchPageDto();
         searchPageDto.setPage(page);
         searchPageDto.setSize(size);
-        List<Map<String, Object>> myCourse = myPageService.getMyCourse(myCourseUploadRequestDto.getUserId());
-        int myCourseCount = myPageService.countMyCourse(myCourseUploadRequestDto.getUserId());
+        List<GetMyPageCourseResponseDto> myCourse = myPageService.getMyCourse(id);
+        int myCourseCount = myPageService.countMyCourse(id);
+
         return ResponseEntity.ok(
-                new PageImpl<>(myCourse, PageRequest.of(searchPageDto.getPage(), searchPageDto.getSize()), myCourseCount));
+                new PageImpl<>(myCourse, PageRequest.of(page, size), myCourseCount));
     }
 
     //작성글 코스 지우기
