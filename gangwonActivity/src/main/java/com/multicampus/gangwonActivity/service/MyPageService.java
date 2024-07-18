@@ -1,6 +1,7 @@
 package com.multicampus.gangwonActivity.service;
 
 
+import com.multicampus.gangwonActivity.dto.request.mypage.CheckPasswordRequestDto;
 import com.multicampus.gangwonActivity.dto.request.mypage.ModifyMyInfoRequestDto;
 import com.multicampus.gangwonActivity.dto.response.board.GetBoardListResponseDto;
 import com.multicampus.gangwonActivity.dto.response.board.SearchPageDto;
@@ -28,10 +29,11 @@ public interface MyPageService {
     // 규진님 파트
     ResponseEntity<? super ModifyMyInfoResponseDto> modifyMyInfo(String id, ModifyMyInfoRequestDto dto);
 
-    ResponseEntity<? super ModifyMyInfoResponseDto> deleteMyInfo(String id);
+    ResponseEntity<? super ModifyMyInfoResponseDto> deleteMyInfo(String id, ModifyMyInfoRequestDto dto);
 
     public ModMyInfoResponseDto modMyInfo(String id);
 
+    ResponseEntity<? super ModifyMyInfoResponseDto> checkPassword(String id, CheckPasswordRequestDto dto);
     //내추천코스 (수지&민호형)
 
     List<Map<String, Object>> getMyCourse(String userId);

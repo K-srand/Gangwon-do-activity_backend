@@ -1,6 +1,7 @@
 package com.multicampus.gangwonActivity.controller;
 
 
+import com.multicampus.gangwonActivity.dto.request.mypage.CheckPasswordRequestDto;
 import com.multicampus.gangwonActivity.dto.request.board.MyCourseUploadRequestDto;
 import com.multicampus.gangwonActivity.dto.request.mypage.ModifyMyInfoRequestDto;
 import com.multicampus.gangwonActivity.dto.response.board.GetBoardListResponseDto;
@@ -82,9 +83,10 @@ public class MyPageController {
 
     @PostMapping("/deleteuser")
     public ResponseEntity<? super ModifyMyInfoResponseDto> deleteuser(
-            @AuthenticationPrincipal String id
+            @AuthenticationPrincipal String id,
+            @RequestBody @Valid ModifyMyInfoRequestDto requestDto
     ) {
-        ResponseEntity<? super ModifyMyInfoResponseDto> response = myPageService.deleteMyInfo(id);
+        ResponseEntity<? super ModifyMyInfoResponseDto> response = myPageService.deleteMyInfo(id, requestDto);
         return  response;
     }
 
@@ -95,7 +97,14 @@ public class MyPageController {
         ModMyInfoResponseDto response = myPageService.modMyInfo(id);
         return ResponseEntity.ok(response);
     }
-
+    //규진님 패스워드 체킹
+    @PostMapping("/checkpassword")
+    public ResponseEntity<? super MyPageResponseDto> checkPassword(
+            @AuthenticationPrincipal String id, @RequestBody @Valid CheckPasswordRequestDto requestDto
+    ){
+        ResponseEntity<? super ModifyMyInfoResponseDto> response = myPageService.checkPassword(id, requestDto);
+        return (ResponseEntity<? super MyPageResponseDto>) response;
+    }
     //내 추천코스 (민호형 & 수지)
 
     @PostMapping("/mycourse")
