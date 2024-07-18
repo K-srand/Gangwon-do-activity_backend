@@ -44,12 +44,12 @@
 
 
 <!--    제재-->
-    <!--     제재 여부 판단 -->
+    <!-- 제재 여부 판단 -->
     <select id="alreadySanctionedUser" parameterType="java.lang.Long" resultType="java.lang.Boolean">
         select exists (select 1 from user where userNo = #{userNo} and userBanTime is not null);
     </select>
 
-    <!--    유저 제재-->
+    <!-- 유저 제재 -->
     <update id="sanctionUser">
         update user
         set userBanTime = #{localDateTime}
@@ -60,6 +60,25 @@
         update user
         set userBanTime = null
         where userNo = #{userNo}
+    </update>
+
+    <!-- 콘텐츠 제재 여부 판단 -->
+    <select id="alreadySanctionContent" parameterType="java.lang.Long" resultType="java.lang.Boolean">
+        select exists (select 1 from reportedContent where reportedContentNo = #{reportedContentNo} and censoredTime is not null);
+    </select>
+
+    <!-- 콘텐츠 제재 -->
+    <update id="sanctionContent">
+        update reportedContent
+        set censoredTime = #{localDateTime}
+        where reportedContentNo = #{reportedContentNo}
+    </update>
+
+    <!-- 콘텐츠 제재 해제 -->
+    <update id="desanctionContent">
+        update reportedContent
+        set censoredTime = null
+        where reportedContentNo = #{reportedContentNo}
     </update>
 
 </mapper>

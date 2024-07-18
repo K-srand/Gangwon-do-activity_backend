@@ -5,6 +5,7 @@ import com.multicampus.gangwonActivity.dto.request.auth.SignInRequestDto;
 import com.multicampus.gangwonActivity.dto.response.admin.AdminUserListResponseDto;
 import com.multicampus.gangwonActivity.dto.response.auth.SignInResponseDto;
 import com.multicampus.gangwonActivity.dto.response.board.SearchPageDto;
+import com.multicampus.gangwonActivity.dto.response.sanction.SanctionContentResponseDto;
 import com.multicampus.gangwonActivity.dto.response.sanction.SanctionedUserResponseDto;
 import com.multicampus.gangwonActivity.service.AdminService;
 import jakarta.validation.Valid;
@@ -70,5 +71,23 @@ public class AdminController {
 
     }
 
+    // 콘텐츠 제재
+    @PatchMapping("/sanctionContent")
+    public ResponseEntity<? super SanctionContentResponseDto> restrictContent(
+            @RequestBody Long reportedContentNo
+    ){
+        ResponseEntity<? super SanctionContentResponseDto> response = adminService.sanctionContent(reportedContentNo);
 
+        return response;
+    }
+
+    // 콘텐츠 제재 해제
+    @PatchMapping("desanctionContent")
+    public ResponseEntity<? super SanctionContentResponseDto> disRestrictContent(
+            @RequestBody Long reportedContendNo
+    ){
+        ResponseEntity<? super SanctionContentResponseDto> response = adminService.disSanctionContent(reportedContendNo);
+
+        return response;
+    }
 }

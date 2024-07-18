@@ -33,6 +33,8 @@ public interface ResponseCode {
     String ALREADY_REPORTED_CONTENT = "AR";
     //제재 -> 이미 제재된 유저
     String ALREADY_SANCTIONED_USER = "AS";
+    //콘첸츠 제재
+    String ALREADY_SANCTIONED_CONTENT = "AC";
     //아이디 변경 -> 아이디 불일치
     String ID_NOT_CORRECT ="IC";
 }

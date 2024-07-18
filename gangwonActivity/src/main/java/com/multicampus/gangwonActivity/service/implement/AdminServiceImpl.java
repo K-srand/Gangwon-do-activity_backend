@@ -5,6 +5,7 @@ import com.multicampus.gangwonActivity.dto.response.ResponseDto;
 import com.multicampus.gangwonActivity.dto.response.admin.AdminUserListResponseDto;
 import com.multicampus.gangwonActivity.dto.response.auth.SignInResponseDto;
 import com.multicampus.gangwonActivity.dto.response.board.SearchPageDto;
+import com.multicampus.gangwonActivity.dto.response.sanction.SanctionContentResponseDto;
 import com.multicampus.gangwonActivity.dto.response.sanction.SanctionedUserResponseDto;
 import com.multicampus.gangwonActivity.mapper.AdminMapper;
 import com.multicampus.gangwonActivity.mapper.ReportMapper;
@@ -71,4 +72,35 @@ public class AdminServiceImpl implements AdminService {
         reportMapper.desanctionUser(userNo);
         return SanctionedUserResponseDto.success();
     }
+
+    //콘텐츠 제재
+    @Override
+    public ResponseEntity<? super SanctionContentResponseDto> sanctionContent(Long reportedContentNo) {
+        try {
+            if(!reportMapper.alreadySanctionContent(reportedContentNo)) return SanctionContentResponseDto.alreadySanctionContent();
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+        reportMapper.sanctionContent(reportedContentNo,localDateTime);
+        return SanctionContentResponseDto.success();
+    }
+
+    //콘텐츠 제재 해제
+    @Override
+    public ResponseEntity<? super SanctionContentResponseDto> disSanctionContent(Long reportedContentNo) {
+
+        try {
+            if (!reportMapper.alreadySanctionContent(reportedContentNo))
+                return SanctionContentResponseDto.alreadySanctionContent();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        reportMapper.desanctionContent(reportedContentNo);
+        return SanctionContentResponseDto.success();
+    }
+
 }
