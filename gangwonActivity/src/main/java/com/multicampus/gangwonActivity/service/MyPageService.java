@@ -27,7 +27,7 @@ public interface MyPageService {
 
     ResponseEntity<? super ModifyMyInfoResponseDto> modifyMyInfo(String id, ModifyMyInfoRequestDto dto);
 
-    ResponseEntity<? super ModifyMyInfoResponseDto> deleteMyInfo(String id);
+    ResponseEntity<? super ModifyMyInfoResponseDto> deleteMyInfo(String id, ModifyMyInfoRequestDto dto);
 
     public ModMyInfoResponseDto modMyInfo(String id);
 

@@ -106,13 +106,16 @@ public class MyPageServiceImpl implements MyPageService {
 
 
     @Override
-    public ResponseEntity<? super ModifyMyInfoResponseDto> deleteMyInfo(String id) {
+    public ResponseEntity<? super ModifyMyInfoResponseDto> deleteMyInfo(String id, ModifyMyInfoRequestDto dto) {
         try {
             User user = userRepository.findByUserId(id);
             if(user == null) {
                 return ModifyMyInfoResponseDto.notExistUser();
             }
+            String userId = dto.getUserId();
+            String UserId = user.getUserId();
 
+            if(!UserId.equals(userId)) return ModifyMyInfoResponseDto.idError();
             userRepository.delete(user);
 
         } catch (Exception e) {

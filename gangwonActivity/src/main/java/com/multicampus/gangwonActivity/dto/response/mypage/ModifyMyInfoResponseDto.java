@@ -35,4 +35,10 @@ public class ModifyMyInfoResponseDto extends ResponseDto{
         ResponseDto result = new ResponseDto(ResponseCode.NOT_EXITSTED_USER, ResponseMessage.NOT_EXITSTED_USER);
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
     }
+
+    public static  ResponseEntity<ResponseDto> idError(){
+        ResponseDto result = new ResponseDto(ResponseCode.ID_NOT_CORRECT, ResponseMessage.ID_NOT_CORRECT);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
+    }
+
 }

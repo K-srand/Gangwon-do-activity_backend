@@ -81,9 +81,10 @@ public class MyPageController {
 
     @PostMapping("/deleteuser")
     public ResponseEntity<? super ModifyMyInfoResponseDto> deleteuser(
-            @AuthenticationPrincipal String id
+            @AuthenticationPrincipal String id,
+            @RequestBody @Valid ModifyMyInfoRequestDto requestDto
     ) {
-        ResponseEntity<? super ModifyMyInfoResponseDto> response = myPageService.deleteMyInfo(id);
+        ResponseEntity<? super ModifyMyInfoResponseDto> response = myPageService.deleteMyInfo(id, requestDto);
         return  response;
     }
 
