@@ -53,9 +53,9 @@ public class AdminController {
     @PatchMapping("/sanction")
     public  ResponseEntity<? super SanctionedUserResponseDto> restrictUser(
             @AuthenticationPrincipal String id,
-            @RequestBody Long userId
+            @RequestBody Long userNo
     ){
-        ResponseEntity<? super SanctionedUserResponseDto> response = adminService.sanctionUser(id, userId);
+        ResponseEntity<? super SanctionedUserResponseDto> response = adminService.sanctionUser(id, userNo);
 
         return response;
     }
@@ -64,16 +64,16 @@ public class AdminController {
     @PatchMapping("/desanction")
     public ResponseEntity<? super  SanctionedUserResponseDto> disRestrictUser(
             @AuthenticationPrincipal String id,
-            @RequestBody Long userId
+            @RequestBody Long userNo
     ){
-       ResponseEntity<? super  SanctionedUserResponseDto> response = adminService.disSanctionUser(id, userId);
+       ResponseEntity<? super  SanctionedUserResponseDto> response = adminService.disSanctionUser(id, userNo);
 
        return response;
 
     }
 
     // 콘텐츠 제재
-    @PatchMapping("/sanctionContent")
+    @PatchMapping("/sanctioncontent")
     public ResponseEntity<? super SanctionContentResponseDto> restrictContent(
             @RequestBody Long reportedContentNo
     ){
@@ -83,7 +83,7 @@ public class AdminController {
     }
 
     // 콘텐츠 제재 해제
-    @PatchMapping("desanctionContent")
+    @PatchMapping("desanctioncontent")
     public ResponseEntity<? super SanctionContentResponseDto> disRestrictContent(
             @RequestBody Long reportedContendNo
     ){

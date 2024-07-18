@@ -39,7 +39,7 @@ public interface ReportMapper {
     void desanctionUser(@Param("userNo")Long userNo);
 
     //신고 목록
-    List<ReportListResponseDto> findAllReportedContent();
+    List<ReportListResponseDto> findAllReportedContent(SearchPageDto searchPageDto);
 
     //신고받은 글/댓글 삭제
     void deleteReport(@Param("reportedContentNo") Long reportedContentNo);

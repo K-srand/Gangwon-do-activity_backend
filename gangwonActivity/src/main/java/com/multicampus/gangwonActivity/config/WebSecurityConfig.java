@@ -67,13 +67,12 @@ public class WebSecurityConfig {
                                 "/api/v1/**",
                                 "/api/v1/weather/**",
                                 "/resources/**",
-                                "/static/**"
+                                "/static/**",
+                                "/api/v1/admin/**"
                                 ).permitAll()
                         .requestMatchers("/api/v1/user/**"
-
-
                         ).hasRole("USER")
-                        .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
+//                        .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exceptionHandling -> exceptionHandling
