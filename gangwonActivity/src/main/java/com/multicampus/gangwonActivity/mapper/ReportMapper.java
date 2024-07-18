@@ -2,6 +2,9 @@ package com.multicampus.gangwonActivity.mapper;
 
 import com.multicampus.gangwonActivity.dto.response.report.ReportListResponseDto;
 import com.multicampus.gangwonActivity.entity.Board;
+import com.multicampus.gangwonActivity.dto.response.board.SearchPageDto;
+import com.multicampus.gangwonActivity.dto.response.report.ReportListResponseDto;
+import com.multicampus.gangwonActivity.entity.Board;
 import com.multicampus.gangwonActivity.entity.ReportedContent;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -49,4 +52,7 @@ public interface ReportMapper {
 
     //콘텐츠 제재 해제
     void  desanctionContent(@Param("reportedContentNo")Long reportedContentNo);
+
+    //신고리스트 수
+    Integer countReportedContent();
 }

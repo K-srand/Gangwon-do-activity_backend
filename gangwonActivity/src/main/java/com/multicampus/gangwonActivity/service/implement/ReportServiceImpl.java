@@ -3,6 +3,8 @@ package com.multicampus.gangwonActivity.service.implement;
 
 import com.multicampus.gangwonActivity.dto.response.ResponseDto;
 import com.multicampus.gangwonActivity.dto.response.report.ReportListResponseDto;
+import com.multicampus.gangwonActivity.dto.response.board.SearchPageDto;
+import com.multicampus.gangwonActivity.dto.response.report.ReportListResponseDto;
 import com.multicampus.gangwonActivity.dto.response.report.ReportedContentResponseDto;
 import com.multicampus.gangwonActivity.entity.ReportedContent;
 import com.multicampus.gangwonActivity.mapper.ReportMapper;
@@ -32,7 +34,6 @@ public class ReportServiceImpl implements ReportService {
         Long userNo = userRepository.findUserNoByUserId(id);
         try{
             // 작성글 존재 여부
-
             if(!boardRepository.existsByBoardNo(boardNo)) return ReportedContentResponseDto.notExistContent();
             // 중복 신고 여부
             if(reportMapper.alreadyReportedBoard(boardNo, userNo)) return ReportedContentResponseDto.alreadyReportedContent();
@@ -84,15 +85,21 @@ public class ReportServiceImpl implements ReportService {
         return ReportedContentResponseDto.success();
     }
 
-    //신고 목록
+    // 신고 목록
     @Override
-    public List<ReportListResponseDto> listReport() {
-        return reportMapper.findAllReportedContent();
+    public List<ReportListResponseDto> listReport(SearchPageDto searchPageDto) {
+        return reportMapper.findAllReportedContent(searchPageDto);
     }
 
     //신고받은 글/댓글 삭제
     @Override
     public void reportDelete(Long reportedContentNo) {
         reportMapper.deleteReport(reportedContentNo);
+    }
+
+    //신고리스트 수 조회
+    @Override
+    public int countReport() {
+        return reportMapper.countReportedContent();
     }
 }

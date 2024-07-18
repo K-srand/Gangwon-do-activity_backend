@@ -3,10 +3,15 @@ package com.multicampus.gangwonActivity.controller;
 
 import com.multicampus.gangwonActivity.dto.response.board.DeleteBoardResponseDto;
 import com.multicampus.gangwonActivity.dto.response.report.ReportListResponseDto;
+import com.multicampus.gangwonActivity.dto.response.board.DeleteBoardResponseDto;
+import com.multicampus.gangwonActivity.dto.response.board.SearchPageDto;
+import com.multicampus.gangwonActivity.dto.response.report.ReportListResponseDto;
 import com.multicampus.gangwonActivity.dto.response.report.ReportedContentResponseDto;
 import com.multicampus.gangwonActivity.entity.ReportedContent;
 import com.multicampus.gangwonActivity.service.ReportService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +28,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReportController {
 
     private final ReportService reportService;
+
+
 
 
     @PostMapping("/board/{boardNo}")
@@ -53,13 +60,23 @@ public class ReportController {
 
     //reportList
     @GetMapping("/")
-    public ResponseEntity<List<ReportListResponseDto>> listReport() {
-        List<ReportListResponseDto> reportList = reportService.listReport();
-        return ResponseEntity.ok(reportList);
+    public ResponseEntity<PageImpl<ReportListResponseDto>> listReport(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "15") int size) {
+
+        SearchPageDto searchPageDto = new SearchPageDto();
+        searchPageDto.setPage(page);
+        searchPageDto.setSize(size);
+
+        List<ReportListResponseDto> reportList = reportService.listReport(searchPageDto);
+        int reportCount = reportService.countReport();
+
+        return ResponseEntity.ok(
+            new PageImpl<>(reportList, PageRequest.of(searchPageDto.getPage(), searchPageDto.getSize()), reportCount));
     }
 
     //delete
-    @PatchMapping("/delete/{reportedContentNo}")
+    @DeleteMapping ("/delete/{reportedContentNo}")
     public ResponseEntity<Void> deleteReport(@PathVariable("reportedContentNo") Long reportedContentNo) {
         reportService.reportDelete(reportedContentNo);
         return ResponseEntity.ok().build();

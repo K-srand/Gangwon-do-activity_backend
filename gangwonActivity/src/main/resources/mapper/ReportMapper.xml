@@ -25,7 +25,8 @@
 
     <!-- 신고 리스트 불러오기-->
     <select id="findAllReportedContent"
-            resultType="com.multicampus.gangwonActivity.dto.response.report.ReportListResponseDto">
+            resultType="com.multicampus.gangwonActivity.dto.response.report.ReportListResponseDto"
+            parameterType="com.multicampus.gangwonActivity.dto.response.board.SearchPageDto">
         SELECT r.reportedContentNo, r.boardNo, r.commentNo, r.reportedTime, r.userNo, r.censoredTime, u.userId,
         CASE
         WHEN b.content IS NOT NULL THEN b.content
@@ -35,6 +36,8 @@
         LEFT JOIN comment c ON r.commentNo = c.commentNo
         LEFT JOIN user u ON r.userNo = u.userNo
         where r.censoredTime is null
+        LIMIT #{searchPageDto.size}
+        OFFSET #{searchPageDto.offset}
     </select>
 
     <delete id="deleteReport" parameterType="map">
@@ -43,13 +46,13 @@
 
 
 
-<!--    제재-->
-    <!-- 제재 여부 판단 -->
+    <!--제재-->
+    <!--     제재 여부 판단 -->
     <select id="alreadySanctionedUser" parameterType="java.lang.Long" resultType="java.lang.Boolean">
         select exists (select 1 from user where userNo = #{userNo} and userBanTime is not null);
     </select>
 
-    <!-- 유저 제재 -->
+    <!--    유저 제재-->
     <update id="sanctionUser">
         update user
         set userBanTime = #{localDateTime}
@@ -61,6 +64,13 @@
         set userBanTime = null
         where userNo = #{userNo}
     </update>
+
+    <!-- 신고리스트 수(페이지네이션) -->
+    <select id="countReportedContent" parameterType="long" resultType="int">
+        SELECT count(*)
+        FROM reportedContent
+        WHERE censoredTime IS NULL
+    </select>
 
     <!-- 콘텐츠 제재 여부 판단 -->
     <select id="alreadySanctionContent" parameterType="java.lang.Long" resultType="java.lang.Boolean">

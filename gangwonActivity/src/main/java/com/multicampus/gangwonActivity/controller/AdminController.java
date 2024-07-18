@@ -7,6 +7,7 @@ import com.multicampus.gangwonActivity.dto.response.auth.SignInResponseDto;
 import com.multicampus.gangwonActivity.dto.response.board.SearchPageDto;
 import com.multicampus.gangwonActivity.dto.response.sanction.SanctionContentResponseDto;
 import com.multicampus.gangwonActivity.dto.response.sanction.SanctionedUserResponseDto;
+import com.multicampus.gangwonActivity.dto.response.sanction.SanctionedUserResponseDto;
 import com.multicampus.gangwonActivity.service.AdminService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
