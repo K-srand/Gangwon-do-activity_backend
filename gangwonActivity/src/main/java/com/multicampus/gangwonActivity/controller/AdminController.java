@@ -47,7 +47,7 @@ public class AdminController {
 
     }
 
-    //제재하기
+    //제재하기 관리자 팀을 위해서 기증하겠습니다.
     @PatchMapping("/sanction")
     public  ResponseEntity<? super SanctionedUserResponseDto> restrictUser(
             @AuthenticationPrincipal String id,
@@ -58,6 +58,7 @@ public class AdminController {
         return response;
     }
 
+    //제재 해지
     @PatchMapping("/desanction")
     public ResponseEntity<? super  SanctionedUserResponseDto> disRestrictUser(
             @AuthenticationPrincipal String id,

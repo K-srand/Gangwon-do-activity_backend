@@ -60,6 +60,7 @@
         FROM place
         WHERE addr1 != '' AND rate != 0 AND cat1 = 'A03' AND (mapx != #{mapx} AND mapy != #{mapy})
         ORDER BY distance ASC, rate DESC LIMIT 10;
+
     </select>
 
     <select id="selectPlaceRestaurantWithDistance" resultType="map">

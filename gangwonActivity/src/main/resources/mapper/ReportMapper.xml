@@ -46,19 +46,19 @@
 <!--    제재-->
     <!--     제재 여부 판단 -->
     <select id="alreadySanctionedUser" parameterType="java.lang.Long" resultType="java.lang.Boolean">
-        select exists (select 1 from reportedContent where userNo = #{userNo} and censoredTime is not null);
+        select exists (select 1 from user where userNo = #{userNo} and userBanTime is not null);
     </select>
 
     <!--    유저 제재-->
     <update id="sanctionUser">
-        update reportedContent
-        set censoredTime = #{localDateTime}
+        update user
+        set userBanTime = #{localDateTime}
         where userNo = #{userNo}
     </update>
 
     <update id="desanctionUser">
-        update reportedContent
-        set censoredTime = null
+        update user
+        set userBanTime = null
         where userNo = #{userNo}
     </update>
 

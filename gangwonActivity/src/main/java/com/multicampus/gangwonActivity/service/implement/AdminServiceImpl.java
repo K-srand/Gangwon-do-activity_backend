@@ -56,10 +56,8 @@ public class AdminServiceImpl implements AdminService {
 
         return SanctionedUserResponseDto.success();
     }
-
     @Override
     public ResponseEntity<? super SanctionedUserResponseDto> disSanctionUser(String id, Long userNo) {
-
 
         try{
             if(!reportMapper.alreadySanctionedUser(userNo)) return SanctionedUserResponseDto.alreadySanctionedUser();
@@ -69,10 +67,8 @@ public class AdminServiceImpl implements AdminService {
             return ResponseDto.databaseError();
 
         }
-//        LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+
         reportMapper.desanctionUser(userNo);
-
-
         return SanctionedUserResponseDto.success();
     }
 }

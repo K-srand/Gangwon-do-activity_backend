@@ -1,5 +1,6 @@
 package com.multicampus.gangwonActivity;
 
+import com.multicampus.gangwonActivity.dto.request.board.PostBoardRequestDto;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,6 +15,9 @@ public class GangwonActivityApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(GangwonActivityApplication.class, args);
+
+
+
 	}
 
 @Bean

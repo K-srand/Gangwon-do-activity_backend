@@ -69,7 +69,10 @@ public class WebSecurityConfig {
                                 "/resources/**",
                                 "/static/**"
                                 ).permitAll()
-                        .requestMatchers("/api/v1/user/**").hasRole("USER")
+                        .requestMatchers("/api/v1/user/**"
+
+
+                        ).hasRole("USER")
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )

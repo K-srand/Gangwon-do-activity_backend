@@ -2,17 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.multicampus.gangwonActivity.mapper.BoardMapper">
 
-    <!--작성글 목록 조회-->
+    <!--제재 및 삭제 제외 작성글 목록 조회-->
     <select id="findAllWithUser"
             resultType="com.multicampus.gangwonActivity.dto.response.board.GetBoardListResponseDto"
             parameterType="com.multicampus.gangwonActivity.dto.response.board.SearchPageDto" > <!--보내줄 값-->
         SELECT b.boardNo, b.userNo, b.boardTitle, b.content, b.countLikes, b.boardCount, b.deletedTime, b.writtenTime, b.isReported,
         b.myCourseNo, u.userNick
-        FROM board b LEFT JOIN user u ON b.userNo = u.userNo
-        where b.deletedTime is null
-        order by b.writtenTime desc
-        limit #{size} <!--한 번에 몇개를 가져올 건지 제한 -->
-        offset #{offset} <!--시작지점으로 부터 몇개씩 떨구거냐-->
+        FROM board b
+        LEFT JOIN user u ON b.userNo = u.userNo
+        LEFT JOIN reportedContent rc ON b.boardNo = rc.boardNo
+        WHERE b.deletedTime IS NULL
+        AND rc.censoredTime IS NULL
+        ORDER BY b.writtenTime DESC
+        LIMIT 5
+        OFFSET 0;
     </select>
 
 
@@ -38,8 +41,11 @@
             parameterType="com.multicampus.gangwonActivity.dto.response.board.SearchPageDto" >
         SELECT
         c.commentNo, c.boardNo, c.userNo, c.writtenTime, c.content, u.userNick
-        FROM comment c LEFT JOIN user u ON c.userNo = u.userNo
+        FROM comment c
+        LEFT JOIN user u ON c.userNo = u.userNo
+        left join reportedContent rc on c.commentNo = rc.commentNo
         WHERE c.boardNo = #{boardNo}
+        and rc.censoredTime is null
         LIMIT #{searchPageDto.size}
         OFFSET #{searchPageDto.offset}
     </select>
@@ -71,12 +77,16 @@
         where boardNo=#{boardNo}
     </update>
 
-    <!-- 좋아요 수가 많은 상위 3개의 글을 가져오는 쿼리 추가 -->
+    <!-- 좋아요 수가 많은 상위 3개의 글을 가져오는 쿼리 추가, 제재먹은 녀석들은 노출안되게 수정 완. -->
     <select id="getBestPosts" resultType="com.multicampus.gangwonActivity.dto.response.board.GetBoardListResponseDto">
         SELECT b.boardNo, b.userNo, b.boardTitle, b.content, b.countLikes, b.boardCount, b.deletedTime, b.writtenTime, b.isReported,
-        b.myCourseNo, u.userNick
-        FROM board b LEFT JOIN user u ON b.userNo = u.userNo
-        WHERE b.deletedTime IS NULL AND b.myCourseNo IS NOT NULL
+        b.myCourseNo, u.userNick, rc.censoredTime
+        FROM board b
+        LEFT JOIN user u ON b.userNo = u.userNo
+        left join reportedContent rc on b.boardNo = rc.boardNo
+        WHERE b.deletedTime IS NULL
+        AND b.myCourseNo IS NOT NULL
+        and rc.censoredTime is null
         ORDER BY b.countLikes DESC
         LIMIT 3
     </select>

@@ -17,6 +17,5 @@ public interface AdminService {
 
 
     ResponseEntity<? super SanctionedUserResponseDto> sanctionUser(String id, Long userNo);
-
     ResponseEntity<? super SanctionedUserResponseDto> disSanctionUser(String id, Long userNo);
 }
