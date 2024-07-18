@@ -3,10 +3,8 @@ package com.multicampus.gangwonActivity.service;
 
 import com.multicampus.gangwonActivity.dto.response.report.ReportListResponseDto;
 import com.multicampus.gangwonActivity.dto.response.report.ReportedContentResponseDto;
-//import com.multicampus.gangwonActivity.entity.ReportRequestDto;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.http.ResponseEntity;
-
+import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface ReportService {

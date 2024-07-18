@@ -22,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -128,6 +129,22 @@ public class MyPageServiceImpl implements MyPageService {
         Long userNo = userRepository.findUserNoByUserId(id);
 
         return adminMapper.userInfo(userNo);
+    }
+
+    // 내 추천 코스 ( 민호형 & 수지 )
+    @Override
+    public List<Map<String, Object>> getMyCourse(String userId) {
+        return myFavoriteMapper.findMyCourse(myFavoriteMapper.selectUserNo(userId));
+    }
+
+    @Override
+    public int countMyCourse(String userId) {
+        return myFavoriteMapper.countMyCourse(myFavoriteMapper.selectUserNo(userId));
+    }
+
+    @Override
+    public void deleteMyCourse(Long myCourseNo) {
+        myFavoriteMapper.deleteMyCourse(myCourseNo);
     }
 
 }
