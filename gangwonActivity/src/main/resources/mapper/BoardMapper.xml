@@ -7,7 +7,7 @@
             resultType="com.multicampus.gangwonActivity.dto.response.board.GetBoardListResponseDto"
             parameterType="com.multicampus.gangwonActivity.dto.response.board.SearchPageDto" > <!--보내줄 값-->
         SELECT b.boardNo, b.userNo, b.boardTitle, b.content, b.countLikes, b.boardCount, b.deletedTime, b.writtenTime, b.isReported,
-        b.myCourseNo, u.userNick
+        b.myCourseNo, u.userNick, u.userExp
         FROM board b LEFT JOIN user u ON b.userNo = u.userNo
         where b.deletedTime is null
         order by b.writtenTime desc
@@ -37,7 +37,7 @@
     <select id="findCommentsByBoardNo" resultType="com.multicampus.gangwonActivity.dto.response.board.GetBoardCommentListResponseDto"
             parameterType="com.multicampus.gangwonActivity.dto.response.board.SearchPageDto" >
         SELECT
-        c.commentNo, c.boardNo, c.userNo, c.writtenTime, c.content, u.userNick
+        c.commentNo, c.boardNo, c.userNo, c.writtenTime, c.content, u.userNick, u.userExp
         FROM comment c LEFT JOIN user u ON c.userNo = u.userNo
         WHERE c.boardNo = #{boardNo}
         LIMIT #{searchPageDto.size}
@@ -55,7 +55,7 @@
     <select id="findBoardDetailWithUser" resultType="com.multicampus.gangwonActivity.dto.response.board.GetBoardDetailResponseDto"
     parameterType="long">
         SELECT b.boardNo, b.userNo, b.boardTitle, b.content, b.countLikes, b.deletedTime, b.writtenTime, b.isReported,
-        b.myCourseNo, b.boardCount, u.userNick
+        b.myCourseNo, b.boardCount, u.userNick, u.userExp
         FROM board b LEFT JOIN user u ON b.userNo = u.userNo
         WHERE b.boardNo = #{boardNo}
     </select>
@@ -74,7 +74,7 @@
     <!-- 좋아요 수가 많은 상위 3개의 글을 가져오는 쿼리 추가 -->
     <select id="getBestPosts" resultType="com.multicampus.gangwonActivity.dto.response.board.GetBoardListResponseDto">
         SELECT b.boardNo, b.userNo, b.boardTitle, b.content, b.countLikes, b.boardCount, b.deletedTime, b.writtenTime, b.isReported,
-        b.myCourseNo, u.userNick
+        b.myCourseNo, u.userNick, u.userExp
         FROM board b LEFT JOIN user u ON b.userNo = u.userNo
         WHERE b.deletedTime IS NULL AND b.myCourseNo IS NOT NULL
         ORDER BY b.countLikes DESC
@@ -180,4 +180,19 @@
         UPDATE board SET myCourseNo = #{myCourseNo}
         WHERE boardNo = #{boardNo}
     </update>
+
+    <!-- 작성글 작성시 유저 경험치 증가-->
+    <update id="incrementExpBoardWrite" parameterType="long">
+        UPDATE user
+        SET userExp = userExp +3
+        WHERE userNo = #{userNo}
+    </update>
+
+    <!-- 댓글 작성시 유저 경험치 증가-->
+    <update id="incrementExpCommentWrite" parameterType="long">
+        UPDATE user
+        SET userExp = userExp +1
+        WHERE userNo = #{userNo}
+    </update>
+
 </mapper>

@@ -19,4 +19,5 @@ public class GetBoardListResponseDto {
     private boolean isReported;
     private String userNick;
     private Integer boardCount;
+    private Integer userExp;
 }

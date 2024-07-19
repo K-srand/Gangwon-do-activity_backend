@@ -22,4 +22,5 @@ public class GetBoardDetailResponseDto {
     private int boardCount;
     private String userNick;
     private List<GetBoardCommentListResponseDto> comments;
+    private Integer userExp;
 }
