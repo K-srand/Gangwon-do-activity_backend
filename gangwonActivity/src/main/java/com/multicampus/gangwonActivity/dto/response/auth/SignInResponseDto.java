@@ -11,19 +11,21 @@ import org.springframework.http.ResponseEntity;
 @Getter
 public class SignInResponseDto extends ResponseDto {
 
+    private String role;
     private  String token;
     private int expirationTime;
 
-    private SignInResponseDto(String token){
+    private SignInResponseDto(String token, String role){
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
+        this.role = role;
         this.token = token;
         this.expirationTime = 3600; //1시간
     }
 
 
     //로그인 성공
-    public static ResponseEntity<SignInResponseDto> success(String token){
-        SignInResponseDto result = new SignInResponseDto(token);
+    public static ResponseEntity<SignInResponseDto> success(String token, String role){
+        SignInResponseDto result = new SignInResponseDto(token, role);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 

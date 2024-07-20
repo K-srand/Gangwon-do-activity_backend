@@ -84,26 +84,19 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public ResponseEntity<? super SignInResponseDto> signIn(SignInRequestDto dto) {
         String token = null;
-
+        String role = null;
         try{
             String userId = dto.getUserId();
             User user = userRepository.findByUserId(userId);
             if (user == null) return  SignInResponseDto.signInFailed();
 
-            LocalDateTime userBanTime = user.getUserBanTime();
-
-            //제재당한 유저
-            if (userBanTime != null) {
-                return SignInResponseDto.validationFailed();
-            }
-
-            //탈퇴한 유저
             LocalDateTime exitTime = user.getUserExitTime();
             if(exitTime != null) return SignInResponseDto.signInFailed();
 
+
+
             //평문 비번
             String password = dto.getUserPassword();
-
             //JWT암호화된 비번
             String encodedPassword = user.getUserPassword();
 
@@ -111,6 +104,8 @@ public class AuthServiceImpl implements AuthService {
             if(!isMatched) return SignInResponseDto.signInFailed();
 
             token = jwtProvider.create(userId);
+            //user, admin 구분
+            role = user.getUserRole();
 
 
         }catch (Exception e){
@@ -120,8 +115,9 @@ public class AuthServiceImpl implements AuthService {
 
 
 
-        return SignInResponseDto.success(token);
+        return SignInResponseDto.success(token, role);
     }
+
 
     public ResponseEntity<? super EmailCertificationResponseDto> emailCertification(EmailCertificationRequestDto dto, HttpSession session) {
 
