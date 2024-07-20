@@ -27,19 +27,19 @@
     <select id="findMyFavoritesByUserNo" parameterType="com.multicampus.gangwonActivity.dto.response.board.SearchPageDto"
             resultType="com.multicampus.gangwonActivity.dto.response.mypage.GetMyFavoritesListResponseDto">
         select p.placeNo, p.placeTitle, p.firstImage, p.rate from place p
-        left join myFavoritesUserPlace f on p.placeNo = f.placeNo
+                                                                      left join myFavoritesUserPlace f on p.placeNo = f.placeNo
         where f.userNo = #{userNo}
-        LIMIT #{searchPageDto.size}
+            LIMIT #{searchPageDto.size}
         OFFSET #{searchPageDto.offset}
     </select>
 
     <!--    내 찜목록 삭제-->
     <delete id="deleteMyFavoritesByPlaceNo" parameterType="java.lang.Long" >
-            delete from myFavoritesUserPlace where placeNo = #{placeNo}
+        delete from myFavoritesUserPlace where placeNo = #{placeNo}
     </delete>
 
     <!-- 나만의 코스 불러오기 -->
-    <select id="findMyCourse" resultType="map">
+    <select id="findMyCourse" resultType="com.multicampus.gangwonActivity.dto.response.mypage.GetMyPageCourseResponseDto">
         SELECT mc.myCourseNo, p.placeTitle, p.firstImage2
         FROM myCourse mc
                  JOIN myCoursePlace mcp ON mc.myCourseNo = mcp.myCourseNo
