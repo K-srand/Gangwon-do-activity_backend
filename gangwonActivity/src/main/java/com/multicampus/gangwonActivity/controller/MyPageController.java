@@ -68,7 +68,7 @@ public class MyPageController {
         return getMyFavoritesListResponseDtoResponseEntity;
     }
 
-    @PostMapping("/modify")
+    @PatchMapping("/modify")
     public ResponseEntity<? super ModifyMyInfoResponseDto> modifyMyInfo(
             @AuthenticationPrincipal String id,
             @RequestBody @Valid ModifyMyInfoRequestDto requestDto
