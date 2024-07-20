@@ -22,6 +22,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
 
@@ -117,7 +119,10 @@ public class MyPageServiceImpl implements MyPageService {
             String UserId = user.getUserId();
 
             if(!UserId.equals(userId)) return ModifyMyInfoResponseDto.idError();
-            userRepository.delete(user);
+
+            LocalDateTime ExitTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+            user.ExitTime(ExitTime);
+            userRepository.save(user);
 
         } catch (Exception e) {
             e.printStackTrace();

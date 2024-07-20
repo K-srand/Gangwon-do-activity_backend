@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper
 public interface AdminMapper {
 
-    List<AdminUserListResponseDto> allUserList(SearchPageDto searchPageDto);
+    List<AdminUserListResponseDto> allUserList(@Param("searchPageDto") SearchPageDto searchPageDto);
 
     Integer countAllUser();
 

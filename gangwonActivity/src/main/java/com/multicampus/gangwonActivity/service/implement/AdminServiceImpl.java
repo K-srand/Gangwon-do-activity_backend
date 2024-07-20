@@ -1,13 +1,16 @@
 package com.multicampus.gangwonActivity.service.implement;
 
 import com.multicampus.gangwonActivity.dto.request.auth.SignInRequestDto;
+import com.multicampus.gangwonActivity.dto.request.mypage.ModifyMyInfoRequestDto;
 import com.multicampus.gangwonActivity.dto.response.ResponseDto;
 import com.multicampus.gangwonActivity.dto.response.admin.AdminUserListResponseDto;
 import com.multicampus.gangwonActivity.dto.response.auth.SignInResponseDto;
 import com.multicampus.gangwonActivity.dto.response.board.SearchPageDto;
+import com.multicampus.gangwonActivity.dto.response.mypage.ModifyMyInfoResponseDto;
 import com.multicampus.gangwonActivity.dto.response.sanction.SanctionContentResponseDto;
 import com.multicampus.gangwonActivity.dto.response.sanction.SanctionedUserResponseDto;
 import com.multicampus.gangwonActivity.dto.response.sanction.SanctionedUserResponseDto;
+import com.multicampus.gangwonActivity.entity.User;
 import com.multicampus.gangwonActivity.mapper.AdminMapper;
 import com.multicampus.gangwonActivity.mapper.ReportMapper;
 import com.multicampus.gangwonActivity.provider.JwtProvider;
@@ -62,6 +65,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public ResponseEntity<? super SanctionedUserResponseDto> disSanctionUser(String id, Long userNo) {
 
+
         try{
             if(!reportMapper.alreadySanctionedUser(userNo)) return SanctionedUserResponseDto.alreadySanctionedUser();
 
@@ -79,14 +83,15 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public ResponseEntity<? super SanctionContentResponseDto> sanctionContent(Long reportedContentNo) {
         try {
-            if(!reportMapper.alreadySanctionContent(reportedContentNo)) return SanctionContentResponseDto.alreadySanctionContent();
+            if(reportMapper.alreadySanctionContent(reportedContentNo))
+                return SanctionContentResponseDto.alreadySanctionContent();
 
         }catch (Exception e){
             e.printStackTrace();
             return ResponseDto.databaseError();
         }
         LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
-        reportMapper.sanctionContent(reportedContentNo,localDateTime);
+        reportMapper.sanctionContent(reportedContentNo, localDateTime);
         return SanctionContentResponseDto.success();
     }
 
@@ -103,6 +108,27 @@ public class AdminServiceImpl implements AdminService {
         }
         reportMapper.desanctionContent(reportedContentNo);
         return SanctionContentResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super ModifyMyInfoResponseDto> reuseInfo(ModifyMyInfoRequestDto dto) {
+        try {
+            String id = dto.getUserId();
+            User user = userRepository.findByUserId(id);
+            if(user == null) {
+                return ModifyMyInfoResponseDto.notExistUser();
+            }
+
+            LocalDateTime ExitTime = null;
+            user.ExitTime(ExitTime);
+            userRepository.save(user);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return ModifyMyInfoResponseDto.success();
     }
 
 }

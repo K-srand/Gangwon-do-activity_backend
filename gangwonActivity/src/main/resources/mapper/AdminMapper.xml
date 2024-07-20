@@ -3,8 +3,12 @@
 <mapper namespace="com.multicampus.gangwonActivity.mapper.AdminMapper">
 
     <select id="allUserList"
-            resultType="com.multicampus.gangwonActivity.dto.response.admin.AdminUserListResponseDto">
-        SELECT userNo, userName, userId, userNick, userEmail from user
+            resultType="com.multicampus.gangwonActivity.dto.response.admin.AdminUserListResponseDto"
+            parameterType="com.multicampus.gangwonActivity.dto.response.board.SearchPageDto">
+        SELECT userNo, userName, userId, userNick, userEmail, userBanTime, userExitTime
+        from user
+        LIMIT #{searchPageDto.size}
+        OFFSET #{searchPageDto.offset}
     </select>
 
     <select id="countAllUser" resultType="Integer">

@@ -2,9 +2,11 @@ package com.multicampus.gangwonActivity.controller;
 
 
 import com.multicampus.gangwonActivity.dto.request.auth.SignInRequestDto;
+import com.multicampus.gangwonActivity.dto.request.mypage.ModifyMyInfoRequestDto;
 import com.multicampus.gangwonActivity.dto.response.admin.AdminUserListResponseDto;
 import com.multicampus.gangwonActivity.dto.response.auth.SignInResponseDto;
 import com.multicampus.gangwonActivity.dto.response.board.SearchPageDto;
+import com.multicampus.gangwonActivity.dto.response.mypage.ModifyMyInfoResponseDto;
 import com.multicampus.gangwonActivity.dto.response.sanction.SanctionContentResponseDto;
 import com.multicampus.gangwonActivity.dto.response.sanction.SanctionedUserResponseDto;
 import com.multicampus.gangwonActivity.dto.response.sanction.SanctionedUserResponseDto;
@@ -36,7 +38,7 @@ public class AdminController {
     @GetMapping("/getuserlist")
     public ResponseEntity<PageImpl<AdminUserListResponseDto>> userList(
             @RequestParam(value = "page", defaultValue = "0")int page,
-            @RequestParam(value = "size", defaultValue = "6") int size
+            @RequestParam(value = "size", defaultValue = "15") int size
     ){
         SearchPageDto searchPageDto = new SearchPageDto();
         searchPageDto.setPage(page);
@@ -83,7 +85,7 @@ public class AdminController {
     }
 
     // 콘텐츠 제재 해제
-    @PatchMapping("desanctioncontent")
+    @PatchMapping("/desanctioncontent")
     public ResponseEntity<? super SanctionContentResponseDto> disRestrictContent(
             @RequestBody Long reportedContendNo
     ){
@@ -91,4 +93,15 @@ public class AdminController {
 
         return response;
     }
+
+    //탈퇴한 유저 해제
+    @PatchMapping("/reuser")
+    public ResponseEntity<? super ModifyMyInfoResponseDto> reuser(
+            @RequestBody @Valid ModifyMyInfoRequestDto requestDto
+    ) {
+        ResponseEntity<? super ModifyMyInfoResponseDto> response = adminService.reuseInfo(requestDto);
+        return  response;
+    }
+
+
 }

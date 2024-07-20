@@ -304,6 +304,7 @@ public class BoardServiceImpl implements BoardService {
         List<GetBoardCommentListResponseDto> comments = boardMapper.findCommentsByBoardNo(boardNo, new SearchPageDto());
 
         boardDetail.setComments(comments);
+
         incrementViews(boardNo);
         return boardDetail;
     }

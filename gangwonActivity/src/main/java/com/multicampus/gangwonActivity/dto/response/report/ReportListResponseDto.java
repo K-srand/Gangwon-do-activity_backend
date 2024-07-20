@@ -20,6 +20,7 @@ public class ReportListResponseDto extends ResponseDto {
     private Long userNo;
     private String content;
     private String userId;
+    private LocalDateTime censoredTime;
 
     private ReportListResponseDto(){
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);

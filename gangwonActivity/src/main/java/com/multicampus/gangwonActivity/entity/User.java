@@ -60,4 +60,10 @@ public class User {
         this.userNick = userNick;
 
     }
+
+    public void ExitTime(LocalDateTime exitTime){
+
+        this.userExitTime = exitTime;
+
+    }
 }

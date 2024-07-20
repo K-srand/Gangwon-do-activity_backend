@@ -81,7 +81,7 @@ public class MyPageController {
     }
 
 
-    @PostMapping("/deleteuser")
+    @DeleteMapping ("/deleteuser")
     public ResponseEntity<? super ModifyMyInfoResponseDto> deleteuser(
             @AuthenticationPrincipal String id,
             @RequestBody @Valid ModifyMyInfoRequestDto requestDto

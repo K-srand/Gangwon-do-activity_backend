@@ -23,4 +23,5 @@ public class GetBoardDetailResponseDto {
     private String userNick;
     private List<GetBoardCommentListResponseDto> comments;
     private Integer userExp;
+    private LocalDateTime censoredTime;
 }

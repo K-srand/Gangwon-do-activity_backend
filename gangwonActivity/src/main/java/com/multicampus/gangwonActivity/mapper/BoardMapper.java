@@ -13,7 +13,7 @@ import java.util.Map;
 
 @Mapper
 public interface BoardMapper {
-    List<GetBoardListResponseDto> findAllWithUser(SearchPageDto searchPageDto);
+    List<GetBoardListResponseDto> findAllWithUser(@Param("searchPageDto") SearchPageDto searchPageDto);
 
     Boolean alreadyLiked(@Param("boardNo") Long boardNo, @Param("userNo")Long userNo);
 

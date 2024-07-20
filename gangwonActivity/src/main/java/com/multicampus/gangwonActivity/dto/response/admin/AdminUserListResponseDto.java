@@ -3,6 +3,8 @@ package com.multicampus.gangwonActivity.dto.response.admin;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 public class AdminUserListResponseDto {
@@ -11,6 +13,8 @@ public class AdminUserListResponseDto {
     private String userName;
     private String userId;
     private String userNick;
-    private String email;
+    private String userEmail;
+    private LocalDateTime userBanTime;
+    private LocalDateTime userExitTime;
 
 }
