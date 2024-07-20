@@ -94,7 +94,7 @@ public class AdminController {
         return response;
     }
 
-    //탈퇴한 유저
+    //탈퇴한 유저 해제
     @PatchMapping("/reuser")
     public ResponseEntity<? super ModifyMyInfoResponseDto> reuser(
             @RequestBody @Valid ModifyMyInfoRequestDto requestDto
