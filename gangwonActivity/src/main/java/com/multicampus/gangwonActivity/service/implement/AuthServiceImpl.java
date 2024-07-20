@@ -93,7 +93,8 @@ public class AuthServiceImpl implements AuthService {
             LocalDateTime exitTime = user.getUserExitTime();
             if(exitTime != null) return SignInResponseDto.signInFailed();
 
-
+            LocalDateTime BanTime = user.getUserBanTime();
+            if (BanTime != null) return  SignInResponseDto.signInFailed();
 
             //평문 비번
             String password = dto.getUserPassword();

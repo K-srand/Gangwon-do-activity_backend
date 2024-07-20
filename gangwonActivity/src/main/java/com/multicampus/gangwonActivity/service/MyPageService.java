@@ -5,10 +5,7 @@ import com.multicampus.gangwonActivity.dto.request.mypage.CheckPasswordRequestDt
 import com.multicampus.gangwonActivity.dto.request.mypage.ModifyMyInfoRequestDto;
 import com.multicampus.gangwonActivity.dto.response.board.GetBoardListResponseDto;
 import com.multicampus.gangwonActivity.dto.response.board.SearchPageDto;
-import com.multicampus.gangwonActivity.dto.response.mypage.GetMyFavoritesListResponseDto;
-import com.multicampus.gangwonActivity.dto.response.mypage.ModMyInfoResponseDto;
-import com.multicampus.gangwonActivity.dto.response.mypage.ModifyMyInfoResponseDto;
-import com.multicampus.gangwonActivity.dto.response.mypage.MyPageResponseDto;
+import com.multicampus.gangwonActivity.dto.response.mypage.*;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
