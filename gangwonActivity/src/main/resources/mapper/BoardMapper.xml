@@ -7,15 +7,15 @@
             resultType="com.multicampus.gangwonActivity.dto.response.board.GetBoardListResponseDto"
             parameterType="com.multicampus.gangwonActivity.dto.response.board.SearchPageDto" > <!--보내줄 값-->
         SELECT b.boardNo, b.userNo, b.boardTitle, b.content, b.countLikes, b.boardCount, b.deletedTime, b.writtenTime, b.isReported,
-        b.myCourseNo, u.userNick
+        b.myCourseNo, u.userNick, u.userExp
         FROM board b
         LEFT JOIN user u ON b.userNo = u.userNo
         LEFT JOIN reportedContent rc ON b.boardNo = rc.boardNo
         WHERE b.deletedTime IS NULL
         AND rc.censoredTime IS NULL
         ORDER BY b.writtenTime DESC
-        LIMIT 5
-        OFFSET 0;
+        limit #{size} <!--한 번에 몇개를 가져올 건지 제한 -->
+        offset #{offset} <!--시작지점으로 부터 몇개씩 떨구거냐-->
     </select>
 
 
@@ -40,7 +40,7 @@
     <select id="findCommentsByBoardNo" resultType="com.multicampus.gangwonActivity.dto.response.board.GetBoardCommentListResponseDto"
             parameterType="com.multicampus.gangwonActivity.dto.response.board.SearchPageDto" >
         SELECT
-        c.commentNo, c.boardNo, c.userNo, c.writtenTime, c.content, u.userNick
+        c.commentNo, c.boardNo, c.userNo, c.writtenTime, c.content, u.userNick, u.userExp
         FROM comment c
         LEFT JOIN user u ON c.userNo = u.userNo
         left join reportedContent rc on c.commentNo = rc.commentNo
@@ -61,7 +61,7 @@
     <select id="findBoardDetailWithUser" resultType="com.multicampus.gangwonActivity.dto.response.board.GetBoardDetailResponseDto"
     parameterType="long">
         SELECT b.boardNo, b.userNo, b.boardTitle, b.content, b.countLikes, b.deletedTime, b.writtenTime, b.isReported,
-        b.myCourseNo, b.boardCount, u.userNick
+        b.myCourseNo, b.boardCount, u.userNick, u.userExp
         FROM board b LEFT JOIN user u ON b.userNo = u.userNo
         WHERE b.boardNo = #{boardNo}
     </select>
@@ -80,7 +80,7 @@
     <!-- 좋아요 수가 많은 상위 3개의 글을 가져오는 쿼리 추가, 제재먹은 녀석들은 노출안되게 수정 완. -->
     <select id="getBestPosts" resultType="com.multicampus.gangwonActivity.dto.response.board.GetBoardListResponseDto">
         SELECT b.boardNo, b.userNo, b.boardTitle, b.content, b.countLikes, b.boardCount, b.deletedTime, b.writtenTime, b.isReported,
-        b.myCourseNo, u.userNick, rc.censoredTime
+        b.myCourseNo, u.userNick, rc.censoredTime, u.userExp
         FROM board b
         LEFT JOIN user u ON b.userNo = u.userNo
         left join reportedContent rc on b.boardNo = rc.boardNo
@@ -190,4 +190,19 @@
         UPDATE board SET myCourseNo = #{myCourseNo}
         WHERE boardNo = #{boardNo}
     </update>
+
+    <!-- 작성글 작성시 유저 경험치 증가-->
+    <update id="incrementExpBoardWrite" parameterType="long">
+        UPDATE user
+        SET userExp = userExp +3
+        WHERE userNo = #{userNo}
+    </update>
+
+    <!-- 댓글 작성시 유저 경험치 증가-->
+    <update id="incrementExpCommentWrite" parameterType="long">
+        UPDATE user
+        SET userExp = userExp +1
+        WHERE userNo = #{userNo}
+    </update>
+
 </mapper>

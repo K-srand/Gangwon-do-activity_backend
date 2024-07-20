@@ -190,5 +190,14 @@ public class BoardController {
         return boardService.dislikesBoard(boardNo, id);
     }
 
+    @GetMapping("/increment1/")
+    public void increment1(@AuthenticationPrincipal String id){
+        boardService.incrementExp1(id);
+    }
+    @GetMapping("/increment3/")
+    public void increment3(@AuthenticationPrincipal String id){
+        boardService.incrementExp3(id);
+    }
+
 
 }

@@ -394,4 +394,14 @@ public class BoardServiceImpl implements BoardService {
     public void updateMyCourse(Long boardNo, Long myCourseNo) {
         boardMapper.updateMyCourse(boardNo, myCourseNo);
     }
+
+    public void incrementExp3(String id){
+        Long userNo = userRepository.findUserNoByUserId(id);
+        boardMapper.incrementExpBoardWrite(userNo);
+    }
+
+    public void incrementExp1(String id){
+        Long userNo = userRepository.findUserNoByUserId(id);
+        boardMapper.incrementExpCommentWrite(userNo);
+    }
 }

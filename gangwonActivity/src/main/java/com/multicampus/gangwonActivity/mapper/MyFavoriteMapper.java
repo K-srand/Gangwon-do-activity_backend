@@ -2,6 +2,7 @@ package com.multicampus.gangwonActivity.mapper;
 
 import com.multicampus.gangwonActivity.dto.response.board.SearchPageDto;
 import com.multicampus.gangwonActivity.dto.response.mypage.GetMyPageCourseResponseDto;
+import com.multicampus.gangwonActivity.dto.response.mypage.GetMyExpResponseDto;
 import com.multicampus.gangwonActivity.dto.response.mypage.GetMyFavoritesListResponseDto;
 import com.multicampus.gangwonActivity.dto.response.mypage.MyPageResponseDto;
 import com.multicampus.gangwonActivity.entity.MyFavoritesUserPlace;
@@ -10,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface MyFavoriteMapper {
@@ -33,5 +35,7 @@ public interface MyFavoriteMapper {
     Integer countMyCourse(@Param("userNo") Long userNo);
 
     void deleteMyCourse(@Param("myCourseNo") Long myCourseNo);
+
+    Integer getMyExp(@Param("userNo") Long userNo);
 
 }

@@ -62,4 +62,8 @@ public interface BoardMapper {
     void unlike(@Param("boardNo") long boardNo, @Param("userNo") long userNo);
 
     void undislike(@Param("boardNo") long boardNo, @Param("userNo") long userNo);
+
+    void incrementExpBoardWrite(@Param("userNo") Long userNo);
+
+    void incrementExpCommentWrite(@Param("userNo") Long userNo);
 }

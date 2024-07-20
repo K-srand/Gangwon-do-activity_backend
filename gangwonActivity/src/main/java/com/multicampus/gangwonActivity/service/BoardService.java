@@ -57,4 +57,8 @@ public interface BoardService {
     void deleteMyCourse(Long boardNo);
 
     void updateMyCourse(Long boardNo, Long myCourseNo);
+
+    void incrementExp3(String id);
+
+    void incrementExp1(String id);
 }

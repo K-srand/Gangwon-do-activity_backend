@@ -6,7 +6,10 @@ import com.multicampus.gangwonActivity.dto.request.board.MyCourseUploadRequestDt
 import com.multicampus.gangwonActivity.dto.request.mypage.ModifyMyInfoRequestDto;
 import com.multicampus.gangwonActivity.dto.response.board.GetBoardListResponseDto;
 import com.multicampus.gangwonActivity.dto.response.board.SearchPageDto;
-import com.multicampus.gangwonActivity.dto.response.mypage.*;
+import com.multicampus.gangwonActivity.dto.response.mypage.GetMyFavoritesListResponseDto;
+import com.multicampus.gangwonActivity.dto.response.mypage.ModMyInfoResponseDto;
+import com.multicampus.gangwonActivity.dto.response.mypage.ModifyMyInfoResponseDto;
+import com.multicampus.gangwonActivity.dto.response.mypage.MyPageResponseDto;
 import com.multicampus.gangwonActivity.entity.Board;
 import com.multicampus.gangwonActivity.service.MyPageService;
 import jakarta.validation.Valid;
@@ -128,4 +131,12 @@ public class MyPageController {
         return deleteMyCourse;
     }
 
+    @GetMapping("/exp")
+    public ResponseEntity<? super GetMyExpResponseDto> getMyExp(
+            @AuthenticationPrincipal String id){
+        int rank = myPageService.getUserExp(id);
+        return ResponseEntity.ok(rank);
+    }
+
 }
+

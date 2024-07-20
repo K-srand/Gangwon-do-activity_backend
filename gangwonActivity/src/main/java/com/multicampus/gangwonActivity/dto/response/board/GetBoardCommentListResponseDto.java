@@ -15,4 +15,5 @@ public class GetBoardCommentListResponseDto{
     private LocalDateTime writtenTime;
     private String content;
     private String userNick;
+    private Integer userExp;
 }
