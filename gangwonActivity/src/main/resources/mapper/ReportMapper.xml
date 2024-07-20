@@ -35,8 +35,8 @@
         LEFT JOIN board b ON r.boardNo = b.boardNo
         LEFT JOIN comment c ON r.commentNo = c.commentNo
         LEFT JOIN user u ON r.userNo = u.userNo
-        LIMIT #{searchPageDto.size}
-        OFFSET #{searchPageDto.offset}
+        LIMIT #{size}
+        OFFSET #{offset}
     </select>
 
     <delete id="deleteReport" parameterType="map">

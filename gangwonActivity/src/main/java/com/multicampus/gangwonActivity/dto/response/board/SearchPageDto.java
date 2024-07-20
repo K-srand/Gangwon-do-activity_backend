@@ -1,12 +1,8 @@
 package com.multicampus.gangwonActivity.dto.response.board;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-
-@Getter
-@Setter
-
+@Data
 public class SearchPageDto {
     private int page = 0; // 현재 페이지 번호
     private int size = 10; //dafault 값으로 10개 지정

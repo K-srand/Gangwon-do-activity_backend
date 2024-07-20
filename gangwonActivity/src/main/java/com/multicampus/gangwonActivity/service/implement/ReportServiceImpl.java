@@ -4,7 +4,6 @@ package com.multicampus.gangwonActivity.service.implement;
 import com.multicampus.gangwonActivity.dto.response.ResponseDto;
 import com.multicampus.gangwonActivity.dto.response.report.ReportListResponseDto;
 import com.multicampus.gangwonActivity.dto.response.board.SearchPageDto;
-import com.multicampus.gangwonActivity.dto.response.report.ReportListResponseDto;
 import com.multicampus.gangwonActivity.dto.response.report.ReportedContentResponseDto;
 import com.multicampus.gangwonActivity.entity.ReportedContent;
 import com.multicampus.gangwonActivity.mapper.ReportMapper;

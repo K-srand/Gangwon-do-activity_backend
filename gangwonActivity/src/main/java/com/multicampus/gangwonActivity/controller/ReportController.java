@@ -72,7 +72,7 @@ public class ReportController {
         int reportCount = reportService.countReport();
 
         return ResponseEntity.ok(
-            new PageImpl<>(reportList, PageRequest.of(searchPageDto.getPage(), searchPageDto.getSize()), reportCount));
+                new PageImpl<>(reportList, PageRequest.of(searchPageDto.getPage(), searchPageDto.getSize()), reportCount));
     }
 
     //delete
