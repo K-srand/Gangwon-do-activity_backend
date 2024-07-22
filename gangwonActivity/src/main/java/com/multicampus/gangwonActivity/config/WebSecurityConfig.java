@@ -68,7 +68,8 @@ public class WebSecurityConfig {
                                 "/api/v1/weather/**",
                                 "/resources/**",
                                 "/static/**",
-                                "/api/v1/admin/**"
+                                "/api/v1/admin/**",
+                                "/localfile/**"
                                 ).permitAll()
                         .requestMatchers("/api/v1/user/**"
                         ).hasRole("USER")
