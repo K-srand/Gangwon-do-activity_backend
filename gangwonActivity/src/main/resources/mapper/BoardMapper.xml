@@ -78,18 +78,32 @@
         where boardNo=#{boardNo}
     </update>
 
-    <!-- 좋아요 수가 많은 상위 3개의 글을 가져오는 쿼리 추가, 제재먹은 녀석들은 노출안되게 수정 완. -->
+    <!-- 좋아요 수I가 많은 상위 3개의 글을 가져오는 쿼리 추가, 제재먹은 녀석들은 노출안되게 수정 완. -->
     <select id="getBestPosts" resultType="com.multicampus.gangwonActivity.dto.response.board.GetBoardListResponseDto">
+        (
         SELECT b.boardNo, b.userNo, b.boardTitle, b.content, b.countLikes, b.boardCount, b.deletedTime, b.writtenTime, b.isReported,
         b.myCourseNo, u.userNick, rc.censoredTime, u.userExp
         FROM board b
         LEFT JOIN user u ON b.userNo = u.userNo
-        left join reportedContent rc on b.boardNo = rc.boardNo
+        LEFT JOIN reportedContent rc ON b.boardNo = rc.boardNo
         WHERE b.deletedTime IS NULL
-        AND b.myCourseNo IS NOT NULL
-        and rc.censoredTime is null
-        ORDER BY b.countLikes DESC
-        LIMIT 3
+        AND rc.censoredTime IS NULL
+        AND u.userRole = 'ROLE_ADMIN'
+        ORDER BY b.writtenTime DESC
+        LIMIT 1
+        )
+        UNION ALL
+        (
+        SELECT b.boardNo, b.userNo, b.boardTitle, b.content, b.countLikes, b.boardCount, b.deletedTime, b.writtenTime, b.isReported,
+        b.myCourseNo, u.userNick, rc.censoredTime, u.userExp
+        FROM board b
+        LEFT JOIN user u ON b.userNo = u.userNo
+        LEFT JOIN reportedContent rc ON b.boardNo = rc.boardNo
+        WHERE b.deletedTime IS NULL
+        AND rc.censoredTime IS NULL
+        AND u.userRole != 'ROLE_ADMIN'
+        )
+        ORDER BY writtenTime DESC;
     </select>
 
     <!--이미지 삭제-->
