@@ -5,6 +5,7 @@ import com.multicampus.gangwonActivity.entity.Weather;
 import com.multicampus.gangwonActivity.repository.WeatherRepository;
 import com.multicampus.gangwonActivity.service.WeatherService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,6 +25,7 @@ public class WeatherController {
     private final WeatherRepository weatherRepository;
 
     //날씨 API 저장 서비스 호출
+    @Scheduled(cron = "0 0 6 * * *")
     @GetMapping("")
     public String getWeatherInDataBase() throws IOException,InterruptedException{
 
