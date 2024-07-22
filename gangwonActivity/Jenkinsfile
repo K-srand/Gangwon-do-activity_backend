@@ -1,0 +1,43 @@
+pipeline {
+    agent any
+    environment {
+        DOCKER_IMAGE = 'backend-app:latest'
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'feature/jenkinstest', url: 'https://github.com/K-srand/Gangwon-do-activity_backend.git'
+            }
+        }
+        stage('Build') {
+            when {
+                branch 'feature/jenkinstest'
+            }
+            steps {
+                sh './gradlew build'
+            }
+        }
+        stage('Docker Build') {
+            when {
+                branch 'feature/jenkinstest'
+            }
+            steps {
+                script {
+                    dockerImage = docker.build(DOCKER_IMAGE)
+                }
+            }
+        }
+        stage('Deploy') {
+            when {
+                branch 'feature/jenkinstest'
+            }
+            steps {
+                script {
+                    sh 'docker stop backend-app || true'
+                    sh 'docker rm backend-app || true'
+                    sh 'docker run -d -p 4040:4040 --name backend-app backend-app:latest'
+                }
+            }
+        }
+    }
+}
