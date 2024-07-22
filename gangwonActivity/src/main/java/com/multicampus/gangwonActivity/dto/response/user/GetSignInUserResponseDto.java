@@ -12,12 +12,13 @@ import org.springframework.http.ResponseEntity;
 public class GetSignInUserResponseDto extends ResponseDto {
     private String id;
     private String nickname;
-//    private String profileImage;
+    private String userRole;
 
     private GetSignInUserResponseDto(User user){
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
         this.id = user.getUserId();
         this.nickname = user.getUserNick();
+        this.userRole = user.getUserRole();
 //        this.profileImage = userEntity.getUserProfileImage();
     }
 
