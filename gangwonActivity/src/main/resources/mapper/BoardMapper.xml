@@ -7,12 +7,13 @@
             resultType="com.multicampus.gangwonActivity.dto.response.board.GetBoardListResponseDto"
             parameterType="com.multicampus.gangwonActivity.dto.response.board.SearchPageDto" > <!--보내줄 값-->
         SELECT b.boardNo, b.userNo, b.boardTitle, b.content, b.countLikes, b.boardCount, b.deletedTime, b.writtenTime, b.isReported,
-        b.myCourseNo, u.userNick, rc.censoredTime, u.userExp
+        b.myCourseNo, u.userNick, rc.censoredTime, u.userExp, u.userRole
         FROM board b
         LEFT JOIN user u ON b.userNo = u.userNo
         LEFT JOIN reportedContent rc ON b.boardNo = rc.boardNo
         WHERE b.deletedTime IS NULL
         AND rc.censoredTime IS NULL
+        AND u.userRole = 'ROLE_USER'
         ORDER BY b.writtenTime DESC
         LIMIT #{searchPageDto.size}
         OFFSET #{searchPageDto.offset}
@@ -40,7 +41,7 @@
     <select id="findCommentsByBoardNo" resultType="com.multicampus.gangwonActivity.dto.response.board.GetBoardCommentListResponseDto"
             parameterType="com.multicampus.gangwonActivity.dto.response.board.SearchPageDto" >
         SELECT
-        c.commentNo, c.boardNo, c.userNo, c.writtenTime, c.content, u.userNick, u.userExp
+        c.commentNo, c.boardNo, c.userNo, c.writtenTime, c.content, u.userNick, u.userExp, u.userRole
         FROM comment c
         LEFT JOIN user u ON c.userNo = u.userNo
         left join reportedContent rc on c.commentNo = rc.commentNo
@@ -59,9 +60,9 @@
 
     <!-- 작성글 상세 조회 -->
     <select id="findBoardDetailWithUser" resultType="com.multicampus.gangwonActivity.dto.response.board.GetBoardDetailResponseDto"
-    parameterType="long">
+            parameterType="long">
         SELECT b.boardNo, b.userNo, b.boardTitle, b.content, b.countLikes, b.deletedTime, b.writtenTime, b.isReported,
-        b.myCourseNo, b.boardCount, u.userNick, rc.censoredTime, u.userExp
+        b.myCourseNo, b.boardCount, u.userNick, rc.censoredTime, u.userExp, u.userRole
         FROM board b LEFT JOIN user u ON b.userNo = u.userNo
         LEFT JOIN reportedContent rc ON b.boardNo = rc.boardNo
         WHERE b.boardNo = #{boardNo}
@@ -78,32 +79,19 @@
         where boardNo=#{boardNo}
     </update>
 
-    <!-- 좋아요 수I가 많은 상위 3개의 글을 가져오는 쿼리 추가, 제재먹은 녀석들은 노출안되게 수정 완. -->
+    <!-- 좋아요 수가 많은 상위 3개의 글을 가져오는 쿼리 추가, 제재먹은 녀석들은 노출안되게 수정 완. -->
     <select id="getBestPosts" resultType="com.multicampus.gangwonActivity.dto.response.board.GetBoardListResponseDto">
-        (
         SELECT b.boardNo, b.userNo, b.boardTitle, b.content, b.countLikes, b.boardCount, b.deletedTime, b.writtenTime, b.isReported,
-        b.myCourseNo, u.userNick, rc.censoredTime, u.userExp
+        b.myCourseNo, u.userNick, rc.censoredTime, u.userExp, u.userRole
         FROM board b
         LEFT JOIN user u ON b.userNo = u.userNo
-        LEFT JOIN reportedContent rc ON b.boardNo = rc.boardNo
+        left join reportedContent rc on b.boardNo = rc.boardNo
         WHERE b.deletedTime IS NULL
-        AND rc.censoredTime IS NULL
-        AND u.userRole = 'ROLE_ADMIN'
-        ORDER BY b.writtenTime DESC
-        LIMIT 1
-        )
-        UNION ALL
-        (
-        SELECT b.boardNo, b.userNo, b.boardTitle, b.content, b.countLikes, b.boardCount, b.deletedTime, b.writtenTime, b.isReported,
-        b.myCourseNo, u.userNick, rc.censoredTime, u.userExp
-        FROM board b
-        LEFT JOIN user u ON b.userNo = u.userNo
-        LEFT JOIN reportedContent rc ON b.boardNo = rc.boardNo
-        WHERE b.deletedTime IS NULL
-        AND rc.censoredTime IS NULL
-        AND u.userRole != 'ROLE_ADMIN'
-        )
-        ORDER BY writtenTime DESC;
+        AND b.myCourseNo IS NOT NULL
+        AND rc.censoredTime is null
+        AND u.userRole = 'ROLE_USER'
+        ORDER BY b.countLikes DESC
+        LIMIT 3
     </select>
 
     <!--이미지 삭제-->
@@ -115,7 +103,7 @@
 
     </delete>
 
-<!--    예원-->
+    <!--    예원-->
 
     <!-- 좋아요-->
     <insert id="like">
@@ -148,7 +136,7 @@
         where boardNo = #{boardNo} and userNo = #{userNo} and likeCheck = 'dislikes'
     </delete>
 
-<!--    낌&빡-->
+    <!--    낌&빡-->
 
     <!--    userNo로 BoardList 가져오기-->
     <select id="getBoardListByUserNo" parameterType="java.lang.Long" resultType="Board">
@@ -189,8 +177,8 @@
     <select id="selectMyCourse" parameterType="long" resultType="map">
         SELECT p.placeTitle, p.firstImage2
         FROM myCourse mc
-                 JOIN myCoursePlace mcp ON mc.myCourseNo = mcp.myCourseNo
-                 JOIN place p ON mcp.placeNo = p.placeNo
+        JOIN myCoursePlace mcp ON mc.myCourseNo = mcp.myCourseNo
+        JOIN place p ON mcp.placeNo = p.placeNo
         WHERE mc.myCourseNo = #{myCourseNo}
     </select>
 
@@ -219,5 +207,19 @@
         SET userExp = userExp +1
         WHERE userNo = #{userNo}
     </update>
+
+    <!-- 공지글 1개 가져오기 -->
+    <select id="getNoticePost" resultType="com.multicampus.gangwonActivity.dto.response.board.GetBoardListResponseDto">
+        SELECT b.boardNo, b.userNo, b.boardTitle, b.content, b.countLikes, b.boardCount, b.deletedTime, b.writtenTime, b.isReported,
+        b.myCourseNo, u.userNick, rc.censoredTime, u.userExp, u.userRole
+        FROM board b
+        LEFT JOIN user u ON b.userNo = u.userNo
+        left join reportedContent rc on b.boardNo = rc.boardNo
+        WHERE b.deletedTime IS NULL
+        AND rc.censoredTime is null
+        AND u.userRole = 'ROLE_ADMIN'
+        ORDER BY b.writtenTime DESC
+        LIMIT 1
+    </select>
 
 </mapper>

@@ -61,4 +61,6 @@ public interface BoardService {
     void incrementExp3(String id);
 
     void incrementExp1(String id);
+
+    List<GetBoardListResponseDto> getNoticePost();
 }

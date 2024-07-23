@@ -405,4 +405,9 @@ public class BoardServiceImpl implements BoardService {
         Long userNo = userRepository.findUserNoByUserId(id);
         boardMapper.incrementExpCommentWrite(userNo);
     }
+
+    @Override
+    public List<GetBoardListResponseDto> getNoticePost() {
+        return boardMapper.getNoticePost();
+    }
 }

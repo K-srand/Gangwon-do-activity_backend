@@ -16,4 +16,5 @@ public class GetBoardCommentListResponseDto{
     private String content;
     private String userNick;
     private Integer userExp;
+    private String userRole;
 }

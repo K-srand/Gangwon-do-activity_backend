@@ -21,4 +21,5 @@ public class GetBoardListResponseDto {
     private Integer boardCount;
     private Integer userExp;
     private LocalDateTime censoredTime;
+    private String userRole;
 }
