@@ -4,85 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-<<<<<<< HEAD
-    <list default="true" id="d6f7416a-f1a1-4396-a990-d6a2c9b885f6" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ganwonActivity/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ganwonActivity/build.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ganwonActivity/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ganwonActivity/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ganwonActivity/gradlew" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ganwonActivity/gradlew.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ganwonActivity/settings.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ganwonActivity/src/main/java/com/multicampus/ganwonActivity/GanwonActivityApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ganwonActivity/src/main/java/com/multicampus/ganwonActivity/common/ResponseCode.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ganwonActivity/src/main/java/com/multicampus/ganwonActivity/common/ResponseMessage.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ganwonActivity/src/main/java/com/multicampus/ganwonActivity/config/WebSecurityConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ganwonActivity/src/main/java/com/multicampus/ganwonActivity/controller/AuthController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ganwonActivity/src/main/java/com/multicampus/ganwonActivity/controller/UserController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ganwonActivity/src/main/java/com/multicampus/ganwonActivity/dto/request/auth/SignInRequestDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ganwonActivity/src/main/java/com/multicampus/ganwonActivity/dto/request/auth/SignUpRequestDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ganwonActivity/src/main/java/com/multicampus/ganwonActivity/dto/response/ResponseDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ganwonActivity/src/main/java/com/multicampus/ganwonActivity/dto/response/auth/SignInResponseDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ganwonActivity/src/main/java/com/multicampus/ganwonActivity/dto/response/auth/SignUpResponseDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ganwonActivity/src/main/java/com/multicampus/ganwonActivity/dto/response/user/GetSignInUserResponseDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ganwonActivity/src/main/java/com/multicampus/ganwonActivity/entity/UserEntity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ganwonActivity/src/main/java/com/multicampus/ganwonActivity/exception/BadRequestExceptionHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ganwonActivity/src/main/java/com/multicampus/ganwonActivity/filter/JwtAuthenticationFilter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ganwonActivity/src/main/java/com/multicampus/ganwonActivity/provider/JwtProvider.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ganwonActivity/src/main/java/com/multicampus/ganwonActivity/repository/UserRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ganwonActivity/src/main/java/com/multicampus/ganwonActivity/service/AuthService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ganwonActivity/src/main/java/com/multicampus/ganwonActivity/service/UserService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ganwonActivity/src/main/java/com/multicampus/ganwonActivity/service/implement/AuthServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ganwonActivity/src/main/java/com/multicampus/ganwonActivity/service/implement/UserServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ganwonActivity/src/main/resources/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ganwonActivity/src/test/java/com/multicampus/ganwonActivity/GanwonActivityApplicationTests.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradlew.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/multicampus/ganwonActivity/GanwonActivityApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/multicampus/ganwonActivity/common/ResponseCode.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/multicampus/ganwonActivity/common/ResponseMessage.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/multicampus/ganwonActivity/config/AppConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/multicampus/ganwonActivity/config/OpenAPIConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/multicampus/ganwonActivity/config/SwaggerConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/multicampus/ganwonActivity/config/WebSecurityConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/multicampus/ganwonActivity/controller/AuthController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/multicampus/ganwonActivity/controller/BoardController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/multicampus/ganwonActivity/controller/UserController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/multicampus/ganwonActivity/dto/request/auth/SignInRequestDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/multicampus/ganwonActivity/dto/request/auth/SignUpRequestDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/multicampus/ganwonActivity/dto/request/board/PatchBoardRequestDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/multicampus/ganwonActivity/dto/request/board/PostBoardRequestDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/multicampus/ganwonActivity/dto/response/ResponseDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/multicampus/ganwonActivity/dto/response/auth/SignInResponseDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/multicampus/ganwonActivity/dto/response/auth/SignUpResponseDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/multicampus/ganwonActivity/dto/response/board/PatchBoardResponseDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/multicampus/ganwonActivity/dto/response/board/PostBoardResponseDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/multicampus/ganwonActivity/dto/response/user/GetSignInUserResponseDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/multicampus/ganwonActivity/entity/BoardEntity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/multicampus/ganwonActivity/entity/UserEntity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/multicampus/ganwonActivity/exception/BadRequestExceptionHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/multicampus/ganwonActivity/filter/JwtAuthenticationFilter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/multicampus/ganwonActivity/provider/JwtProvider.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/multicampus/ganwonActivity/repository/BoardRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/multicampus/ganwonActivity/repository/UserRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/multicampus/ganwonActivity/service/AuthService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/multicampus/ganwonActivity/service/BoardService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/multicampus/ganwonActivity/service/UserService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/multicampus/ganwonActivity/service/implement/AuthServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/multicampus/ganwonActivity/service/implement/BoardServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/multicampus/ganwonActivity/service/implement/UserServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/multicampus/ganwonActivity/GanwonActivityApplicationTests.java" beforeDir="false" />
+    <list default="true" id="a49b2433-7ef5-4ee6-a564-72d8bff481ea" name="Changes" comment="도커, 젠킨스 파일 추가">
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
-=======
-    <list default="true" id="25515273-fc8f-42aa-a544-1a8969cf21ef" name="Changes" comment="" />
->>>>>>> origin/feature/mybatis-join-communitylist
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -93,60 +17,53 @@
       <ProjectState />
     </projectState>
   </component>
-<<<<<<< HEAD
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
+        <option value="Dockerfile" />
       </list>
     </option>
   </component>
-=======
->>>>>>> origin/feature/mybatis-join-communitylist
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
+  <component name="KubernetesApiProvider"><![CDATA[{
+  "isMigrated": true
+}]]></component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-<<<<<<< HEAD
-  <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
-  </component>
-  <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 5
-}</component>
-  <component name="ProjectId" id="2iSmKMihyHCOzDnbNamGLco5djG" />
-  <component name="ProjectLevelVcsManager">
-    <ConfirmationsSetting value="1" id="Add" />
-  </component>
-=======
   <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 4
+  "associatedIndex": 7
 }]]></component>
-  <component name="ProjectId" id="2ida6e934G9yZOciT8pmfIPaydL" />
->>>>>>> origin/feature/mybatis-join-communitylist
+  <component name="ProjectId" id="2jbNFE8gh4eckaLjfbNBzLEWw4d" />
   <component name="ProjectViewState">
-    <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-<<<<<<< HEAD
-    "Application.GanwonActivityApplication.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "feature/boardCRU",
+    "git-widget-placeholder": "feature/jenkinstest",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Multicampus/GangBack/ganwonActivity/ganwonActivity",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "last_opened_file_path": "D:/multicampus/서버구축&배포/back/gangwonActivity",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration name="GangwonActivityApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="gangwonActivity.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.multicampus.gangwonActivity.GangwonActivityApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -157,30 +74,45 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="d6f7416a-f1a1-4396-a990-d6a2c9b885f6" name="Changes" comment="" />
-      <created>1719492287652</created>
+      <changelist id="a49b2433-7ef5-4ee6-a564-72d8bff481ea" name="Changes" comment="" />
+      <created>1721651711199</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1719492287652</updated>
-      <workItem from="1719925984569" duration="7000" />
-=======
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "android.gradle.sync.needed": "true",
-    "git-widget-placeholder": "feature/boardCRU",
-    "last_opened_file_path": "C:/Users/Jungsuk/Desktop/BE/gangwonActivity"
-  }
-}]]></component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
-  <component name="TaskManager">
-    <task active="true" id="Default" summary="Default task">
-      <changelist id="25515273-fc8f-42aa-a544-1a8969cf21ef" name="Changes" comment="" />
-      <created>1719822734522</created>
-      <option name="number" value="Default" />
-      <option name="presentableId" value="Default" />
-      <updated>1719822734522</updated>
->>>>>>> origin/feature/mybatis-join-communitylist
+      <updated>1721651711199</updated>
+      <workItem from="1721651712311" duration="4962000" />
     </task>
+    <task id="LOCAL-00001" summary="도커, 젠킨스 파일 추가">
+      <option name="closed" value="true" />
+      <created>1721652397630</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1721652397630</updated>
+    </task>
+    <task id="LOCAL-00002" summary="도커, 젠킨스 파일 추가">
+      <option name="closed" value="true" />
+      <created>1721695169675</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1721695169676</updated>
+    </task>
+    <task id="LOCAL-00003" summary="도커, 젠킨스 파일 추가">
+      <option name="closed" value="true" />
+      <created>1721695860583</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1721695860583</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="도커, 젠킨스 파일 추가" />
+    <option name="LAST_COMMIT_MESSAGE" value="도커, 젠킨스 파일 추가" />
   </component>
 </project>
