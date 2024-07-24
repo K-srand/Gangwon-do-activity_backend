@@ -3,11 +3,6 @@ pipeline {
     environment {
         JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-17.0.9.0.9-2.el8_8.x86_64'
         PATH = "${JAVA_HOME}/bin:${env.PATH}"
-
-        SPRING_MAIL_USERNAME = credentials('SPRING_MAIL_CREDENTIALS').username
-        SPRING_MAIL_PASSWORD = credentials('SPRING_MAIL_CREDENTIALS').password
-        AWS_ACCESS_KEY = credentials('AWS_ACCESS_KEY')
-        AWS_SECRET_KEY = credentials('AWS_SECRET_KEY')
     }
     stages {
         stage('Checkout') {
@@ -33,19 +28,23 @@ pipeline {
             steps {
                 echo 'Building Docker image...'
                 script {
-                    // 환경 변수 확인
-                    echo "SPRING_MAIL_USERNAME=${env.SPRING_MAIL_USERNAME}"
-                    echo "SPRING_MAIL_PASSWORD=${env.SPRING_MAIL_PASSWORD}"
-                    echo "AWS_ACCESS_KEY=${env.AWS_ACCESS_KEY}"
-                    echo "AWS_SECRET_KEY=${env.AWS_SECRET_KEY}"
+                    withCredentials([usernamePassword(credentialsId: 'SPRING_MAIL_CREDENTIALS', usernameVariable: 'SPRING_MAIL_USERNAME', passwordVariable: 'SPRING_MAIL_PASSWORD'),
+                                     string(credentialsId: 'AWS_ACCESS_KEY', variable: 'AWS_ACCESS_KEY'),
+                                     string(credentialsId: 'AWS_SECRET_KEY', variable: 'AWS_SECRET_KEY')]) {
+                        // 환경 변수 확인
+                        echo "SPRING_MAIL_USERNAME=${env.SPRING_MAIL_USERNAME}"
+                        echo "SPRING_MAIL_PASSWORD=${env.SPRING_MAIL_PASSWORD}"
+                        echo "AWS_ACCESS_KEY=${env.AWS_ACCESS_KEY}"
+                        echo "AWS_SECRET_KEY=${env.AWS_SECRET_KEY}"
 
-                    def dockerImage = docker.build('backend-app:latest', """
-                    --build-arg SPRING_MAIL_USERNAME=${env.SPRING_MAIL_USERNAME} \
-                    --build-arg SPRING_MAIL_PASSWORD=${env.SPRING_MAIL_PASSWORD} \
-                    --build-arg AWS_ACCESS_KEY=${env.AWS_ACCESS_KEY} \
-                    --build-arg AWS_SECRET_KEY=${env.AWS_SECRET_KEY} .
-                    """)
-                    echo "Docker image built successfully: ${dockerImage.imageName()}"
+                        def dockerImage = docker.build('backend-app:latest', """
+                        --build-arg SPRING_MAIL_USERNAME=${env.SPRING_MAIL_USERNAME} \
+                        --build-arg SPRING_MAIL_PASSWORD=${env.SPRING_MAIL_PASSWORD} \
+                        --build-arg AWS_ACCESS_KEY=${env.AWS_ACCESS_KEY} \
+                        --build-arg AWS_SECRET_KEY=${env.AWS_SECRET_KEY} .
+                        """)
+                        echo "Docker image built successfully: ${dockerImage.imageName()}"
+                    }
                 }
             }
         }
