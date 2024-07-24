@@ -1,8 +1,8 @@
 pipeline {
     agent any
     environment {
-        JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-17.0.9.0.9-2.el8_8.x86_64'
-        PATH = "${JAVA_HOME}/bin:${env.PATH}"
+        JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-17.0.9.0.9-1.el8_8.x86_64'
+        PATH = "${JAVA_HOME}/bin:/usr/bin:${env.PATH}"
     }
     stages {
         stage('Checkout') {
@@ -32,7 +32,7 @@ pipeline {
                                      string(credentialsId: 'AWS_ACCESS_KEY', variable: 'AWS_ACCESS_KEY'),
                                      string(credentialsId: 'AWS_SECRET_KEY', variable: 'AWS_SECRET_KEY')]) {
                         sh '''
-                        docker build -t backend-app:latest \
+                        /usr/bin/docker build -t backend-app:latest \
                         --build-arg SPRING_MAIL_USERNAME=${SPRING_MAIL_USERNAME} \
                         --build-arg SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD} \
                         --build-arg AWS_ACCESS_KEY=${AWS_ACCESS_KEY} \
