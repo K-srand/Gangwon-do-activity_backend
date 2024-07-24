@@ -23,10 +23,9 @@ pipeline {
             steps {
                 echo 'Building Docker image...'
                 script {
-                    withEnv(['DOCKER_IMAGE=backend-app:latest']) {
-                        def dockerImage = env.DOCKER_IMAGE
-                        dockerImage = docker.build(dockerImage)
-                    }
+                    def dockerImage = 'backend-app:latest'
+                    dockerImage = docker.build(dockerImage)
+                    echo "Docker image built successfully: ${dockerImage.id}"
                 }
             }
         }
@@ -37,12 +36,11 @@ pipeline {
             steps {
                 echo 'Deploying the application...'
                 script {
-                    withEnv(['DOCKER_IMAGE=backend-app:latest']) {
-                        def dockerImage = env.DOCKER_IMAGE
-                        sh 'docker stop backend-app || true'
-                        sh 'docker rm backend-app || true'
-                        sh 'docker run -d -p 4040:4040 --name backend-app ' + dockerImage
-                    }
+                    def dockerImage = 'backend-app:latest'
+                    sh 'docker stop backend-app || true'
+                    sh 'docker rm backend-app || true'
+                    sh 'docker run -d -p 4040:4040 --name backend-app ' + dockerImage
+                    echo "Docker container started successfully"
                 }
             }
         }
