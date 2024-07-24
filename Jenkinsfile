@@ -31,13 +31,13 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: 'SPRING_MAIL_CREDENTIALS', usernameVariable: 'SPRING_MAIL_USERNAME', passwordVariable: 'SPRING_MAIL_PASSWORD'),
                                      string(credentialsId: 'AWS_ACCESS_KEY', variable: 'AWS_ACCESS_KEY'),
                                      string(credentialsId: 'AWS_SECRET_KEY', variable: 'AWS_SECRET_KEY')]) {
-                        def dockerImage = docker.build('backend-app:latest', """
+                        sh """
+                        docker build -t backend-app:latest \
                         --build-arg SPRING_MAIL_USERNAME=${SPRING_MAIL_USERNAME} \
                         --build-arg SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD} \
                         --build-arg AWS_ACCESS_KEY=${AWS_ACCESS_KEY} \
                         --build-arg AWS_SECRET_KEY=${AWS_SECRET_KEY} .
-                        """, ".")
-                        echo "Docker image built successfully: ${dockerImage.imageName()}"
+                        """
                     }
                 }
             }
