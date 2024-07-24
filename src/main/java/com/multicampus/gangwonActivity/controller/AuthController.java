@@ -89,7 +89,7 @@ public class AuthController {
     }
 
     //인증번호 확인 서비스 호출
-    @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+    @CrossOrigin(origins = "http://http://223.130.138.174:3000", allowCredentials = "true")
     @PostMapping("/check-certification")
     public ResponseEntity<? super CheckCertificationResponseDto> checkCertification(
             @RequestBody @Validated CheckCertificationRequestDto requestBody,
