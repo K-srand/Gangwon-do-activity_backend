@@ -3,11 +3,15 @@ package com.multicampus.gangwonActivity.filter;
 import com.multicampus.gangwonActivity.entity.User;
 import com.multicampus.gangwonActivity.provider.JwtProvider;
 import com.multicampus.gangwonActivity.repository.UserRepository;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,17 +27,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+    private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+
     private final JwtProvider jwtProvider;
     private final UserRepository userRepository;
 
-
-
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
         try {
             String token = parseBearerToken(request);
 
@@ -57,42 +61,36 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             String role = user.getUserRole(); // role: ROLE_USER, ROLE_ADMIN
 
-            // ROLE_USER, ROLE_ADMIN 형태로
             List<GrantedAuthority> authorities = new ArrayList<>();
-            authorities.add(new SimpleGrantedAuthority(role)); // 반드시 ROLE_ 형태
+            authorities.add(new SimpleGrantedAuthority(role));
 
-            // 빈 securityContext 형성
             SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-            // 비어있는 securityContext에 authenticationToken 값을 넣어주는 과정
             AbstractAuthenticationToken authenticationToken =
-                    new UsernamePasswordAuthenticationToken(userId, null, authorities); // 수정된 부분
+                    new UsernamePasswordAuthenticationToken(userId, null, authorities);
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
             securityContext.setAuthentication(authenticationToken);
-            // 등록 -> 이제 얘가 controller에 접근할 수 있게
             SecurityContextHolder.setContext(securityContext);
 
+        } catch (ExpiredJwtException ex) {
+            // JWT가 만료되었을 때의 처리
+            logger.warn("Expired JWT token: {}", ex.getMessage());
+        } catch (MalformedJwtException ex) {
+            // JWT가 잘못되었을 때의 처리
+            logger.warn("Malformed JWT token: {}", ex.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            // 기타 예외 처리
+            logger.error("Unexpected error during JWT validation", e);
         }
 
         filterChain.doFilter(request, response);
     }
 
-
-    private String parseBearerToken(HttpServletRequest request){
+    private String parseBearerToken(HttpServletRequest request) {
         String authorization = request.getHeader("Authorization");
-        boolean hasAuthorization = StringUtils.hasText(authorization);
-
-        if(!hasAuthorization) return null;
-
-        boolean isBearer = authorization.startsWith("Bearer ");
-        if (!isBearer) return null;
-
-        String token = authorization.substring(7); //"Bearer "이후 글자부터
-        return token;
-
+        if (StringUtils.hasText(authorization) && authorization.startsWith("Bearer ")) {
+            return authorization.substring(7);
+        }
+        return null;
     }
-
-
 }

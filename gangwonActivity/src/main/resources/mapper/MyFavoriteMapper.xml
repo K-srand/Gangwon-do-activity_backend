@@ -27,7 +27,7 @@
     <select id="findMyFavoritesByUserNo" parameterType="com.multicampus.gangwonActivity.dto.response.board.SearchPageDto"
             resultType="com.multicampus.gangwonActivity.dto.response.mypage.GetMyFavoritesListResponseDto">
         select p.placeNo, p.placeTitle, p.firstImage, p.rate from place p
-                                                                      left join myFavoritesUserPlace f on p.placeNo = f.placeNo
+        left join myFavoritesUserPlace f on p.placeNo = f.placeNo
         where f.userNo = #{userNo}
             LIMIT #{searchPageDto.size}
         OFFSET #{searchPageDto.offset}
