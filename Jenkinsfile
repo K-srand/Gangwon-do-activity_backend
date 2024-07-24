@@ -24,6 +24,12 @@ pipeline {
                 sh './gradlew build'
             }
         }
+        stage('Test') {
+            steps {
+                echo '테스트 실행 중...'
+                sh './gradlew test --info --stacktrace'
+            }
+        }
         stage('Docker Build') {
             steps {
                 echo 'Docker 빌드 준비 중...'
@@ -35,7 +41,7 @@ pipeline {
                     ]) {
                         sh '''
                             echo "Docker Buildx를 사용하여 이미지 빌드 중..."
-                            /usr/bin/docker buildx build --progress=plain -t backend-app:latest \
+                            docker buildx build --progress=plain -t backend-app:latest \
                             --build-arg SPRING_MAIL_USERNAME=${SPRING_MAIL_USERNAME} \
                             --build-arg SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD} \
                             --build-arg AWS_ACCESS_KEY=$AWS_ACCESS_KEY_ID \
@@ -50,9 +56,9 @@ pipeline {
             steps {
                 echo '애플리케이션 배포 중...'
                 script {
-                    sh '/usr/bin/docker stop backend-app || true'
-                    sh '/usr/bin/docker rm backend-app || true'
-                    sh '/usr/bin/docker run -d -p 4040:4040 --name backend-app backend-app:latest'
+                    sh 'docker stop backend-app || true'
+                    sh 'docker rm backend-app || true'
+                    sh 'docker run -d -p 4040:4040 --name backend-app backend-app:latest'
                     echo "Docker 컨테이너가 성공적으로 시작되었습니다."
                 }
             }
