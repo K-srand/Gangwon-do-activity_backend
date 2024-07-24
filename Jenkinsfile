@@ -21,7 +21,7 @@ pipeline {
             steps {
                 echo 'Building the project...'
                 sh 'java -version'  // Java 버전 확인
-                sh './gradlew build --warning-mode all'
+                sh './gradlew build'
             }
         }
         stage('Docker Build') {
@@ -41,22 +41,10 @@ pipeline {
                     def dockerImage = 'backend-app:latest'
                     sh 'docker stop backend-app || true'
                     sh 'docker rm backend-app || true'
-                    sh 'docker run -d -p 4040:4040 --name backend-app ' + dockerImage.id
+                    sh 'docker run -d -p 4040:4040 --name backend-app ' + dockerImage
                     echo "Docker container started successfully"
+
                 }
-            }
-        }
-    }
-    post {
-        always {
-            echo 'Cleaning up temporary files...'
-            sh 'rm -f *.log'
-        }
-        failure {
-            echo 'Build failed. Please check the logs for more details.'
-            script {
-                sh './gradlew --version'
-                sh './gradlew dependencies --warning-mode all'
             }
         }
     }
