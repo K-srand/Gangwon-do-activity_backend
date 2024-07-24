@@ -88,7 +88,7 @@ public class WebSecurityConfig {
     @Bean
     protected CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:3000")); // 특정 출처를 명시
+        corsConfiguration.setAllowedOrigins(Arrays.asList("http://223.130.138.174:3030")); // 특정 출처를 명시
         corsConfiguration.setAllowedMethods(Arrays.asList("*")); // 모든 메서드를 허용
         corsConfiguration.setAllowedHeaders(Arrays.asList("*")); // 모든 헤더를 허용
         corsConfiguration.setAllowCredentials(true); // 자격 증명 허용
