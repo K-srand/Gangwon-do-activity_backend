@@ -26,7 +26,7 @@ pipeline {
             steps {
                 echo 'Building Docker image...'
                 script {
-                    dockerImage = docker.build(DOCKER_IMAGE)
+                    dockerImage = docker.build(env.DOCKER_IMAGE)
                 }
             }
         }
@@ -39,7 +39,7 @@ pipeline {
                 script {
                     sh 'docker stop backend-app || true'
                     sh 'docker rm backend-app || true'
-                    sh 'docker run -d -p 4040:4040 --name backend-app backend-app:latest'
+                    sh 'docker run -d -p 4040:4040 --name backend-app ' + env.DOCKER_IMAGE
                 }
             }
         }
