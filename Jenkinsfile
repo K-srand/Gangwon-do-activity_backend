@@ -36,7 +36,8 @@ pipeline {
                         --build-arg SPRING_MAIL_USERNAME=${SPRING_MAIL_USERNAME} \
                         --build-arg SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD} \
                         --build-arg AWS_ACCESS_KEY=${AWS_ACCESS_KEY} \
-                        --build-arg AWS_SECRET_KEY=${AWS_SECRET_KEY} .
+                        --build-arg AWS_SECRET_KEY=${AWS_SECRET_KEY} \
+                        -f Dockerfile .
                         '''
                     }
                 }
