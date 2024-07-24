@@ -28,9 +28,8 @@ pipeline {
             steps {
                 echo 'Building Docker image...'
                 script {
-                    def dockerImage = 'backend-app:latest'
-                    dockerImage = docker.build(dockerImage)
-                    echo "Docker image built successfully: ${dockerImage.id}"
+                    def dockerImage = docker.build('backend-app:latest')
+                    echo "Docker image built successfully: ${dockerImage.imageName()}"
                 }
             }
         }
@@ -38,12 +37,10 @@ pipeline {
             steps {
                 echo 'Deploying the application...'
                 script {
-                    def dockerImage = 'backend-app:latest'
                     sh 'docker stop backend-app || true'
                     sh 'docker rm backend-app || true'
-                    sh 'docker run -d -p 4040:4040 --name backend-app ' + dockerImage
+                    sh 'docker run -d -p 4040:4040 --name backend-app backend-app:latest'
                     echo "Docker container started successfully"
-
                 }
             }
         }
