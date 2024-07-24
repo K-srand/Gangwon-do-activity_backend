@@ -34,14 +34,19 @@ pipeline {
                                      string(credentialsId: 'AWS_SECRET_KEY', variable: 'AWS_SECRET_KEY')]) {
                        sh '''
                            echo "Docker Buildx를 사용하여 이미지 빌드 중..."
+                           echo "SPRING_MAIL_USERNAME=$SPRING_MAIL_USERNAME"
+                           echo "SPRING_MAIL_PASSWORD=$SPRING_MAIL_PASSWORD"
+                           echo "AWS_ACCESS_KEY=$AWS_ACCESS_KEY"
+                           echo "AWS_SECRET_KEY=$AWS_SECRET_KEY"
+
                            /usr/bin/docker buildx build --progress=plain -t backend-app:latest \
                            --build-arg SPRING_MAIL_USERNAME=$SPRING_MAIL_USERNAME \
                            --build-arg SPRING_MAIL_PASSWORD=$SPRING_MAIL_PASSWORD \
                            --build-arg AWS_ACCESS_KEY=$AWS_ACCESS_KEY \
                            --build-arg AWS_SECRET_KEY=$AWS_SECRET_KEY \
-                           -f Dockerfile \
-                           .
+                           -f Dockerfile .
                        '''
+
                     }
                 }
             }
