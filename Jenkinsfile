@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    environment {
+        JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-17.0.9.0.9-2.el8_8.x86_64'
+        PATH = "${JAVA_HOME}/bin:${env.PATH}"
+    }
     stages {
         stage('Checkout') {
             steps {
@@ -16,6 +20,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building the project...'
+                sh 'java -version'  // Java 버전 확인
                 sh './gradlew build'
             }
         }
