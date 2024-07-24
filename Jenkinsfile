@@ -33,7 +33,18 @@ pipeline {
             steps {
                 echo 'Building Docker image...'
                 script {
-                    def dockerImage = docker.build('backend-app:latest', "-f Dockerfile . --build-arg SPRING_MAIL_USERNAME=${env.SPRING_MAIL_USERNAME} --build-arg SPRING_MAIL_PASSWORD=${env.SPRING_MAIL_PASSWORD} --build-arg AWS_ACCESS_KEY=${env.AWS_ACCESS_KEY} --build-arg AWS_SECRET_KEY=${env.AWS_SECRET_KEY}")
+                    // 환경 변수 확인
+                    echo "SPRING_MAIL_USERNAME=${env.SPRING_MAIL_USERNAME}"
+                    echo "SPRING_MAIL_PASSWORD=${env.SPRING_MAIL_PASSWORD}"
+                    echo "AWS_ACCESS_KEY=${env.AWS_ACCESS_KEY}"
+                    echo "AWS_SECRET_KEY=${env.AWS_SECRET_KEY}"
+
+                    def dockerImage = docker.build('backend-app:latest', """
+                    --build-arg SPRING_MAIL_USERNAME=${env.SPRING_MAIL_USERNAME} \
+                    --build-arg SPRING_MAIL_PASSWORD=${env.SPRING_MAIL_PASSWORD} \
+                    --build-arg AWS_ACCESS_KEY=${env.AWS_ACCESS_KEY} \
+                    --build-arg AWS_SECRET_KEY=${env.AWS_SECRET_KEY} .
+                    """)
                     echo "Docker image built successfully: ${dockerImage.imageName()}"
                 }
             }
