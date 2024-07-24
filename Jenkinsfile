@@ -1,8 +1,5 @@
 pipeline {
     agent any
-    environment {
-        DOCKER_IMAGE = 'backend-app:latest'
-    }
     stages {
         stage('Checkout') {
             steps {
@@ -26,7 +23,8 @@ pipeline {
             steps {
                 echo 'Building Docker image...'
                 script {
-                    dockerImage = docker.build(env.DOCKER_IMAGE)
+                    def dockerImage = 'backend-app:latest'
+                    dockerImage = docker.build(dockerImage)
                 }
             }
         }
@@ -37,9 +35,10 @@ pipeline {
             steps {
                 echo 'Deploying the application...'
                 script {
+                    def dockerImage = 'backend-app:latest'
                     sh 'docker stop backend-app || true'
                     sh 'docker rm backend-app || true'
-                    sh 'docker run -d -p 4040:4040 --name backend-app ' + env.DOCKER_IMAGE
+                    sh 'docker run -d -p 4040:4040 --name backend-app ' + dockerImage
                 }
             }
         }
