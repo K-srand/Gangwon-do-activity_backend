@@ -24,12 +24,6 @@ pipeline {
                 sh './gradlew build --info --stacktrace'
             }
         }
-        stage('Test') {
-            steps {
-                echo '테스트 실행 중...'
-                sh './gradlew test --info --stacktrace'
-            }
-        }
         stage('Docker Build') {
             when {
                 expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
