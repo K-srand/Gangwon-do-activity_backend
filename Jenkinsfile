@@ -30,17 +30,21 @@ pipeline {
                 script {
                     sh 'docker buildx version' // Docker Buildx가 설치되었는지 확인
                     withCredentials([
-                        usernamePassword(credentialsId: 'SPRING_MAIL_CREDENTIALS', usernameVariable: 'SPRING_MAIL_USERNAME', passwordVariable: 'SPRING_MAIL_PASSWORD'),
-                        string(credentialsId: 'AWS_ACCESS_KEY', variable: 'AWS_ACCESS_KEY'),
-                        string(credentialsId: 'AWS_SECRET_KEY', variable: 'AWS_SECRET_KEY')
+                        usernamePassword(credentialsId: 'SPRING_MAIL_CREDENTIAL', usernameVariable: 'SPRING_MAIL_USERNAME', passwordVariable: 'SPRING_MAIL_PASSWORD'),
+                        string(credentialsId: 'AWS_CREDENTIALS', variable: 'AWS_CREDENTIALS')
                     ]) {
+                       // AWS_CREDENTIALS 자격 증명은 'AKIA...:SECRET' 형식일 것으로 가정하고 분리합니다.
+                       def awsCreds = AWS_CREDENTIALS.split(':')
+                       def AWS_ACCESS_KEY = awsCreds[0]
+                       def AWS_SECRET_KEY = awsCreds[1]
+
                        sh '''
                            echo "Docker Buildx를 사용하여 이미지 빌드 중..."
                            /usr/bin/docker buildx build --progress=plain -t backend-app:latest \
-                           --build-arg SPRING_MAIL_USERNAME=$SPRING_MAIL_USERNAME \
-                           --build-arg SPRING_MAIL_PASSWORD=$SPRING_MAIL_PASSWORD \
-                           --build-arg AWS_ACCESS_KEY=$AWS_ACCESS_KEY \
-                           --build-arg AWS_SECRET_KEY=$AWS_SECRET_KEY \
+                           --build-arg SPRING_MAIL_USERNAME=${SPRING_MAIL_USERNAME} \
+                           --build-arg SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD} \
+                           --build-arg AWS_ACCESS_KEY=${AWS_ACCESS_KEY} \
+                           --build-arg AWS_SECRET_KEY=${AWS_SECRET_KEY} \
                            -f Dockerfile .
                        '''
                     }
