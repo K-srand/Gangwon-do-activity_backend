@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.multicampus.gangwonActivity.mapper.BoardMapper">
+
+    <!--제재 및 삭제 제외 작성글 목록 조회-->
+    <select id="findAllWithUser"
+            resultType="com.multicampus.gangwonActivity.dto.response.board.GetBoardListResponseDto"
+            parameterType="com.multicampus.gangwonActivity.dto.response.board.SearchPageDto" > <!--보내줄 값-->
+        SELECT b.boardNo, b.userNo, b.boardTitle, b.content, b.countLikes, b.boardCount, b.deletedTime, b.writtenTime, b.isReported,
+        b.myCourseNo, u.userNick, rc.censoredTime, u.userExp, u.userRole
+        FROM board b
+        LEFT JOIN user u ON b.userNo = u.userNo
+        LEFT JOIN reportedContent rc ON b.boardNo = rc.boardNo
+        WHERE b.deletedTime IS NULL
+        AND rc.censoredTime IS NULL
+        AND u.userRole = 'ROLE_USER'
+        ORDER BY b.writtenTime DESC
+        LIMIT #{searchPageDto.size}
+        OFFSET #{searchPageDto.offset}
+    </select>
+
+
+    <!--pafing을 할 때는 list랑 똑같은 조건으로 count 쿼리를 작성해야한다.-->
+    <!-- 삭제되지 않은 게시글 카운드 -->
+    <select id="countAllWithBoard" resultType="Integer">
+        SELECT count(*)
+        FROM board
+        where deletedTime is null
+    </select>
+
+    <!--좋아요 눌렀는지 여부-->
+    <select id="alreadyLiked" resultType="boolean" parameterType="map">
+        SELECT EXISTS(
+        SELECT 1 FROM boardLikesUser
+        WHERE boardNo = #{boardNo} AND userNo = #{userNo}
+        )
+    </select>
+
+
+    <!-- 해당 작성글 댓글 목록 조회-->
+    <select id="findCommentsByBoardNo" resultType="com.multicampus.gangwonActivity.dto.response.board.GetBoardCommentListResponseDto"
+            parameterType="com.multicampus.gangwonActivity.dto.response.board.SearchPageDto" >
+        SELECT
+        c.commentNo, c.boardNo, c.userNo, c.writtenTime, c.content, u.userNick, u.userExp, u.userRole
+        FROM comment c
+        LEFT JOIN user u ON c.userNo = u.userNo
+        left join reportedContent rc on c.commentNo = rc.commentNo
+        WHERE c.boardNo = #{boardNo}
+        and rc.censoredTime is null
+        LIMIT #{searchPageDto.size}
+        OFFSET #{searchPageDto.offset}
+    </select>
+
+    <!-- 해당 작성글 댓글 수-->
+    <select id="countAllWithComment" resultType="Integer" parameterType="long">
+        SELECT count(*)
+        FROM comment c
+        WHERE c.boardNo = #{boardNo}
+    </select>
+
+    <!-- 작성글 상세 조회 -->
+    <select id="findBoardDetailWithUser" resultType="com.multicampus.gangwonActivity.dto.response.board.GetBoardDetailResponseDto"
+            parameterType="long">
+        SELECT b.boardNo, b.userNo, b.boardTitle, b.content, b.countLikes, b.deletedTime, b.writtenTime, b.isReported,
+        b.myCourseNo, b.boardCount, u.userNick, rc.censoredTime, u.userExp, u.userRole
+        FROM board b LEFT JOIN user u ON b.userNo = u.userNo
+        LEFT JOIN reportedContent rc ON b.boardNo = rc.boardNo
+        WHERE b.boardNo = #{boardNo}
+    </select>
+
+    <!-- 이미지 업로드 주소-->
+    <select id="findAllImage" resultType="string" parameterType="long">
+        SELECT imageAddress FROM boardImage WHERE boardNo = #{boardNo}
+    </select>
+
+    <!-- 해당 작성글 조회수 증가-->
+    <update id="incrementViewsByBoardNo" parameterType="long">
+        update board set boardCount=boardCount+1
+        where boardNo=#{boardNo}
+    </update>
+
+    <!-- 좋아요 수가 많은 상위 3개의 글을 가져오는 쿼리 추가, 제재먹은 녀석들은 노출안되게 수정 완. -->
+    <select id="getBestPosts" resultType="com.multicampus.gangwonActivity.dto.response.board.GetBoardListResponseDto">
+        SELECT b.boardNo, b.userNo, b.boardTitle, b.content, b.countLikes, b.boardCount, b.deletedTime, b.writtenTime, b.isReported,
+        b.myCourseNo, u.userNick, rc.censoredTime, u.userExp, u.userRole
+        FROM board b
+        LEFT JOIN user u ON b.userNo = u.userNo
+        left join reportedContent rc on b.boardNo = rc.boardNo
+        WHERE b.deletedTime IS NULL
+        AND b.myCourseNo IS NOT NULL
+        AND rc.censoredTime is null
+        AND u.userRole = 'ROLE_USER'
+        ORDER BY b.countLikes DESC
+        LIMIT 3
+    </select>
+
+    <!--이미지 삭제-->
+    <delete id="deleteImageFile" parameterType="string">
+        DELETE b
+        FROM boardImage b
+        JOIN (SELECT boardImageNo FROM boardImage WHERE imageAddress = #{imageAddress}) sub
+        ON b.boardImageNo = sub.boardImageNo;
+
+    </delete>
+
+    <!--    예원-->
+
+    <!-- 좋아요-->
+    <insert id="like">
+        insert into boardLikesUser (boardNo, userNo, likeCheck)
+        values (#{boardNo}, #{userNo}, 'likes')
+    </insert>
+
+    <!-- 싫어요-->
+    <insert id="dislike">
+        insert into boardLikesUser (boardNo, userNo, likeCheck)
+        values (#{boardNo}, #{userNo}, 'dislikes')
+    </insert>
+
+    <!-- 좋아요 여부 확인-->
+    <select id="likeChecked" resultType="String" parameterType="map">
+        select likeCheck
+        from boardLikesUser
+        where boardNo = #{boardNo} and userNo = #{userNo}
+    </select>
+
+    <!-- 좋아요 취소 -->
+    <delete id="unlike">
+        delete from boardLikesUser
+        where boardNo = #{boardNo} and userNo = #{userNo} and likeCheck = 'likes'
+    </delete>
+
+    <!-- 싦어요 취소 -->
+    <delete id="undislike">
+        delete from boardLikesUser
+        where boardNo = #{boardNo} and userNo = #{userNo} and likeCheck = 'dislikes'
+    </delete>
+
+    <!--    낌&빡-->
+
+    <!--    userNo로 BoardList 가져오기-->
+    <select id="getBoardListByUserNo" parameterType="java.lang.Long" resultType="Board">
+        select * from board where userNo = #{userNo}
+    </select>
+
+    <select id="getBoardListByUserNoPaged" resultType="com.multicampus.gangwonActivity.dto.response.board.GetBoardListResponseDto">
+        select boardTitle, writtenTime from board
+        where userNo = #{userNo}
+        limit  #{searchPageDto.size}
+        offset #{searchPageDto.offset}
+    </select>
+
+    <!-- 나만의 코스 불러오기 -->
+    <select id="findMyCourse" resultType="map">
+        SELECT mc.myCourseNo, p.placeTitle, p.firstImage2
+        FROM myCourse mc
+        JOIN myCoursePlace mcp ON mc.myCourseNo = mcp.myCourseNo
+        JOIN place p ON mcp.placeNo = p.placeNo
+        WHERE mc.userNo = #{userNo}
+    </select>
+
+    <!-- userId로 userNo 찾기 -->
+    <select id="selectUserNo" parameterType="string" resultType="long">
+        SELECT userNo
+        FROM user
+        WHERE userId = #{userId}
+    </select>
+
+    <!-- 전체 나만의 코스 수 -->
+    <select id="countMyCourse" parameterType="long" resultType="int">
+        SELECT count(*)
+        FROM myCourse
+        WHERE userNo = #{userNo}
+    </select>
+
+    <!-- 나만의 코스 출력 -->
+    <select id="selectMyCourse" parameterType="long" resultType="map">
+        SELECT p.placeTitle, p.firstImage2
+        FROM myCourse mc
+        JOIN myCoursePlace mcp ON mc.myCourseNo = mcp.myCourseNo
+        JOIN place p ON mcp.placeNo = p.placeNo
+        WHERE mc.myCourseNo = #{myCourseNo}
+    </select>
+
+    <!-- 작성글 코스 삭제 -->
+    <update id="deleteMyCourse" parameterType="long">
+        UPDATE board SET myCourseNo = null
+        WHERE boardNo = #{boardNo}
+    </update>
+
+    <!-- 작성글 코스 추가 -->
+    <update id="updateMyCourse" parameterType="long">
+        UPDATE board SET myCourseNo = #{myCourseNo}
+        WHERE boardNo = #{boardNo}
+    </update>
+
+    <!-- 작성글 작성시 유저 경험치 증가-->
+    <update id="incrementExpBoardWrite" parameterType="long">
+        UPDATE user
+        SET userExp = userExp +3
+        WHERE userNo = #{userNo}
+    </update>
+
+    <!-- 댓글 작성시 유저 경험치 증가-->
+    <update id="incrementExpCommentWrite" parameterType="long">
+        UPDATE user
+        SET userExp = userExp +1
+        WHERE userNo = #{userNo}
+    </update>
+
+    <!-- 공지글 1개 가져오기 -->
+    <select id="getNoticePost" resultType="com.multicampus.gangwonActivity.dto.response.board.GetBoardListResponseDto">
+        SELECT b.boardNo, b.userNo, b.boardTitle, b.content, b.countLikes, b.boardCount, b.deletedTime, b.writtenTime, b.isReported,
+        b.myCourseNo, u.userNick, rc.censoredTime, u.userExp, u.userRole
+        FROM board b
+        LEFT JOIN user u ON b.userNo = u.userNo
+        left join reportedContent rc on b.boardNo = rc.boardNo
+        WHERE b.deletedTime IS NULL
+        AND rc.censoredTime is null
+        AND u.userRole = 'ROLE_ADMIN'
+        ORDER BY b.writtenTime DESC
+        LIMIT 1
+    </select>
+
+</mapper>
