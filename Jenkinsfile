@@ -21,7 +21,7 @@ pipeline {
             steps {
                 echo '프로젝트 빌드 중...'
                 sh 'java -version'  // Java 버전 확인
-                sh './gradlew build --info --stacktrace'
+                sh './gradlew build --warning-mode all --info --stacktrace'
             }
         }
         stage('Docker Build') {
