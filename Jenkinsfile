@@ -8,18 +8,12 @@ pipeline {
             }
         }
         stage('Build') {
-            when {
-                branch 'feature/jenkinstest'
-            }
             steps {
                 echo 'Building the project...'
                 sh './gradlew build'
             }
         }
         stage('Docker Build') {
-            when {
-                branch 'feature/jenkinstest'
-            }
             steps {
                 echo 'Building Docker image...'
                 script {
@@ -30,9 +24,6 @@ pipeline {
             }
         }
         stage('Deploy') {
-            when {
-                branch 'feature/jenkinstest'
-            }
             steps {
                 echo 'Deploying the application...'
                 script {
