@@ -21,7 +21,7 @@ pipeline {
             steps {
                 echo '프로젝트 빌드 중...'
                 sh 'java -version'  // Java 버전 확인
-                sh './gradlew build'
+                sh './gradlew build --info --stacktrace'
             }
         }
         stage('Test') {
@@ -31,6 +31,9 @@ pipeline {
             }
         }
         stage('Docker Build') {
+            when {
+                expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
+            }
             steps {
                 echo 'Docker 빌드 준비 중...'
                 script {
@@ -53,6 +56,9 @@ pipeline {
             }
         }
         stage('Deploy') {
+            when {
+                expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
+            }
             steps {
                 echo '애플리케이션 배포 중...'
                 script {
@@ -62,6 +68,12 @@ pipeline {
                     echo "Docker 컨테이너가 성공적으로 시작되었습니다."
                 }
             }
+        }
+    }
+    post {
+        always {
+            archiveArtifacts artifacts: 'build/reports/tests/test/index.html', allowEmptyArchive: true
+            junit 'build/test-results/test/*.xml'
         }
     }
 }
