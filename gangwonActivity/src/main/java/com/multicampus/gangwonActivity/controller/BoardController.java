@@ -190,14 +190,23 @@ public class BoardController {
         return boardService.dislikesBoard(boardNo, id);
     }
 
+    // 댓글 작성시 1점 추가
     @GetMapping("/increment1/")
     public void increment1(@AuthenticationPrincipal String id){
         boardService.incrementExp1(id);
     }
+    
+    // 댓글 작성시 3점 추가
     @GetMapping("/increment3/")
     public void increment3(@AuthenticationPrincipal String id){
         boardService.incrementExp3(id);
     }
 
+    // 공지글
+    @GetMapping("/notice")
+    public ResponseEntity<List<GetBoardListResponseDto>> getNoticePost() {
+        List<GetBoardListResponseDto> noticePost = boardService.getNoticePost();
+        return ResponseEntity.ok(noticePost);
+    }
 
 }

@@ -2,9 +2,11 @@ package com.multicampus.gangwonActivity.controller;
 
 
 import com.multicampus.gangwonActivity.dto.request.auth.SignInRequestDto;
+import com.multicampus.gangwonActivity.dto.request.board.PostBoardRequestDto;
 import com.multicampus.gangwonActivity.dto.request.mypage.ModifyMyInfoRequestDto;
 import com.multicampus.gangwonActivity.dto.response.admin.AdminUserListResponseDto;
 import com.multicampus.gangwonActivity.dto.response.auth.SignInResponseDto;
+import com.multicampus.gangwonActivity.dto.response.board.PostBoardResponseDto;
 import com.multicampus.gangwonActivity.dto.response.board.SearchPageDto;
 import com.multicampus.gangwonActivity.dto.response.mypage.ModifyMyInfoResponseDto;
 import com.multicampus.gangwonActivity.dto.response.sanction.SanctionContentResponseDto;

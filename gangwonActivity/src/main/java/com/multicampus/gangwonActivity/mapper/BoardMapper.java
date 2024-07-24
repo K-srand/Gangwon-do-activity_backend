@@ -66,4 +66,6 @@ public interface BoardMapper {
     void incrementExpBoardWrite(@Param("userNo") Long userNo);
 
     void incrementExpCommentWrite(@Param("userNo") Long userNo);
+
+    List<GetBoardListResponseDto> getNoticePost();
 }

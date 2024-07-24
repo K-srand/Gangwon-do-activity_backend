@@ -1,9 +1,13 @@
 package com.multicampus.gangwonActivity.provider;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -13,12 +17,13 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
-// 토큰의 유효성을 검증하는 제공자
 @Component
 public class JwtProvider {
 
+    private static final Logger logger = LoggerFactory.getLogger(JwtProvider.class);
+
     @Value("${secret-key}")
-    private String secretKey; // application.properties 내에 있는 값을 불러옴
+    private String secretKey;
 
     private Key getSigningKey() {
         return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
@@ -29,33 +34,32 @@ public class JwtProvider {
         Date expiredDate = Date.from(Instant.now().plus(1, ChronoUnit.HOURS));
         Key key = getSigningKey();
 
-        String jwt = Jwts.builder()
+        return Jwts.builder()
                 .signWith(key, SignatureAlgorithm.HS256)
                 .setSubject(userId)
                 .setIssuedAt(new Date())
                 .setExpiration(expiredDate)
                 .compact();
-
-        return jwt;
     }
 
     // jwt 검증
     public String validate(String jwt) {
-        Claims claims = null;
-        Key key = getSigningKey();
-
         try {
-
-            claims = Jwts.parserBuilder()
+            Key key = getSigningKey();
+            Claims claims = Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(jwt)
-                    .getBody(); // signingkey의 만료 여부
+                    .getBody();
 
+            return claims.getSubject();
+        } catch (ExpiredJwtException e) {
+            logger.warn("Expired JWT token: {}", e.getMessage());
+        } catch (MalformedJwtException e) {
+            logger.warn("Malformed JWT token: {}", e.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            logger.error("Error validating JWT token: {}", e.getMessage());
         }
-        return claims.getSubject();
+        return null;
     }
 }
