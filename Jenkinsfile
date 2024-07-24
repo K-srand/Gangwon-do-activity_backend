@@ -32,7 +32,7 @@ pipeline {
                 script {
                     sh 'docker buildx version' // Docker Buildx가 설치되었는지 확인
                     withCredentials([
-                        usernamePassword(credentialsId: 'SPRING_MAIL_CREDENTIAL', usernameVariable: 'SPRING_MAIL_USERNAME', passwordVariable: 'SPRING_MAIL_PASSWORD'),
+                        usernamePassword(credentialsId: 'SPRING_MAIL_CREDENTIALS', usernameVariable: 'SPRING_MAIL_USERNAME', passwordVariable: 'SPRING_MAIL_PASSWORD'),
                         [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS_CREDENTIALS']
                     ]) {
                         sh '''
