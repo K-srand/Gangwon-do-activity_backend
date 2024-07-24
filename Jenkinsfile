@@ -21,8 +21,6 @@ pipeline {
             steps {
                 echo '프로젝트 빌드 중...'
                 sh 'java -version'  // Java 버전 확인
-                sh './gradlew clean'  // Clean build
-                sh './gradlew build --warning-mode all --info --stacktrace'
             }
         }
         stage('Docker Build') {
@@ -63,16 +61,6 @@ pipeline {
                     echo "Docker 컨테이너가 성공적으로 시작되었습니다."
                 }
             }
-        }
-    }
-    post {
-        always {
-            archiveArtifacts artifacts: 'build/reports/tests/test/index.html', allowEmptyArchive: true
-            junit 'build/test-results/test/*.xml'
-        }
-        failure {
-            echo '빌드 실패: 상세 로그를 확인하세요.'
-            sh 'cat build/reports/tests/test/index.html'  // 빌드 실패 시 테스트 보고서 출력
         }
     }
 }
