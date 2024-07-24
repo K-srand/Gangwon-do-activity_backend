@@ -7,6 +7,12 @@ pipeline {
                 git branch: 'feature/jenkinstest', url: 'https://github.com/K-srand/Gangwon-do-activity_backend.git'
             }
         }
+        stage('Grant Permissions') {
+            steps {
+                echo 'Granting execute permission to gradlew...'
+                sh 'chmod +x ./gradlew'
+            }
+        }
         stage('Build') {
             steps {
                 echo 'Building the project...'
