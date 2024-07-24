@@ -72,7 +72,7 @@ public class AuthController {
     }
 
     //이메일 인증 서비스 호출
-    @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+    @CrossOrigin(origins = "http://223.130.138.174:3030", allowCredentials = "true")
     @PostMapping("/email-certification")
     public ResponseEntity<? super EmailCertificationResponseDto> emailCertification(
             @RequestBody @Validated EmailCertificationRequestDto requestBody,
@@ -103,7 +103,7 @@ public class AuthController {
 
 
     //아이디 찾기 서비스 호출
-    @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+    @CrossOrigin(origins = "http://223.130.138.174:3030", allowCredentials = "true")
     @PostMapping("/findId-certification")
     public ResponseEntity<? super CheckCertificationResponseDto> findIdCertification(
             @RequestBody @Validated CheckCertificationRequestDto requestBody,
@@ -115,7 +115,7 @@ public class AuthController {
     }
 
     //새 비밀번호 발급 서비스 호출
-    @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+    @CrossOrigin(origins = "http://223.130.138.174:3030", allowCredentials = "true")
     @PostMapping("/findPwd-certification")
     public ResponseEntity<? super CheckCertificationResponseDto> findPwdCertification(
             @RequestBody @Validated CheckCertificationRequestDto requestBody,
