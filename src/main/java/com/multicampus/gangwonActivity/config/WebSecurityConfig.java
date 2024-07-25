@@ -93,6 +93,7 @@ public class WebSecurityConfig {
         corsConfiguration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type")); // 모든 헤더를 허용
         corsConfiguration.setAllowCredentials(true); // 자격 증명 허용
         corsConfiguration.setMaxAge(86400L);
+        corsConfiguration.setExposedHeaders(Arrays.asList("Authorization", "Authorization-refresh"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);

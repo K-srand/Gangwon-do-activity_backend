@@ -24,18 +24,18 @@ public class GangwonActivityApplication {
 
 	}
 
-@Bean
-public WebMvcConfigurer corsConfigurer() {
-	return new WebMvcConfigurer() {
-		@Override
-		public void addCorsMappings(CorsRegistry registry) {
-			registry.addMapping("/api/**")
-					.allowedOrigins("http://223.130.138.174:3030")
-					.allowedMethods("HEAD", "GET", "POST", "PUT", "DELETE", "OPTIONS")
-					.allowedHeaders("*")
-					.allowCredentials(true)
-					.maxAge(3600);
-		}
-	};
- }
+//@Bean
+//public WebMvcConfigurer corsConfigurer() {
+//	return new WebMvcConfigurer() {
+//		@Override
+//		public void addCorsMappings(CorsRegistry registry) {
+//			registry.addMapping("/api/**")
+//					.allowedOrigins("http://223.130.138.174:3030")
+//					.allowedMethods("HEAD", "GET", "POST", "PUT", "DELETE", "OPTIONS")
+//					.allowedHeaders("*")
+//					.allowCredentials(true)
+//					.maxAge(3600);
+//		}
+//	};
+// }
 }
