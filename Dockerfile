@@ -1,5 +1,5 @@
-# Start with a base image containing Java runtime
-FROM openjdk:17-jdk-slim
+# Stage 1: Build the backend application
+FROM openjdk:17-jdk-slim as backend
 
 # Add a volume pointing to /tmp
 VOLUME /tmp
@@ -27,3 +27,4 @@ COPY ${JAR_FILE} app.jar
 
 # Run the jar file with environment variables
 ENTRYPOINT ["sh", "-c", "java -jar /app.jar --spring.mail.username=${SPRING_MAIL_USERNAME} --spring.mail.password=${SPRING_MAIL_PASSWORD} --cloud.aws.credentials.accessKey=${AWS_ACCESS_KEY} --cloud.aws.credentials.secretKey=${AWS_SECRET_KEY}"]
+
