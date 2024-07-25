@@ -34,7 +34,6 @@ import java.util.Arrays;
 public class WebSecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final CorsConfig corsConfig;
 
 
     @Bean
@@ -46,7 +45,7 @@ public class WebSecurityConfig {
     protected SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception{
         httpSecurity
                 .cors(cors -> cors
-                        .configurationSource(corsConfig.corsConfigurationSource())
+                        .configurationSource(corsConfigurationSource())
                 )
                 .csrf(CsrfConfigurer::disable)
                 .httpBasic(HttpBasicConfigurer::disable)
@@ -85,23 +84,23 @@ public class WebSecurityConfig {
 
     }
 
-//    //CORS 정책허용
-//    @Bean
-//    protected CorsConfigurationSource corsConfigurationSource(){
-//        CorsConfiguration corsConfiguration = new CorsConfiguration();
-//        corsConfiguration.setAllowedOrigins(Arrays.asList("http://223.130.138.174:3030")); // 요청을 보낼 출처 설정
-//        corsConfiguration.setAllowedMethods(Arrays.asList("HEAD", "PUT", "POST", "GET", "OPTIONS", "DELETE", "PATCH")); // 허용할 HTTP 메서드 설정
-//        corsConfiguration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type")); // 허용할 요청 헤더 설정
-//        corsConfiguration.setAllowCredentials(true); // 자격 증명 허용 설정
-//        corsConfiguration.setExposedHeaders(Arrays.asList("Authorization", "Authorization-refresh")); // 노출할 응답 헤더 설정
-//        corsConfiguration.setMaxAge(3600L); // pre-flight 요청 캐시 시간 설정
-//
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**", corsConfiguration);
-//        //다른 정책 만들고 싶으면 위에 corsConfiguration하나 더 생성하고
-////        source.registerCorsConfiguration("api/v2/**", corsConfiguration);
-//        return source;
-//    }
+    //CORS 정책허용
+    @Bean
+    protected CorsConfigurationSource corsConfigurationSource(){
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowedOrigins(Arrays.asList("http://223.130.138.174:3030")); // 요청을 보낼 출처 설정
+        corsConfiguration.setAllowedMethods(Arrays.asList("HEAD", "PUT", "POST", "GET", "OPTIONS", "DELETE", "PATCH")); // 허용할 HTTP 메서드 설정
+        corsConfiguration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type")); // 허용할 요청 헤더 설정
+        corsConfiguration.setAllowCredentials(true); // 자격 증명 허용 설정
+        corsConfiguration.setExposedHeaders(Arrays.asList("Authorization", "Authorization-refresh")); // 노출할 응답 헤더 설정
+        corsConfiguration.setMaxAge(3600L); // pre-flight 요청 캐시 시간 설정
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfiguration);
+        //다른 정책 만들고 싶으면 위에 corsConfiguration하나 더 생성하고
+//        source.registerCorsConfiguration("api/v2/**", corsConfiguration);
+        return source;
+    }
 
     class FailedAuthenticationEntryPoint implements AuthenticationEntryPoint {
 

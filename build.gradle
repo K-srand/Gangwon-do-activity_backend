@@ -76,6 +76,9 @@ dependencies {
 
 	//좌표 변환
 	implementation 'org.locationtech.proj4j:proj4j:1.1.0'
+
+	//자동 재시작 및 라이브 리로드
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 }
 
 hibernate {
