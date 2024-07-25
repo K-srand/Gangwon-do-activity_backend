@@ -18,6 +18,17 @@ services:
       - "4040:4040"
     networks:
       - app-network
+    volumes:
+      - ./backend/nginx.conf:/etc/nginx/nginx.conf
+
+  nginx:
+    image: nginx:1.27.0-alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./backend/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - backend
 
 networks:
   app-network:
