@@ -44,9 +44,9 @@ public class WebSecurityConfig {
     @Bean
     protected SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception{
         httpSecurity
-                .cors(cors -> cors
-                        .configurationSource(corsConfigurationSource())
-                )
+//                .cors(cors -> cors
+//                        .configurationSource(corsConfigurationSource())
+//                )
                 .cors(cors -> cors.disable())
                 .csrf(CsrfConfigurer::disable)
                 .httpBasic(HttpBasicConfigurer::disable)
