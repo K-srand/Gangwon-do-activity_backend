@@ -89,7 +89,7 @@ public class WebSecurityConfig {
     protected CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowedOrigins(Arrays.asList("http://223.130.138.174:3030")); // 특정 출처를 명시
-        corsConfiguration.setAllowedMethods(Arrays.asList("POST, GET, OPTIONS, DELETE, PATCH")); // 모든 메서드를 허용
+        corsConfiguration.setAllowedMethods(Arrays.asList("HEAD, PUT, POST, GET, OPTIONS, DELETE, PATCH")); // 모든 메서드를 허용
         corsConfiguration.setAllowedHeaders(Arrays.asList("Authorization, Content-Type")); // 모든 헤더를 허용
         corsConfiguration.setAllowCredentials(true); // 자격 증명 허용
         corsConfiguration.setMaxAge(86400L);
