@@ -27,10 +27,10 @@ public WebMvcConfigurer corsConfigurer() {
 	return new WebMvcConfigurer() {
 		@Override
 		public void addCorsMappings(CorsRegistry registry) {
-			registry.addMapping("/api/**")
+			registry.addMapping("/**")
 					.allowedOrigins("http://223.130.138.174:3030")
-					.allowedMethods("*")
-					.allowedHeaders("*")
+					.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 명시적 방법 설정
+					.allowedHeaders("Content-Type", "Authorization", "Cache-Control", "Content-Disposition", "Accept", "Origin", "X-Requested-With") // 명시적 헤더 설정
 					.allowCredentials(true)
 					.maxAge(3600);
 		}
