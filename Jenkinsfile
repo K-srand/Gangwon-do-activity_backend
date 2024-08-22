@@ -20,7 +20,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo '프로젝트 빌드 중...'
-                sh './gradlew build --warning-mode all'  // 모든 경고를 표시하도록 설정
+                sh './gradlew test -i'  // 모든 경고를 표시하도록 설정
                 sh 'java -version'  // Java 버전 확인
             }
         }
