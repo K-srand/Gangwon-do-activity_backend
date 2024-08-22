@@ -92,6 +92,8 @@ tasks.named('test') {
 }
 
 tasks.withType(JavaCompile) {
-    options.compilerArgs << "-parameters"
-
+	options.compilerArgs << "-parameters"
+	// Deprecated된 Gradle 기능 사용 시 경고 표시
+	options.warningMode = WarningMode.All
 }
+
