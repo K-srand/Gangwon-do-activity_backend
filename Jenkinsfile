@@ -20,14 +20,22 @@ pipeline {
         stage('Build') {
             steps {
                 echo '프로젝트 빌드 중...'
-                sh './gradlew test -i'  // 모든 경고를 표시하도록 설정
+                sh './gradlew build --warning-mode all'  // 모든 경고를 표시하도록 설정
                 sh 'java -version'  // Java 버전 확인
             }
         }
         stage('Test') {
             steps {
                 echo '테스트 실행 중...'
-                sh './gradlew test --warning-mode all'  // 테스트 단계에서도 모든 경고를 표시
+                script {
+                    withCredentials([
+                        usernamePassword(credentialsId: 'spring.mail.credential', usernameVariable: 'SPRING_MAIL_CREDENTIALS_USERNAME', passwordVariable: 'SPRING_MAIL_CREDENTIALS_PASSWORD'),
+                        string(credentialsId: 'AWS_ACCESS_KEY', variable: 'AWS_ACCESS_KEY_ID'),
+                        string(credentialsId: 'AWS_SECRET_KEY', variable: 'AWS_SECRET_ACCESS_KEY')
+                    ]) {
+                        sh './gradlew test --warning-mode all'  // 테스트 단계에서도 모든 경고를 표시
+                    }
+                }
             }
             post {
                 always {
