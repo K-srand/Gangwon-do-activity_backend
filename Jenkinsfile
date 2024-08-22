@@ -20,8 +20,23 @@ pipeline {
         stage('Build') {
             steps {
                 echo '프로젝트 빌드 중...'
-                sh './gradlew build'  // JAR 파일을 빌드하기 위한 명령어 추가
+                sh './gradlew build --warning-mode all'  // 모든 경고를 표시하도록 설정
                 sh 'java -version'  // Java 버전 확인
+            }
+        }
+        stage('Test') {
+            steps {
+                echo '테스트 실행 중...'
+                sh './gradlew test --warning-mode all'  // 테스트 단계에서도 모든 경고를 표시
+            }
+            post {
+                always {
+                    junit 'build/reports/tests/test/*.xml' // 테스트 결과를 Jenkins에서 확인 가능하도록 설정
+                }
+                failure {
+                    echo '테스트 실패!'
+                    error '테스트 단계에서 실패하여 빌드가 중단되었습니다.'
+                }
             }
         }
         stage('Docker Build') {
