@@ -49,7 +49,9 @@ pipeline {
                     withCredentials([
                         usernamePassword(credentialsId: 'spring.mail.credential', usernameVariable: 'SPRING_MAIL_CREDENTIALS_USERNAME', passwordVariable: 'SPRING_MAIL_CREDENTIALS_PASSWORD'),
                         string(credentialsId: 'AWS_ACCESS_KEY', variable: 'AWS_ACCESS_KEY_ID'),
-                        string(credentialsId: 'AWS_SECRET_KEY', variable: 'AWS_SECRET_ACCESS_KEY')
+                        string(credentialsId: 'AWS_SECRET_KEY', variable: 'AWS_SECRET_ACCESS_KEY'),
+                        string(credentialsId: 'naver.client.id', variable: 'NAVER_CLIENT_ID'),
+                        string(credentialsId: 'naver.client.secret', variable: 'NAVER_CLIENT_SECRET')
                     ]) {
                         sh 'docker buildx version' // Docker Buildx가 설치되었는지 확인
                         sh """
@@ -59,6 +61,8 @@ pipeline {
                             --build-arg SPRING_MAIL_CREDENTIALS_PASSWORD=${SPRING_MAIL_CREDENTIALS_PASSWORD} \
                             --build-arg AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
                             --build-arg AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
+                            --build-arg NAVER_CLIENT_ID=${NAVER_CLIENT_ID} \
+                            --build-arg NAVER_CLIENT_SECRET=${NAVER_CLIENT_SECRET} \
                             -f Dockerfile .
                         """.trim()
                     }
@@ -74,7 +78,7 @@ pipeline {
                 script {
                     sh 'docker stop backend-app || true'
                     sh 'docker rm backend-app || true'
-                    sh 'docker run -d -p 4040:4040 --name backend-app backend-app:latest'
+                    sh 'docker run -d -p 4040:4040 --name backend-app -e SPRING_MAIL_CREDENTIALS_USERNAME=${SPRING_MAIL_CREDENTIALS_USERNAME} -e SPRING_MAIL_CREDENTIALS_PASSWORD=${SPRING_MAIL_CREDENTIALS_PASSWORD} -e AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} -e AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} -e NAVER_CLIENT_ID=${NAVER_CLIENT_ID} -e NAVER_CLIENT_SECRET=${NAVER_CLIENT_SECRET} backend-app:latest'
 
                     echo "Docker 컨테이너가 성공적으로 시작되었습니다."
                 }
