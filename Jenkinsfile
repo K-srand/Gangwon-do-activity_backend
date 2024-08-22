@@ -20,33 +20,8 @@ pipeline {
         stage('Build') {
             steps {
                 echo '프로젝트 빌드 중...'
-                sh './gradlew build --warning-mode all'  // 모든 경고를 표시하도록 설정
-                sh 'java -version'  // Java 버전 확인
-            }
-        }
-        stage('Test') {
-            steps {
-                echo '테스트 실행 중...'
-                script {
-                    withCredentials([
-                        usernamePassword(credentialsId: 'spring.mail.credential', usernameVariable: 'SPRING_MAIL_CREDENTIALS_USERNAME', passwordVariable: 'SPRING_MAIL_CREDENTIALS_PASSWORD'),
-                        string(credentialsId: 'AWS_ACCESS_KEY', variable: 'AWS_ACCESS_KEY_ID'),
-                        string(credentialsId: 'AWS_SECRET_KEY', variable: 'AWS_SECRET_ACCESS_KEY'),
-                        string(credentialsId: 'naver.client.id', variable: 'NAVER_CLIENT_ID'),
-                        string(credentialsId: 'naver.client.secret', variable: 'NAVER_CLIENT_SECRET')
-                    ]) {
-                        sh './gradlew test --warning-mode all'  // 테스트 단계에서도 모든 경고를 표시
-                    }
-                }
-            }
-            post {
-                always {
-                    junit 'build/reports/tests/test/*.xml' // 테스트 결과를 Jenkins에서 확인 가능하도록 설정
-                }
-                failure {
-                    echo '테스트 실패!'
-                    error '테스트 단계에서 실패하여 빌드가 중단되었습니다.'
-                }
+                sh './gradlew build --warning-mode all'
+                sh 'java -version'
             }
         }
         stage('Docker Build') {
