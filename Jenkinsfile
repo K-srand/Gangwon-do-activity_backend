@@ -31,7 +31,9 @@ pipeline {
                     withCredentials([
                         usernamePassword(credentialsId: 'spring.mail.credential', usernameVariable: 'SPRING_MAIL_CREDENTIALS_USERNAME', passwordVariable: 'SPRING_MAIL_CREDENTIALS_PASSWORD'),
                         string(credentialsId: 'AWS_ACCESS_KEY', variable: 'AWS_ACCESS_KEY_ID'),
-                        string(credentialsId: 'AWS_SECRET_KEY', variable: 'AWS_SECRET_ACCESS_KEY')
+                        string(credentialsId: 'AWS_SECRET_KEY', variable: 'AWS_SECRET_ACCESS_KEY'),
+                        string(credentialsId: 'naver.client.id', variable: 'NAVER_CLIENT_ID'),
+                        string(credentialsId: 'naver.client.secret', variable: 'NAVER_CLIENT_SECRET')
                     ]) {
                         sh './gradlew test --warning-mode all'  // 테스트 단계에서도 모든 경고를 표시
                     }
