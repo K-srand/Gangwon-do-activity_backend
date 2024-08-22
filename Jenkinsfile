@@ -31,8 +31,7 @@ pipeline {
                 echo 'Docker 빌드 준비 중...'
                 script {
                     withCredentials([
-                        string(credentialsId: 'spring.mail.credential', variable: 'SPRING_MAIL_CREDENTIALS_USERNAME'),
-                        string(credentialsId: 'spring.mail.credential', variable: 'SPRING_MAIL_CREDENTIALS_PASSWORD'),
+                        usernamePassword(credentialsId: 'spring.mail.credential', usernameVariable: 'SPRING_MAIL_CREDENTIALS_USERNAME', passwordVariable: 'SPRING_MAIL_CREDENTIALS_PASSWORD'),
                         string(credentialsId: 'AWS_ACCESS_KEY', variable: 'AWS_ACCESS_KEY_ID'),
                         string(credentialsId: 'AWS_SECRET_KEY', variable: 'AWS_SECRET_ACCESS_KEY')
                     ]) {
