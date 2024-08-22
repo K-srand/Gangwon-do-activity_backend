@@ -47,7 +47,7 @@ pipeline {
                         --build-arg AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
                         --build-arg NAVER_CLIENT_ID=${NAVER_CLIENT_ID} \
                         --build-arg NAVER_CLIENT_SECRET=${NAVER_CLIENT_SECRET} \
-                        -f Dockerfile .
+                        -f ./Dockerfile .
                     '''
                 }
             }
