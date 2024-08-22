@@ -20,6 +20,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo '프로젝트 빌드 중...'
+                sh './gradlew build'  // JAR 파일을 빌드하기 위한 명령어 추가
                 sh 'java -version'  // Java 버전 확인
             }
         }
