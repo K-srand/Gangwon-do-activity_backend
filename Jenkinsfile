@@ -31,10 +31,10 @@ pipeline {
                 echo 'Docker 빌드 준비 중...'
                 script {
                     withCredentials([
-                        string(credentialsId: 'spring_mail_username', variable: 'SPRING_MAIL_CREDENTIALS_USERNAME'),
-                        string(credentialsId: 'spring_mail_password', variable: 'SPRING_MAIL_CREDENTIALS_PASSWORD'),
-                        string(credentialsId: 'aws_access_key_id', variable: 'AWS_ACCESS_KEY_ID'),
-                        string(credentialsId: 'aws_secret_access_key', variable: 'AWS_SECRET_ACCESS_KEY')
+                        string(credentialsId: 'spring.mail.credential', variable: 'SPRING_MAIL_CREDENTIALS_USERNAME'),
+                        string(credentialsId: 'spring.mail.credential', variable: 'SPRING_MAIL_CREDENTIALS_PASSWORD'),
+                        string(credentialsId: 'AWS_ACCESS_KEY', variable: 'AWS_ACCESS_KEY_ID'),
+                        string(credentialsId: 'AWS_SECRET_KEY', variable: 'AWS_SECRET_ACCESS_KEY')
                     ]) {
                         sh 'docker buildx version' // Docker Buildx가 설치되었는지 확인
                         sh """
