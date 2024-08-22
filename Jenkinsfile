@@ -5,6 +5,8 @@ pipeline {
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_KEY')
         NAVER_CLIENT_ID = credentials('naver.client.id')
         NAVER_CLIENT_SECRET = credentials('naver.client.secret')
+        SPRING_MAIL_CREDENTIALS_USERNAME = credentials('spring.mail.username')
+        SPRING_MAIL_CREDENTIALS_PASSWORD = credentials('spring.mail.password')
         JAVA_HOME = '/usr/lib/jvm/java-17-amazon-corretto.x86_64'
         PATH = "${JAVA_HOME}/bin:/usr/bin:${env.PATH}"
     }
@@ -35,9 +37,7 @@ pipeline {
             steps {
                 echo 'Docker 빌드 준비 중...'
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'spring.mail.credential',
-                                                      usernameVariable: 'SPRING_MAIL_CREDENTIALS_USERNAME',
-                                                      passwordVariable: 'SPRING_MAIL_CREDENTIALS_PASSWORD')]) {
+                {
                         sh 'docker buildx version' // Docker Buildx가 설치되었는지 확인
                         sh """
                             echo "Docker Buildx를 사용하여 이미지 빌드 중..."
