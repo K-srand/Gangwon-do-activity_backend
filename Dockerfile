@@ -11,14 +11,14 @@ EXPOSE 4040
 ARG JAR_FILE=build/libs/*.jar
 
 # Define build arguments for sensitive information
-ARG SPRING_MAIL_USERNAME
-ARG SPRING_MAIL_PASSWORD
+ARG SPRING_MAIL_CREDENTIALS_USERNAME
+ARG SPRING_MAIL_CREDENTIALS_PASSWORD
 ARG AWS_ACCESS_KEY
 ARG AWS_SECRET_KEY
 
 # Set environment variables using the build arguments
-ENV SPRING_MAIL_USERNAME=${SPRING_MAIL_USERNAME}
-ENV SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD}
+ENV SPRING_MAIL_CREDENTIALS_USERNAME=${SPRING_MAIL_CREDENTIALS_USERNAME}
+ENV SPRING_MAIL_CREDENTIALS_PASSWORD=${SPRING_MAIL_CREDENTIALS_PASSWORD}
 ENV AWS_ACCESS_KEY=${AWS_ACCESS_KEY}
 ENV AWS_SECRET_KEY=${AWS_SECRET_KEY}
 
@@ -26,5 +26,4 @@ ENV AWS_SECRET_KEY=${AWS_SECRET_KEY}
 COPY ${JAR_FILE} app.jar
 
 # Run the jar file with environment variables
-ENTRYPOINT ["sh", "-c", "java -jar /app.jar --spring.mail.username=${SPRING_MAIL_USERNAME} --spring.mail.password=${SPRING_MAIL_PASSWORD} --cloud.aws.credentials.accessKey=${AWS_ACCESS_KEY} --cloud.aws.credentials.secretKey=${AWS_SECRET_KEY}"]
-
+ENTRYPOINT ["sh", "-c", "java -jar /app.jar --spring.mail.credentials.username=${SPRING_MAIL_CREDENTIALS_USERNAME} --spring.mail.credentials.password=${SPRING_MAIL_CREDENTIALS_PASSWORD} --cloud.aws.credentials.accessKey=${AWS_ACCESS_KEY} --cloud.aws.credentials.secretKey=${AWS_SECRET_KEY}"]

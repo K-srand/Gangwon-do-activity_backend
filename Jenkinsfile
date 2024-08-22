@@ -1,12 +1,8 @@
 pipeline {
     agent any
     environment {
-        JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-17.0.9.0.9-2.el8_8.x86_64'
+        JAVA_HOME = '/usr/lib/jvm/java-17-amazon-corretto.x86_64'
         PATH = "${JAVA_HOME}/bin:/usr/bin:${env.PATH}"
-        SPRING_MAIL_USERNAME = 'your_spring_mail_username' // 필요한 값으로 변경
-        SPRING_MAIL_PASSWORD = 'your_spring_mail_password' // 필요한 값으로 변경
-        AWS_ACCESS_KEY_ID = 'your_aws_access_key'          // 필요한 값으로 변경
-        AWS_SECRET_ACCESS_KEY = 'your_aws_secret_key'      // 필요한 값으로 변경
     }
     stages {
         stage('Checkout') {
@@ -34,16 +30,23 @@ pipeline {
             steps {
                 echo 'Docker 빌드 준비 중...'
                 script {
-                    sh 'docker buildx version' // Docker Buildx가 설치되었는지 확인
-                    sh '''
-                        echo "Docker Buildx를 사용하여 이미지 빌드 중..."
-                        docker buildx build --progress=plain -t backend-app:latest \
-                        --build-arg SPRING_MAIL_USERNAME=${SPRING_MAIL_USERNAME} \
-                        --build-arg SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD} \
-                        --build-arg AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
-                        --build-arg AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
-                        -f Dockerfile .
-                    '''
+                    withCredentials([
+                        string(credentialsId: 'spring_mail_username', variable: 'SPRING_MAIL_CREDENTIALS_USERNAME'),
+                        string(credentialsId: 'spring_mail_password', variable: 'SPRING_MAIL_CREDENTIALS_PASSWORD'),
+                        string(credentialsId: 'aws_access_key_id', variable: 'AWS_ACCESS_KEY_ID'),
+                        string(credentialsId: 'aws_secret_access_key', variable: 'AWS_SECRET_ACCESS_KEY')
+                    ]) {
+                        sh 'docker buildx version' // Docker Buildx가 설치되었는지 확인
+                        sh """
+                            echo "Docker Buildx를 사용하여 이미지 빌드 중..."
+                            docker buildx build --progress=plain -t backend-app:latest \
+                            --build-arg SPRING_MAIL_CREDENTIALS_USERNAME=${SPRING_MAIL_CREDENTIALS_USERNAME} \
+                            --build-arg SPRING_MAIL_CREDENTIALS_PASSWORD=${SPRING_MAIL_CREDENTIALS_PASSWORD} \
+                            --build-arg AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
+                            --build-arg AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
+                            -f Dockerfile .
+                        """
+                    }
                 }
             }
         }
