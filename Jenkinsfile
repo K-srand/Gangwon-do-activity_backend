@@ -48,7 +48,7 @@ pipeline {
                         --build-arg NAVER_CLIENT_ID=${NAVER_CLIENT_ID} \
                         --build-arg NAVER_CLIENT_SECRET=${NAVER_CLIENT_SECRET} \
                         -f Dockerfile .
-                    """
+                    """.trim()
                 }
             }
         }
