@@ -20,7 +20,6 @@ pipeline {
 
         stage('Build') {
             steps {
-                // gradlew 파일이 workspace에 있으므로 backend 디렉토리로 이동하지 않음
                 sh 'chmod +x ./gradlew'
                 sh './gradlew build'
             }
@@ -29,7 +28,8 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh 'docker build -t backend-app -f Dockerfile .'
+                    // Docker 이미지를 명확하게 빌드
+                    sh 'docker build -t backend-app:latest -f Dockerfile .'
                 }
             }
         }
@@ -49,7 +49,7 @@ pipeline {
                     -e NAVER_CLIENT_SECRET=$NAVER_CLIENT_SECRET \
                     -e SPRING_MAIL_USERNAME=$SPRING_MAIL_USERNAME \
                     -e SPRING_MAIL_PASSWORD=$SPRING_MAIL_PASSWORD \
-                    backend-app
+                    backend-app:latest
                     '''
                 }
             }
