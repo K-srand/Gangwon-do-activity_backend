@@ -1,81 +1,76 @@
 pipeline {
     agent any
-
     environment {
-        GITHUB_ACCESS_TOKEN = credentials('github-access-token')
-        AWS_ACCESS_KEY = credentials('AWS_ACCESS_KEY')
-        AWS_SECRET_KEY = credentials('AWS_SECRET_KEY')
-        NAVER_CLIENT_ID = credentials('naver.client.id')
-        NAVER_CLIENT_SECRET = credentials('naver.client.secret')
-        SPRING_MAIL_USERNAME = credentials('spring.mail.username')
-        SPRING_MAIL_PASSWORD = credentials('spring.mail.password')
-        DOCKER_HUB_USERNAME = credentials('docker-hub-username')
-        DOCKER_HUB_PASSWORD = credentials('docker-hub-password')
-        DOCKER_IMAGE_NAME = "ksuji/backend-app"
+        JAVA_HOME = '/usr/lib/jvm/java-17-amazon-corretto.x86_64'
+        PATH = "${JAVA_HOME}/bin:/usr/bin:${env.PATH}"
+        SPRING_MAIL_USERNAME = 'your_spring_mail_username' // 필요한 값으로 변경
+        SPRING_MAIL_PASSWORD = 'your_spring_mail_password' // 필요한 값으로 변경
+        AWS_ACCESS_KEY_ID = 'your_aws_access_key'          // 필요한 값으로 변경
+        AWS_SECRET_ACCESS_KEY = 'your_aws_secret_key'      // 필요한 값으로 변경
     }
-
     stages {
-        stage('Clone Repository') {
-            steps {
-                git branch: 'main', url: 'https://github.com/K-srand/Gangwon-do-activity_backend.git', credentialsId: 'github-access-token'
+        stage('Checkout') {
+                git branch: 'main', url: 'https://github.com/K-srand/Gangwon-do-activity_backend.git'
             }
         }
-
+        stage('Grant Permissions') {
+            steps {
+                echo 'gradlew에 실행 권한 부여 중...'
+                sh 'chmod +x ./gradlew'
+            }
+        }
         stage('Build') {
             steps {
-                sh 'chmod +x ./gradlew'
-                sh './gradlew build'
+                echo '프로젝트 빌드 중...'
+                sh 'java -version'  // Java 버전 확인
             }
         }
-
-        stage('Build Docker Image') {
+        stage('Docker Build') {
+            when {
+                expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
+            }
             steps {
+                echo 'Docker 빌드 준비 중...'
                 script {
-                    sh 'docker build -t $DOCKER_IMAGE_NAME:latest -f Dockerfile .'
+                    sh 'docker buildx version' // Docker Buildx가 설치되었는지 확인
+                    withCredentials([
+                        usernamePassword(credentialsId: 'SPRING_MAIL_CREDENTIALS', usernameVariable: 'SPRING_MAIL_USERNAME', passwordVariable: 'SPRING_MAIL_PASSWORD'),
+                        [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS_CREDENTIALS']
+                    ]) {
+                        sh '''
+                            echo "Docker Buildx를 사용하여 이미지 빌드 중..."
+                            docker buildx build --progress=plain -t backend-app:latest \
+                            --build-arg SPRING_MAIL_USERNAME=${SPRING_MAIL_USERNAME} \
+                            --build-arg SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD} \
+                            --build-arg AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
+                            --build-arg AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
+                            -f Dockerfile .  # 여기에서 . 을 사용하여 빌드 컨텍스트 경로를 지정
+                        '''
+                    }
+                    sh '''
+                        echo "Docker Buildx를 사용하여 이미지 빌드 중..."
+                        docker buildx build --progress=plain -t backend-app:latest \
+                        --build-arg SPRING_MAIL_USERNAME=${SPRING_MAIL_USERNAME} \
+                        --build-arg SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD} \
+                        --build-arg AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
+                        --build-arg AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
+                        -f Dockerfile .
+                    '''
                 }
             }
         }
-
-        stage('Login to Docker Hub') {
-            steps {
-                script {
-                    sh 'echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USERNAME --password-stdin'
-                }
-            }
-        }
-
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    sh 'docker push $DOCKER_IMAGE_NAME:latest'
-                }
-            }
-        }
-
         stage('Deploy') {
-            steps {
-                script {
-                    sh 'docker stop backend-app || true && docker rm backend-app || true'
-                    sh 'docker pull $DOCKER_IMAGE_NAME:latest'
-                    sh """
-                    docker run -d --name backend-app -p 4040:4040 \
-                    -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY \
-                    -e AWS_SECRET_KEY=$AWS_SECRET_KEY \
-                    -e NAVER_CLIENT_ID=$NAVER_CLIENT_ID \
-                    -e NAVER_CLIENT_SECRET=$NAVER_CLIENT_SECRET \
-                    -e SPRING_MAIL_USERNAME=$SPRING_MAIL_USERNAME \
-                    -e SPRING_MAIL_PASSWORD=$SPRING_MAIL_PASSWORD \
-                    $DOCKER_IMAGE_NAME:latest
-                    """
-                }
+            when {
+                expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
             }
-        }
-    }
-
-    post {
-        always {
-            script {
-                sh 'docker logout'
+            steps {
+                echo '애플리케이션 배포 중...'
+                script {
+                    sh 'docker stop backend-app || true'
+                    sh 'docker rm backend-app || true'
+                    sh 'docker run -d -p 4040:4040 --name backend-app backend-app:latest'
+                    echo "Docker 컨테이너가 성공적으로 시작되었습니다."
+                }
             }
         }
     }
