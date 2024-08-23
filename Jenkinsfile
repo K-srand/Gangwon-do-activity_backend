@@ -34,7 +34,7 @@ pipeline {
             steps {
                 echo 'Docker 빌드 준비 중...'
                 script {
-                    sh 'docker buildx version' // Docker Buildx가 설치되었는지 확인
+                    sh 'docker buildx --version' // Docker Buildx가 설치되었는지 확인
 
                     sh '''
                         echo "Docker Buildx를 사용하여 이미지 빌드 중..."
@@ -43,7 +43,7 @@ pipeline {
                         --build-arg SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD} \
                         --build-arg AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
                         --build-arg AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
-                        -f ./Dockerfile .
+                        -f Dockerfile .
                     '''
 
                 }
