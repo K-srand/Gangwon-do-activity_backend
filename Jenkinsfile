@@ -49,7 +49,7 @@ pipeline {
                     -e NAVER_CLIENT_SECRET=$NAVER_CLIENT_SECRET \
                     -e SPRING_MAIL_USERNAME=$SPRING_MAIL_USERNAME \
                     -e SPRING_MAIL_PASSWORD=$SPRING_MAIL_PASSWORD \
-                    backend-app:latest
+                    backend-app:latest .
                     '''
                 }
             }
