@@ -50,7 +50,7 @@ pipeline {
             steps {
                 script {
                     // Docker 이미지를 Docker Hub에 푸시
-                    sh 'docker push $DOCKER_IMAGE_NAME:latest .'
+                    sh 'docker push $DOCKER_IMAGE_NAME:latest'
                 }
             }
         }
