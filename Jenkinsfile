@@ -63,7 +63,7 @@ pipeline {
 
                     // Docker Hub에서 이미지를 가져와서 컨테이너 실행
                     sh '''
-                    docker pull $DOCKER_IMAGE_NAME:latest
+                    docker pull ksuji/$DOCKER_IMAGE_NAME:latest
                     docker run -d --name backend-app -p 4040:4040 \
                     -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY \
                     -e AWS_SECRET_KEY=$AWS_SECRET_KEY \
