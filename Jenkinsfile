@@ -63,7 +63,7 @@ pipeline {
 
                     // Docker Hub에서 이미지를 가져와서 컨테이너 실행
                     sh '''
-                    docker pull ksuji/$DOCKER_IMAGE_NAME:latest
+                    docker pull $DOCKER_IMAGE_NAME:latest
                     docker run -d --name backend-app -p 4040:4040 \
                     -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY \
                     -e AWS_SECRET_KEY=$AWS_SECRET_KEY \
@@ -71,7 +71,7 @@ pipeline {
                     -e NAVER_CLIENT_SECRET=$NAVER_CLIENT_SECRET \
                     -e SPRING_MAIL_USERNAME=$SPRING_MAIL_USERNAME \
                     -e SPRING_MAIL_PASSWORD=$SPRING_MAIL_PASSWORD \
-                    ksuji/$DOCKER_IMAGE_NAME:latest
+                    $DOCKER_IMAGE_NAME:latest
                     '''
                 }
             }
