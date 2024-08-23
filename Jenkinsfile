@@ -29,7 +29,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build('backend-app', '-f Dockerfile .')
+                    sh 'docker build -t backend-app -f Dockerfile .'
                 }
             }
         }
@@ -40,8 +40,17 @@ pipeline {
                     // 이미 실행 중인 컨테이너를 중지하고 삭제
                     sh 'docker stop backend-app || true && docker rm backend-app || true'
 
-                    // 새로운 컨테이너를 실행
-                    sh 'docker run -d --name backend-app -p 4040:4040 backend-app'
+                    // 새로운 컨테이너를 실행하면서 환경 변수를 전달
+                    sh '''
+                    docker run -d --name backend-app -p 4040:4040 \
+                    -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY \
+                    -e AWS_SECRET_KEY=$AWS_SECRET_KEY \
+                    -e NAVER_CLIENT_ID=$NAVER_CLIENT_ID \
+                    -e NAVER_CLIENT_SECRET=$NAVER_CLIENT_SECRET \
+                    -e SPRING_MAIL_USERNAME=$SPRING_MAIL_USERNAME \
+                    -e SPRING_MAIL_PASSWORD=$SPRING_MAIL_PASSWORD \
+                    backend-app
+                    '''
                 }
             }
         }
