@@ -59,7 +59,7 @@ pipeline {
             steps {
                 script {
                     // 기존 컨테이너 중지 및 삭제
-                    sh 'docker stop backend-app || true && docker rm backend-app || true'
+                    sh 'docker stop $DOCKER_IMAGE_NAME:latest || true && docker rm $DOCKER_IMAGE_NAME:latest || true'
 
                     // Docker Hub에서 이미지를 가져와서 컨테이너 실행
                     sh '''
