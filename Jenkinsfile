@@ -10,9 +10,11 @@ pipeline {
     }
     stages {
         stage('Checkout') {
+            steps {
                 git branch: 'main', url: 'https://github.com/K-srand/Gangwon-do-activity_backend.git'
             }
         }
+
         stage('Grant Permissions') {
             steps {
                 echo 'gradlew에 실행 권한 부여 중...'
@@ -42,20 +44,11 @@ pipeline {
                             docker buildx build --progress=plain -t backend-app:latest \
                             --build-arg SPRING_MAIL_USERNAME=${SPRING_MAIL_USERNAME} \
                             --build-arg SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD} \
-                            --build-arg AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
-                            --build-arg AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
+                            --build-arg AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
+                            --build-arg AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
                             -f Dockerfile .  # 여기에서 . 을 사용하여 빌드 컨텍스트 경로를 지정
                         '''
                     }
-                    sh '''
-                        echo "Docker Buildx를 사용하여 이미지 빌드 중..."
-                        docker buildx build --progress=plain -t backend-app:latest \
-                        --build-arg SPRING_MAIL_USERNAME=${SPRING_MAIL_USERNAME} \
-                        --build-arg SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD} \
-                        --build-arg AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
-                        --build-arg AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
-                        -f Dockerfile .
-                    '''
                 }
             }
         }
