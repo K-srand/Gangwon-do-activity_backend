@@ -21,6 +21,7 @@ pipeline {
         stage('Build') {
             steps {
                 dir('backend') { // backend 디렉토리로 이동
+                    sh 'chmod +x ./gradlew'
                     sh './gradlew build'
                 }
             }
