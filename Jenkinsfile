@@ -3,6 +3,10 @@ pipeline {
     environment {
         JAVA_HOME = '/usr/lib/jvm/java-17-amazon-corretto.x86_64'
         PATH = "${JAVA_HOME}/bin:/usr/bin:${env.PATH}"
+        SPRING_MAIL_USERNAME = credentials('spring.mail.username') // 필요한 값으로 변경
+        SPRING_MAIL_PASSWORD = credentials('spring.mail.password') // 필요한 값으로 변경
+        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY')         // 필요한 값으로 변경
+        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_KEY')      // 필요한 값으로 변경
     }
     stages {
         stage('Checkout') {
@@ -31,20 +35,17 @@ pipeline {
                 echo 'Docker 빌드 준비 중...'
                 script {
                     sh 'docker buildx version' // Docker Buildx가 설치되었는지 확인
-                    withCredentials([
-                        usernamePassword(credentialsId: 'spring.mail.credential', usernameVariable: 'SPRING_MAIL_USERNAME', passwordVariable: 'SPRING_MAIL_PASSWORD'),
-                        [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS_CREDENTIALS']
-                    ]) {
-                        sh '''
-                            echo "Docker Buildx를 사용하여 이미지 빌드 중..."
-                            docker buildx build --progress=plain -t backend-app:latest \
-                            --build-arg SPRING_MAIL_USERNAME=${SPRING_MAIL_USERNAME} \
-                            --build-arg SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD} \
-                            --build-arg AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
-                            --build-arg AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
-                            -f Dockerfile .  # 여기에서 . 을 사용하여 빌드 컨텍스트 경로를 지정
-                        '''
-                    }
+
+                    sh '''
+                        echo "Docker Buildx를 사용하여 이미지 빌드 중..."
+                        docker buildx build --progress=plain -t backend-app:latest \
+                        --build-arg SPRING_MAIL_USERNAME=${SPRING_MAIL_USERNAME} \
+                        --build-arg SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD} \
+                        --build-arg AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
+                        --build-arg AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
+                        -f Dockerfile .
+                    '''
+
                 }
             }
         }
