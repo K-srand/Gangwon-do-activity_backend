@@ -21,8 +21,8 @@ pipeline {
         stage('Build') {
             steps {
                 dir('backend') { // backend 디렉토리로 이동
-                    sh 'chmod +x ./gradlew'
-                    sh './gradlew build'
+                    sh 'chmod +x /var/lib/jenkins/workspace/backend-pipeline/backend/gradlew'
+                    sh '/var/lib/jenkins/workspace/backend-pipeline/backend/gradlew build'
                 }
             }
         }
@@ -41,7 +41,7 @@ pipeline {
             steps {
                 script {
                     // 이미 실행 중인 컨테이너를 중지하고 삭제
-                    sh 'docker stop backend-app || true && docker rm backend-app || true'
+                    sh 'docker stop backend-app || true && docker.rm backend-app || true'
 
                     // 새로운 컨테이너를 실행
                     sh 'docker run -d --name backend-app -p 4040:4040 backend-app'
