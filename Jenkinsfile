@@ -31,7 +31,6 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Docker 이미지를 빌드하고 태그 지정
                     sh 'docker build -t $DOCKER_IMAGE_NAME:latest -f Dockerfile .'
                 }
             }
@@ -40,7 +39,6 @@ pipeline {
         stage('Login to Docker Hub') {
             steps {
                 script {
-                    // Docker Hub 로그인
                     sh 'echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USERNAME --password-stdin'
                 }
             }
@@ -49,7 +47,6 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    // Docker 이미지를 Docker Hub에 푸시
                     sh 'docker push $DOCKER_IMAGE_NAME:latest'
                 }
             }
@@ -58,12 +55,9 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    // 기존 컨테이너 중지 및 삭제
                     sh 'docker stop backend-app || true && docker rm backend-app || true'
-
-                    // Docker Hub에서 이미지를 가져와서 컨테이너 실행
-                    sh '''
-                    docker pull $DOCKER_IMAGE_NAME:latest
+                    sh 'docker pull $DOCKER_IMAGE_NAME:latest'
+                    sh """
                     docker run -d --name backend-app -p 4040:4040 \
                     -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY \
                     -e AWS_SECRET_KEY=$AWS_SECRET_KEY \
@@ -72,7 +66,7 @@ pipeline {
                     -e SPRING_MAIL_USERNAME=$SPRING_MAIL_USERNAME \
                     -e SPRING_MAIL_PASSWORD=$SPRING_MAIL_PASSWORD \
                     $DOCKER_IMAGE_NAME:latest
-                    '''
+                    """
                 }
             }
         }
@@ -81,7 +75,6 @@ pipeline {
     post {
         always {
             script {
-                // Docker Hub 로그아웃
                 sh 'docker logout'
             }
         }
