@@ -37,7 +37,7 @@ pipeline {
                 script {
                     sh '''
                         echo "Docker를 사용하여 이미지 빌드 중..."
-                        docker build -t backend-app:latest \
+                        docker buildx build --progress=plain -t backend-app:latest \
                         --build-arg SPRING_MAIL_USERNAME=${SPRING_MAIL_USERNAME} \
                         --build-arg SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD} \
                         --build-arg AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
