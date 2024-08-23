@@ -3,10 +3,6 @@ pipeline {
     environment {
         JAVA_HOME = '/usr/lib/jvm/java-17-amazon-corretto.x86_64'
         PATH = "${JAVA_HOME}/bin:/usr/bin:${env.PATH}"
-        SPRING_MAIL_USERNAME = 'your_spring_mail_username' // 필요한 값으로 변경
-        SPRING_MAIL_PASSWORD = 'your_spring_mail_password' // 필요한 값으로 변경
-        AWS_ACCESS_KEY_ID = 'your_aws_access_key'          // 필요한 값으로 변경
-        AWS_SECRET_ACCESS_KEY = 'your_aws_secret_key'      // 필요한 값으로 변경
     }
     stages {
         stage('Checkout') {
