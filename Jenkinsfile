@@ -28,7 +28,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Docker 이미지를 명확하게 빌드
+                    // Docker 이미지를 빌드
                     sh 'docker build -t backend-app:latest -f Dockerfile .'
                 }
             }
@@ -49,7 +49,7 @@ pipeline {
                     -e NAVER_CLIENT_SECRET=$NAVER_CLIENT_SECRET \
                     -e SPRING_MAIL_USERNAME=$SPRING_MAIL_USERNAME \
                     -e SPRING_MAIL_PASSWORD=$SPRING_MAIL_PASSWORD \
-                    backend-app:latest .
+                    backend-app:latest
                     '''
                 }
             }
