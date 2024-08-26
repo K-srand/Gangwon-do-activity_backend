@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         JAVA_HOME = '/usr/lib/jvm/java-17-amazon-corretto.x86_64'
-        PATH = "${JAVA_HOME}/bin:/usr/bin:${env.PATH}"
+        PATH = "/root/.docker/cli-plugins:${JAVA_HOME}/bin:/usr/bin:${env.PATH}" // Docker Buildx 경로 추가
         SPRING_MAIL_USERNAME = credentials('spring.mail.username')
         SPRING_MAIL_PASSWORD = credentials('spring.mail.password')
         AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY')
@@ -31,7 +31,9 @@ pipeline {
             steps {
                 echo 'Docker 빌드 준비 중...'
                 script {
-                sh 'docker buildx version' // Docker Buildx가 설치되었는지 확인
+                    // Docker Buildx가 설치되었는지 확인
+                    sh 'docker buildx version'
+
                     sh '''
                         echo "Docker를 사용하여 이미지 빌드 중..."
                         docker buildx build --progress=plain -t backend-app:latest \
@@ -41,7 +43,6 @@ pipeline {
                         --build-arg AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
                         -f Dockerfile .
                     '''
-
                 }
             }
         }
