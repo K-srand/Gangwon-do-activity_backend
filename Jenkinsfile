@@ -3,10 +3,10 @@ pipeline {
     environment {
         JAVA_HOME = '/usr/lib/jvm/java-17-amazon-corretto.x86_64'
         PATH = "${JAVA_HOME}/bin:/usr/bin:${env.PATH}"
-        SPRING_MAIL_USERNAME = credentials('spring.mail.username') // 필요한 값으로 변경
-        SPRING_MAIL_PASSWORD = credentials('spring.mail.password') // 필요한 값으로 변경
-        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY')         // 필요한 값으로 변경
-        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_KEY')      // 필요한 값으로 변경
+        SPRING_MAIL_USERNAME = credentials('spring.mail.username')
+        SPRING_MAIL_PASSWORD = credentials('spring.mail.password')
+        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY')
+        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_KEY')
     }
     stages {
         stage('Checkout') {
@@ -19,7 +19,6 @@ pipeline {
             steps {
                 echo 'gradlew에 실행 권한 부여 중...'
                 sh 'chmod +x ./gradlew'
-                sh './gradlew'
             }
         }
         stage('Build') {
@@ -37,7 +36,7 @@ pipeline {
                 script {
                     sh '''
                         echo "Docker를 사용하여 이미지 빌드 중..."
-                        docker buildx build --progress=plain -t backend-app:latest \
+                        docker build -t backend-app:latest \
                         --build-arg SPRING_MAIL_USERNAME=${SPRING_MAIL_USERNAME} \
                         --build-arg SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD} \
                         --build-arg AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
