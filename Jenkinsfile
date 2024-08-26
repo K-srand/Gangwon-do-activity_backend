@@ -28,9 +28,6 @@ pipeline {
             }
         }
         stage('Docker Build') {
-            when {
-                expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
-            }
             steps {
                 echo 'Docker 빌드 준비 중...'
                 script {
@@ -48,9 +45,6 @@ pipeline {
             }
         }
         stage('Deploy') {
-            when {
-                expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
-            }
             steps {
                 echo '애플리케이션 배포 중...'
                 script {
