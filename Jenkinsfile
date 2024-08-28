@@ -26,10 +26,10 @@ pipeline {
                     usernamePassword(credentialsId: 'SPRING_MAIL_CREDENTAIL', usernameVariable: 'SPRING_MAIL_USERNAME', passwordVariable: 'SPRING_MAIL_PASSWORD')
                 ]) {
                     sh '''
-                    sed -i 's/\${AWS_ACCESS_KEY}/'$AWS_ACCESS_KEY'/g' src/main/resources/application.properties
-                    sed -i 's/\${AWS_SECRET_KEY}/'$AWS_SECRET_KEY'/g' src/main/resources/application.properties
-                    sed -i 's/\${SPRING_MAIL_USERNAME}/'$SPRING_MAIL_USERNAME'/g' src/main/resources/application.properties
-                    sed -i 's/\${SPRING_MAIL_PASSWORD}/'$SPRING_MAIL_PASSWORD'/g' src/main/resources/application.properties
+                    sed -i 's#${AWS_ACCESS_KEY}#'$AWS_ACCESS_KEY'#g' src/main/resources/application.properties
+                    sed -i 's#${AWS_SECRET_KEY}#'$AWS_SECRET_KEY'#g' src/main/resources/application.properties
+                    sed -i 's#${SPRING_MAIL_USERNAME}#'$SPRING_MAIL_USERNAME'#g' src/main/resources/application.properties
+                    sed -i 's#${SPRING_MAIL_PASSWORD}#'$SPRING_MAIL_PASSWORD'#g' src/main/resources/application.properties
                     '''
                 }
             }
