@@ -24,7 +24,9 @@ pipeline {
         stage('Build') {
             steps {
                 echo '프로젝트 빌드 중...'
+                sh './gradlew build'
                 sh 'java -version'  // Java 버전 확인
+                sh 'ls -al build/libs'
             }
         }
         stage('Docker Build') {
