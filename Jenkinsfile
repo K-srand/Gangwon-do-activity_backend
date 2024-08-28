@@ -41,7 +41,10 @@ pipeline {
         stage('Docker Push') {
             steps {
                 echo 'Docker Hub에 로그인 중...'
-                withCredentials([usernamePassword(credentialsId: 'docker-hub-username', usernameVariable: 'DOCKER_HUB_USERNAME', passwordVariable: 'DOCKER_HUB_PASSWORD')]) {
+                withCredentials([
+                    string(credentialsId: 'docker-hub-username', variable: 'DOCKER_HUB_USERNAME'),
+                    string(credentialsId: 'docker-hub-password', variable: 'DOCKER_HUB_PASSWORD')
+                ]) {
                     sh 'echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USERNAME --password-stdin'
                 }
                 echo "Docker 이미지를 푸시 중..."
