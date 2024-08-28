@@ -24,21 +24,28 @@ pipeline {
         stage('Build') {
             steps {
                 echo '프로젝트 빌드 중...'
-                sh './gradlew build'
-                sh 'java -version'  // Java 버전 확인
-                sh 'ls -al build/libs'
+                sh './gradlew build' // Gradle 빌드 실행
+                sh 'ls -al build/libs' // 빌드 결과 확인
             }
         }
         stage('Docker Build') {
             steps {
                 echo 'Docker 빌드 준비 중...'
                 script {
-                sh 'docker buildx version' // Docker Buildx가 설치되었는지 확인
-                        echo "Docker를 사용하여 이미지 빌드 중..."
-                        sh 'docker build -t ksuji/backend-app -f Dockerfile .'
-                        sh 'docker push ksuji/backend-app'
-                        sh 'docker rmi ksuji/backend-app'
+                    sh 'docker buildx version' // Docker Buildx가 설치되었는지 확인
+                    echo "Docker를 사용하여 이미지 빌드 중..."
+                    sh 'docker build -t ksuji/backend-app -f Dockerfile .'
                 }
+            }
+        }
+        stage('Docker Push') {
+            steps {
+                echo 'Docker Hub에 로그인 중...'
+                withCredentials([usernamePassword(credentialsId: 'docker-hub-username', usernameVariable: 'DOCKER_HUB_USERNAME', passwordVariable: 'DOCKER_HUB_PASSWORD')]) {
+                    sh 'echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USERNAME --password-stdin'
+                }
+                echo "Docker 이미지를 푸시 중..."
+                sh 'docker push ksuji/backend-app:latest'
             }
         }
         stage('Deploy') {
@@ -47,7 +54,7 @@ pipeline {
                 script {
                     sh 'docker stop backend-app || true'
                     sh 'docker rm backend-app || true'
-                    sh 'docker run -d -p 4040:4040 --name backend-app backend:latest'
+                    sh 'docker run -d -p 4040:4040 --name backend-app ksuji/backend-app:latest'
                     echo "Docker 컨테이너가 성공적으로 시작되었습니다."
                 }
             }
