@@ -28,8 +28,8 @@ pipeline {
                     sh '''
                     sed -i 's#${AWS_ACCESS_KEY}#'$AWS_ACCESS_KEY'#g' src/main/resources/application.properties
                     sed -i 's#${AWS_SECRET_KEY}#'$AWS_SECRET_KEY'#g' src/main/resources/application.properties
-                    sed -i 's#${SPRING_MAIL_USERNAME}#'$SPRING_MAIL_USERNAME'#g' src/main/resources/application.properties
-                    sed -i 's#${SPRING_MAIL_PASSWORD}#'$SPRING_MAIL_PASSWORD'#g' src/main/resources/application.properties
+//                     sed -i 's#${SPRING_MAIL_USERNAME}#'$SPRING_MAIL_USERNAME'#g' src/main/resources/application.properties
+//                     sed -i 's#${SPRING_MAIL_PASSWORD}#'$SPRING_MAIL_PASSWORD'#g' src/main/resources/application.properties
                     '''
                 }
             }
