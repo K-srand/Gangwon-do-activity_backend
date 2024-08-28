@@ -22,10 +22,8 @@ pipeline {
             steps {
                 echo 'application.properties 파일에 환경 변수 주입 중...'
                 withCredentials([
-                    string(credentialsId: 'AWS_ACCESS_KEY', variable: 'AWS_ACCESS_KEY'),
-                    string(credentialsId: 'AWS_SECRET_KEY', variable: 'AWS_SECRET_KEY'),
-                    string(credentialsId: 'SPRING_MAIL_USERNAME', variable: 'SPRING_MAIL_USERNAME'),
-                    string(credentialsId: 'SPRING_MAIL_PASSWORD', variable: 'SPRING_MAIL_PASSWORD')
+                    [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS_CREDENTAIL', accessKeyVariable: 'AWS_ACCESS_KEY', secretKeyVariable: 'AWS_SECRET_KEY'],
+                    usernamePassword(credentialsId: 'SPRING_MAIL_CREDENTAIL', usernameVariable: 'SPRING_MAIL_USERNAME', passwordVariable: 'SPRING_MAIL_PASSWORD')
                 ]) {
                     sh '''
                     sed -i 's/\${AWS_ACCESS_KEY}/'$AWS_ACCESS_KEY'/g' src/main/resources/application.properties
