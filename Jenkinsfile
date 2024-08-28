@@ -33,7 +33,7 @@ pipeline {
                 script {
                 sh 'docker buildx version' // Docker Buildx가 설치되었는지 확인
                         echo "Docker를 사용하여 이미지 빌드 중..."
-                        sh 'docker build -t ksuji/backend-app backend-app/.'
+                        sh 'docker build -t ksuji/backend-app Dockerfile .'
                         sh 'docker push ksuji/backend-app'
                         sh 'docker rmi ksuji/backend-app'
                 }
