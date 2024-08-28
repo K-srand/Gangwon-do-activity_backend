@@ -3,10 +3,6 @@ pipeline {
     environment {
         JAVA_HOME = '/usr/lib/jvm/java-17-amazon-corretto.x86_64'
         PATH = "${JAVA_HOME}/bin:/usr/bin:${env.PATH}"
-        SPRING_MAIL_USERNAME = credentials('spring.mail.username')
-        SPRING_MAIL_PASSWORD = credentials('spring.mail.password')
-        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY')
-        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_KEY')
     }
     stages {
         stage('Checkout') {
@@ -21,6 +17,7 @@ pipeline {
                 sh 'chmod +x ./gradlew'
             }
         }
+
         stage('Build') {
             steps {
                 echo '프로젝트 빌드 중...'
@@ -28,6 +25,7 @@ pipeline {
                 sh 'ls -al build/libs' // 빌드 결과 확인
             }
         }
+
         stage('Docker Build') {
             steps {
                 echo 'Docker 빌드 준비 중...'
@@ -38,6 +36,7 @@ pipeline {
                 }
             }
         }
+
         stage('Docker Push') {
             steps {
                 echo 'Docker Hub에 로그인 중...'
@@ -51,29 +50,30 @@ pipeline {
                 sh 'docker push ksuji/backend-app:latest'
             }
         }
+
         stage('Deploy') {
             steps {
                 echo '애플리케이션 배포 중...'
                 script {
                     sh 'docker stop backend-app || true'
                     sh 'docker rm backend-app || true'
-
-                    // Docker 명령어에서 환경 변수를 명시적으로 다시 정의
-                    sh """
-                    SPRING_MAIL_USERNAME=${SPRING_MAIL_USERNAME}
-                    SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD}
-                    AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-                    AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-
-                    docker run -d -p 4040:4040 --name backend-app \
-                    -e SPRING_MAIL_USERNAME=${SPRING_MAIL_USERNAME} \
-                    -e SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD} \
-                    -e AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
-                    -e AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
-                    ksuji/backend-app:latest
-                    """
-                    echo "Docker 컨테이너가 성공적으로 시작되었습니다."
                 }
+                withCredentials([
+                    string(credentialsId: 'spring.mail.username', variable: 'SPRING_MAIL_USERNAME'),
+                    string(credentialsId: 'spring.mail.password', variable: 'SPRING_MAIL_PASSWORD'),
+                    string(credentialsId: 'AWS_ACCESS_KEY', variable: 'AWS_ACCESS_KEY_ID'),
+                    string(credentialsId: 'AWS_SECRET_KEY', variable: 'AWS_SECRET_ACCESS_KEY')
+                ]) {
+                    sh '''
+                    docker run -d -p 4040:4040 --name backend-app \
+                    -e SPRING_MAIL_USERNAME=$SPRING_MAIL_USERNAME \
+                    -e SPRING_MAIL_PASSWORD=$SPRING_MAIL_PASSWORD \
+                    -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
+                    -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
+                    ksuji/backend-app:latest
+                    '''
+                }
+                echo "Docker 컨테이너가 성공적으로 시작되었습니다."
             }
         }
     }
