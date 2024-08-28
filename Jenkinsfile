@@ -54,19 +54,26 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo '애플리케이션 배포 중...'
+                script {
+                    sh 'docker stop backend-app || true'
+                    sh 'docker rm backend-app || true'
 
-                // 환경 변수들이 올바르게 설정되었는지 확인
-                sh 'echo SPRING_MAIL_USERNAME=${SPRING_MAIL_USERNAME}'
-                sh 'echo SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD}'
-                sh 'echo AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}'
-                sh 'echo AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}'
+                    // Docker 명령어에서 환경 변수를 명시적으로 다시 정의
+                    sh """
+                    SPRING_MAIL_USERNAME=${SPRING_MAIL_USERNAME}
+                    SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD}
+                    AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+                    AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
 
-//                 script {
-//                     sh 'docker stop backend-app || true'
-//                     sh 'docker rm backend-app || true'
-//                     sh 'docker run -d -p 4040:4040 --name backend-app ksuji/backend-app:latest'
-//                     echo "Docker 컨테이너가 성공적으로 시작되었습니다."
-//                 }
+                    docker run -d -p 4040:4040 --name backend-app \
+                    -e SPRING_MAIL_USERNAME=${SPRING_MAIL_USERNAME} \
+                    -e SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD} \
+                    -e AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
+                    -e AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
+                    ksuji/backend-app:latest
+                    """
+                    echo "Docker 컨테이너가 성공적으로 시작되었습니다."
+                }
             }
         }
     }
