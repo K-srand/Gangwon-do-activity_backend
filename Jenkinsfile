@@ -59,7 +59,6 @@ pipeline {
                     sh 'docker rm backend-app || true'
                 }
                 withCredentials([
-                    usernamePassword(credentialsId: 'SPRING_MAIL_CREDENTAIL', usernameVariable: 'SPRING_MAIL_USERNAME', passwordVariable: 'SPRING_MAIL_PASSWORD'),
                     string(credentialsId: 'AWS_ACCESS_KEY', variable: 'AWS_ACCESS_KEY_ID'),
                     string(credentialsId: 'AWS_SECRET_KEY', variable: 'AWS_SECRET_ACCESS_KEY')
                 ]) {
@@ -69,8 +68,6 @@ pipeline {
 
                     # Docker 컨테이너 실행
                     docker run -d -p 4040:4040 --name backend-app \
-                    -e SPRING_MAIL_USERNAME=$SPRING_MAIL_USERNAME \
-                    -e SPRING_MAIL_PASSWORD=$SPRING_MAIL_PASSWORD \
                     -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
                     -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
                     $IMAGE_NAME
