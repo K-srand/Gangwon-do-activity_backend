@@ -52,22 +52,23 @@ pipeline {
             }
         }
         stage('Deploy') {
-            steps {
-                echo '애플리케이션 배포 중...'
-                script {
-                    sh 'docker stop backend-app || true'
-                    sh 'docker rm backend-app || true'
-                    sh '''
-                    docker run -d -p 4040:4040 --name backend-app \
-                    -e SPRING_MAIL_USERNAME=${SPRING_MAIL_USERNAME} \
-                    -e SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD} \
-                    -e AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
-                    -e AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
-                    ksuji/backend-app:latest
-                    '''
-                    echo "Docker 컨테이너가 성공적으로 시작되었습니다."
-                }
-            }
+           steps {
+               echo '애플리케이션 배포 중...'
+               script {
+                   sh 'docker stop backend-app || true'
+                   sh 'docker rm backend-app || true'
+                   sh 'docker pull ksuji/backend-app:latest' // 명시적으로 이미지를 가져오도록 추가
+                   sh '''
+                   docker run -d -p 4040:4040 --name backend-app \
+                   -e SPRING_MAIL_USERNAME=${SPRING_MAIL_USERNAME} \
+                   -e SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD} \
+                   -e AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
+                   -e AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
+                   ksuji/backend-app:latest
+                   '''
+                   echo "Docker 컨테이너가 성공적으로 시작되었습니다."
+               }
+           }
         }
     }
 }
