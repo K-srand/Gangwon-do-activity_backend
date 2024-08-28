@@ -66,8 +66,6 @@ pipeline {
                 ]) {
                     sh '''
                     docker run -d -p 4040:4040 --name backend-app \
-                    -e SPRING_MAIL_USERNAME=$SPRING_MAIL_USERNAME \
-                    -e SPRING_MAIL_PASSWORD=$SPRING_MAIL_PASSWORD \
                     -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
                     -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
                     ksuji/backend-app:latest
