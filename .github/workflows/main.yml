@@ -16,13 +16,3 @@ jobs:
           echo $SPRING_MAIL_PASSWORD
           echo $AWS_ACCESS_KEY
           echo $AWS_SECRET_KEY
-
-      - name: Run Spring Boot application
-        env:
-          SPRING_MAIL_USERNAME: ${{ secrets.SPRING_MAIL_USERNAME }}
-          SPRING_MAIL_PASSWORD: ${{ secrets.SPRING_MAIL_PASSWORD }}
-          AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
-          AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
-        run: |
-          # 여기에서 Spring Boot 애플리케이션을 실행하거나, 필요한 다른 명령어를 실행합니다.
-          java -jar app.jar
