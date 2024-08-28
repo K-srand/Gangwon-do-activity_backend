@@ -21,8 +21,12 @@ pipeline {
         stage('Build') {
             steps {
                 echo '프로젝트 빌드 중...'
-                sh './gradlew build' // Gradle 빌드 실행
-                sh 'ls -al build/libs' // 빌드 결과 확인
+
+                // Adding the withCredentials block to use S3 credentials
+                withCredentials([string(credentialsId: 'AWS_CREDENTIAL', variable: 'AWS_CREDENTIAL')]) {
+                    sh './gradlew build' // Gradle 빌드 실행
+                    sh 'ls -al build/libs' // 빌드 결과 확인
+                }
             }
         }
 
@@ -30,7 +34,7 @@ pipeline {
             steps {
                 echo 'Docker 빌드 준비 중...'
                 script {
-                    sh 'docker buildx version' // Docker Buildx가 설치되었는지 확인
+                    sh 'docker --version' // Docker Buildx가 설치되었는지 확인
                     echo "Docker를 사용하여 이미지 빌드 중..."
                     sh 'docker build -t ksuji/backend-app -f Dockerfile .'
                 }
