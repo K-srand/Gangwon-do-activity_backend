@@ -32,14 +32,10 @@ pipeline {
                 echo 'Docker 빌드 준비 중...'
                 script {
                 sh 'docker buildx version' // Docker Buildx가 설치되었는지 확인
-                    sh '''
                         echo "Docker를 사용하여 이미지 빌드 중..."
-                        echo "$SPRING_MAIL_USERNAME"
-                        echo "$SPRING_MAIL_PASSWORD"
-                        echo "$AWS_ACCESS_KEY_ID"
-                        echo "$AWS_SECRET_ACCESS_KEY"
-                    '''
-
+                        sh 'docker build -t ksuji/backend-app backend-app/.'
+                        sh 'docker push ksuji/backend-app'
+                        sh 'docker rmi ksuji/backend-app'
                 }
             }
         }
