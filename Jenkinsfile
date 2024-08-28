@@ -59,16 +59,21 @@ pipeline {
                     sh 'docker rm backend-app || true'
                 }
                 withCredentials([
-                    string(credentialsId: 'spring.mail.username', variable: 'SPRING_MAIL_USERNAME'),
-                    string(credentialsId: 'spring.mail.password', variable: 'SPRING_MAIL_PASSWORD'),
+                    usernamePassword(credentialsId: 'SPRING_MAIL_CREDENTAIL', usernameVariable: 'SPRING_MAIL_USERNAME', passwordVariable: 'SPRING_MAIL_PASSWORD'),
                     string(credentialsId: 'AWS_ACCESS_KEY', variable: 'AWS_ACCESS_KEY_ID'),
                     string(credentialsId: 'AWS_SECRET_KEY', variable: 'AWS_SECRET_ACCESS_KEY')
                 ]) {
                     sh '''
+                    # 명시적으로 Docker 이미지를 정의합니다.
+                    IMAGE_NAME="ksuji/backend-app:latest"
+
+                    # Docker 컨테이너 실행
                     docker run -d -p 4040:4040 --name backend-app \
+                    -e SPRING_MAIL_USERNAME=$SPRING_MAIL_USERNAME \
+                    -e SPRING_MAIL_PASSWORD=$SPRING_MAIL_PASSWORD \
                     -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
                     -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
-                    ksuji/backend-app:latest
+                    $IMAGE_NAME
                     '''
                 }
                 echo "Docker 컨테이너가 성공적으로 시작되었습니다."
