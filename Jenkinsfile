@@ -18,15 +18,30 @@ pipeline {
             }
         }
 
+        stage('Inject Properties') {
+            steps {
+                echo 'application.properties 파일에 환경 변수 주입 중...'
+                withCredentials([
+                    string(credentialsId: 'AWS_ACCESS_KEY', variable: 'AWS_ACCESS_KEY'),
+                    string(credentialsId: 'AWS_SECRET_KEY', variable: 'AWS_SECRET_KEY'),
+                    string(credentialsId: 'SPRING_MAIL_USERNAME', variable: 'SPRING_MAIL_USERNAME'),
+                    string(credentialsId: 'SPRING_MAIL_PASSWORD', variable: 'SPRING_MAIL_PASSWORD')
+                ]) {
+                    sh '''
+                    sed -i 's/\${AWS_ACCESS_KEY}/'$AWS_ACCESS_KEY'/g' src/main/resources/application.properties
+                    sed -i 's/\${AWS_SECRET_KEY}/'$AWS_SECRET_KEY'/g' src/main/resources/application.properties
+                    sed -i 's/\${SPRING_MAIL_USERNAME}/'$SPRING_MAIL_USERNAME'/g' src/main/resources/application.properties
+                    sed -i 's/\${SPRING_MAIL_PASSWORD}/'$SPRING_MAIL_PASSWORD'/g' src/main/resources/application.properties
+                    '''
+                }
+            }
+        }
+
         stage('Build') {
             steps {
                 echo '프로젝트 빌드 중...'
-
-                // Adding the withCredentials block to use S3 credentials
-                withCredentials([string(credentialsId: 'AWS_CREDENTIAL', variable: 'AWS_CREDENTIAL')]) {
-                    sh './gradlew build' // Gradle 빌드 실행
-                    sh 'ls -al build/libs' // 빌드 결과 확인
-                }
+                sh './gradlew build' // Gradle 빌드 실행
+                sh 'ls -al build/libs' // 빌드 결과 확인
             }
         }
 
