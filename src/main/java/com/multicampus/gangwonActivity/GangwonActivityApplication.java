@@ -28,7 +28,7 @@ public WebMvcConfigurer corsConfigurer() {
 		@Override
 		public void addCorsMappings(CorsRegistry registry) {
 			registry.addMapping("/**")
-					.allowedOrigins("http://172.31.3.146")
+					.allowedOrigins("http://3.36.27.202")
 					.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 명시적 방법 설정
 					.allowCredentials(true)
 					.maxAge(3600);
