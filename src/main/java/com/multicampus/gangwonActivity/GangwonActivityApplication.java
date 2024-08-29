@@ -30,7 +30,6 @@ public WebMvcConfigurer corsConfigurer() {
 			registry.addMapping("/**")
 					.allowedOrigins("http://172.31.3.146")
 					.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 명시적 방법 설정
-					.allowedHeaders("Content-Type", "Authorization", "Cache-Control", "Content-Disposition", "Accept", "Origin", "X-Requested-With") // 명시적 헤더 설정
 					.allowCredentials(true)
 					.maxAge(3600);
 		}
