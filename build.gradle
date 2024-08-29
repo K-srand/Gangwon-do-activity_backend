@@ -79,6 +79,8 @@ dependencies {
 
 	//자동 재시작 및 라이브 리로드
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+
 }
 
 hibernate {
