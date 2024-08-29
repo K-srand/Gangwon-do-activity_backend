@@ -88,7 +88,7 @@ public class WebSecurityConfig {
     @Bean
     protected CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(Arrays.asList("http://3.36.27.202:80")); // 요청을 보낼 출처 설정
+        corsConfiguration.setAllowedOrigins(Arrays.asList("http://172.31.3.146:80")); // 요청을 보낼 출처 설정
         corsConfiguration.setAllowedMethods(Arrays.asList("HEAD", "PUT", "POST", "GET", "OPTIONS", "DELETE", "PATCH")); // 허용할 HTTP 메서드 설정
         corsConfiguration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type")); // 허용할 요청 헤더 설정
         corsConfiguration.setAllowCredentials(true); // 자격 증명 허용 설정
