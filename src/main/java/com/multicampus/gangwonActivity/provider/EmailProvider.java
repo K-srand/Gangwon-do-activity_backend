@@ -28,7 +28,7 @@ public class EmailProvider {
             messageHelper.setTo(email);
             messageHelper.setSubject(title);
             messageHelper.setText(htmlContent, true);
-
+            message.setFrom("skj2949@naver.com");
             javaMailSender.send(message);
 
         } catch (Exception exception) {
