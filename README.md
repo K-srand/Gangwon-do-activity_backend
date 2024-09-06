@@ -159,6 +159,7 @@
     
 
 - **프론트 패키지 구조**
+
 ![image 2](https://github.com/user-attachments/assets/ebea650c-be0d-4610-a5c4-06f186bf2a38)
 
 
