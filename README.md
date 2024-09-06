@@ -116,6 +116,7 @@
 ### 📗**백엔드 패키지 구조**
 
 - **백엔드 패키지 구조**
+  
 ![image 1](https://github.com/user-attachments/assets/b49a845a-1df6-4755-af66-93b12bf67e1a)
 
 
