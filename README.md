@@ -6,11 +6,16 @@
 # 액티비티 강추!(강원 액티비티 추천) 프로젝트
 
 태그: 팀 프로젝트
+
 사용기술: AWS, IntelliJ, Java, Mysql, Naver Cloud Platform, React, SpringBoot, TourAPI, Visual Studio Code, 날씨API
+
 진행일자: 2024/06/11 → 2024/07/26
+
 프로젝트 참여인원: 6명
 
-# **P**roject GangwonActivity~~!!!
+# **P**roject GangwonActivity~~!!!!
+<img width="362" alt="20240823_174412" src="https://github.com/user-attachments/assets/d1606724-6155-4208-8b84-72ab7fe3d393">
+
 
 ![20240823_174412.png](%E1%84%8B%E1%85%A2%E1%86%A8%E1%84%90%E1%85%B5%E1%84%87%E1%85%B5%E1%84%90%E1%85%B5%20%E1%84%80%E1%85%A1%E1%86%BC%E1%84%8E%E1%85%AE!(%E1%84%80%E1%85%A1%E1%86%BC%E1%84%8B%E1%85%AF%E1%86%AB%20%E1%84%8B%E1%85%A2%E1%86%A8%E1%84%90%E1%85%B5%E1%84%87%E1%85%B5%E1%84%90%E1%85%B5%20%E1%84%8E%E1%85%AE%E1%84%8E%E1%85%A5%E1%86%AB)%20%E1%84%91%E1%85%B3%E1%84%85%E1%85%A9%E1%84%8C%E1%85%A6%E1%86%A8%E1%84%90%E1%85%B3%200d93012ebcea49c5aa55615b9fd9a69d/20240823_174412.png)
 
@@ -234,61 +239,6 @@
 ![image.png](%E1%84%8B%E1%85%A2%E1%86%A8%E1%84%90%E1%85%B5%E1%84%87%E1%85%B5%E1%84%90%E1%85%B5%20%E1%84%80%E1%85%A1%E1%86%BC%E1%84%8E%E1%85%AE!(%E1%84%80%E1%85%A1%E1%86%BC%E1%84%8B%E1%85%AF%E1%86%AB%20%E1%84%8B%E1%85%A2%E1%86%A8%E1%84%90%E1%85%B5%E1%84%87%E1%85%B5%E1%84%90%E1%85%B5%20%E1%84%8E%E1%85%AE%E1%84%8E%E1%85%A5%E1%86%AB)%20%E1%84%91%E1%85%B3%E1%84%85%E1%85%A9%E1%84%8C%E1%85%A6%E1%86%A8%E1%84%90%E1%85%B3%200d93012ebcea49c5aa55615b9fd9a69d/image%208.png)
 
 → 경로 총 정리 기능
-
-- **구현 코드**
-    
-    ```java
-    package com.multicampus.gangwonActivity.service;
-    
-    import com.multicampus.gangwonActivity.dto.request.api.GetNaverMapDto;
-    import lombok.RequiredArgsConstructor;
-    import org.springframework.beans.factory.annotation.Value;
-    import org.springframework.http.HttpEntity;
-    import org.springframework.http.HttpHeaders;
-    import org.springframework.http.HttpMethod;
-    import org.springframework.http.ResponseEntity;
-    import org.springframework.stereotype.Service;
-    import org.springframework.web.client.RestTemplate;
-    
-    @Service
-    @RequiredArgsConstructor
-    public class NaverMapService {
-    
-        private final String apiUrl = "https://oapi.map.naver.com/openapi/v3/maps.js";
-        private final String directionsApiUrl = "https://naveropenapi.apigw.ntruss.com/map-direction/v1/driving";
-    
-        @Value("${naver.client.id}")
-        private String clientId;
-    
-        @Value("${naver.client.secret}")
-        private String clientSecret;
-    
-        //네이버 맵 API 호출
-        public String getNaverMapScript() {
-            String fullUrl = apiUrl + "?ncpClientId=" + clientId + "&submodules=geocoder";
-            return fullUrl;
-        }
-    
-        //소요시간 호출
-        public String getDrivingDuration(GetNaverMapDto getNaverMapDto) {
-            RestTemplate restTemplate = new RestTemplate();
-            String url = directionsApiUrl + "?start=" + getNaverMapDto.getStartLng() + "," + getNaverMapDto.getStartLat() + "&goal="
-                    + getNaverMapDto.getEndLng() + "," + getNaverMapDto.getEndLat();
-    
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("X-NCP-APIGW-API-KEY-ID", clientId);
-            headers.set("X-NCP-APIGW-API-KEY", clientSecret);
-    
-            HttpEntity<String> entity = new HttpEntity<>(headers);
-    
-            ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
-            System.out.println(response.getBody());
-            return response.getBody();  // You'll need to parse the response to get the time
-        }
-    }
-    
-    ```
-    
 
 ## 📚이슈와 개선 사항
 
