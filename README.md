@@ -173,6 +173,7 @@
 10. Pages : 페이지 컴포넌트들이 위치하는 dir
 
 ## 📚주요 기능
+
 <img width="540" alt="20240823_171605" src="https://github.com/user-attachments/assets/f1c69fc8-d915-4cbb-8a97-af4d6d0a6bb5">
 
 
@@ -185,10 +186,11 @@
 - CRUD, Pagination, 좋아요/싫어요 기능 및 신고 기능 구현하여 사용자 간의 상호작용을 지원.
 - 신고/제재 기능 : 사용자가 작성한 글 및 댓글에 대해 신고 기능 구현. 중복 신고 방지 및 신고된 콘텐츠의 제재 여부 관리.
 - 커뮤니티 관련 데이터를 효과적으로 조회하고 관리할 수 있도록 시스템 설계 및 최적화.
+
 <img width="365" alt="20240823_174259" src="https://github.com/user-attachments/assets/24530508-8d6b-4a65-9774-2d7c6ceb45db">
+
 <img width="369" alt="20240823_174215" src="https://github.com/user-attachments/assets/dc9ffd14-a66b-4812-91ae-c576419c3309">
 
-  ****
 
 ### **📙회원가입/로그인**
 
@@ -197,6 +199,7 @@
 - UserRole에 따라 달리 동작하는 마이페이지/관리자 창을 구현
 
 ![image 3](https://github.com/user-attachments/assets/458d31a5-8bf3-439d-9faa-a0bf88e730c7)
+
 ![image 4](https://github.com/user-attachments/assets/5cc2525b-689d-4973-a9bc-999e8d5103da)
 
 
@@ -218,6 +221,7 @@
 ### 📘**마이페이지**
 
 ![4ca6dde7-1ad8-4001-9a86-c9b25a8ea8c0](https://github.com/user-attachments/assets/46cbe06f-8980-4727-b120-0990576cf58f)
+
 ![image 6](https://github.com/user-attachments/assets/a92f0be5-607f-4e2d-a145-ae4984d22f63)
 
 
