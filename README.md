@@ -14,6 +14,7 @@
 프로젝트 참여인원: 6명
 
 # **P**roject GangwonActivity~~!!!!
+
 <img width="362" alt="20240823_174412" src="https://github.com/user-attachments/assets/d1606724-6155-4208-8b84-72ab7fe3d393">
 <img width="362" alt="20240823_174721" src="https://github.com/user-attachments/assets/458fe6d5-89c1-4816-95a1-29879911f6e1">
 
@@ -211,10 +212,10 @@
 ### **📗관리자 페이지**
 
 <img width="722" alt="20240823_174846" src="https://github.com/user-attachments/assets/29c17759-5dde-4a87-8d9c-d896fef4c0d2">
+
 <img width="541" alt="20240823_174908" src="https://github.com/user-attachments/assets/c71347bd-9148-4f60-9084-b617e56e3217">
+
 ![image 5](https://github.com/user-attachments/assets/00ea2004-e9c7-4d10-982f-44129de59ccc)
-
-
 
 - 회원 제재 및 신고 받은 컨텐츠 검수 기능
 - 특정 신고가 자주 누적되면 우선순위가 높아져 목록 상단에 노출되게 구현
@@ -313,8 +314,6 @@
     - **분포도가 낮은 column**
     
     →  다양한 user가 올린 글/댓글은 분포도가 낮다. 즉 100명의 유저가 있다면 이들이 작성한 글/댓글들은 대체적으로 100명이 고루 작성한 글일 확률이 높다.
-    
-     
     
     - **Join의 연결고리로써 활용되는 column**
     
