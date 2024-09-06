@@ -112,7 +112,7 @@
 - Figma
     - [https://www.figma.com/design/BFAG60ask6W6TwIgEfPtc6/Figma-basics?node-id=1669-162202&node-type=CANVAS&t=4Bgo0DAaEwq9YjDL-0](https://www.figma.com/design/BFAG60ask6W6TwIgEfPtc6/Figma-basics?node-id=1669-162202&node-type=CANVAS&t=4Bgo0DAaEwq9YjDL-0)
 
-### ****📙 **REST API 명세서 (Swagger)**
+### 📙 **REST API 명세서 (Swagger)**
 
    (Swagger 사진 첨부 필)
 
