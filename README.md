@@ -42,12 +42,12 @@
     - [http://3.36.27.202/](http://3.36.27.202/)
 - Git 링크
     - 백엔드
-        
-        [https://github.com/KEKEKia/Gangwon-do-activity_backend.git](https://github.com/KEKEKia/Gangwon-do-activity_backend.git)
+
+        https://github.com/K-srand/Gangwon-do-activity_backend
         
     - 프론트엔드
-        
-        [https://github.com/KEKEKia/Gangwon-do-activity_frontend.git](https://github.com/KEKEKia/Gangwon-do-activity_frontend.git)
+
+        https://github.com/K-srand/Gangwon-do-activity_frontend
         
 
 ### 
