@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://3.36.27.202", allowCredentials = "true")
 @RestController
 @RequestMapping("api/v1/admin")
 @RequiredArgsConstructor

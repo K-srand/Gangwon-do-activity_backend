@@ -28,7 +28,7 @@ public class EmailProvider {
             messageHelper.setTo(email);
             messageHelper.setSubject(title);
             messageHelper.setText(htmlContent, true);
-            message.setFrom("skj2949@naver.com");
+            message.setFrom("2125ks@naver.com");
             javaMailSender.send(message);
 
         } catch (Exception exception) {
@@ -49,7 +49,7 @@ public class EmailProvider {
             messageHelper.setTo(email);
             messageHelper.setSubject(findIdTitle);
             messageHelper.setText(htmlContent, true);
-            message.setFrom("skj2949@naver.com");
+            message.setFrom("2125ks@naver.com");
             javaMailSender.send(message);
 
         } catch (Exception exception) {
@@ -71,7 +71,7 @@ public class EmailProvider {
             messageHelper.setTo(email);
             messageHelper.setSubject(findPwdTitle);
             messageHelper.setText(htmlContent, true);
-            message.setFrom("skj2949@naver.com");
+            message.setFrom("2125ks@naver.com");
             javaMailSender.send(message);
 
         } catch (Exception exception) {

@@ -122,13 +122,5 @@ public class WebSecurityConfig {
         }
     }
 
-//    @Bean
-//    public CookieSerializer cookieSerializer() {
-//        DefaultCookieSerializer serializer = new DefaultCookieSerializer();
-//        serializer.setSameSite("Lax");  // or "Strict" or "None" if appropriate
-//        serializer.setUseSecureCookie(false);  // HTTP에서도 쿠키 전송 허용
-//        return serializer;
-//    }
-
 
 }

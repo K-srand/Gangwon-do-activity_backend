@@ -34,7 +34,6 @@ public class Tour4_0Controller {
     }
 
     //추천 10개 액티비티 서비스 호출
-    @CrossOrigin(origins = "http://3.36.27.202:80")
     @GetMapping("/getplace")
     public List<Tour4_0> getTop2PlaceByCat2() {
         return tour40Service.getPlace();
