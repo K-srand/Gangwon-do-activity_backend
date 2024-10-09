@@ -16,8 +16,8 @@ public interface AuthService {
     ResponseEntity<? super SignUpResponseDto> signUp(SignUpRequestDto dto);
     ResponseEntity<? super SignInResponseDto> signIn(SignInRequestDto dto);
 
-    ResponseEntity<? super EmailCertificationResponseDto> emailCertification(EmailCertificationRequestDto dto, HttpSession session);
-    ResponseEntity<? super CheckCertificationResponseDto> checkCertification(CheckCertificationRequestDto dto, HttpSession session);
+    ResponseEntity<? super EmailCertificationResponseDto> emailCertification(EmailCertificationRequestDto dto);
+    ResponseEntity<? super CheckCertificationResponseDto> checkCertification(CheckCertificationRequestDto dto);
 
     ResponseEntity<? super CheckCertificationResponseDto> findIdCertification(CheckCertificationRequestDto dto, HttpSession session);
     ResponseEntity<? super CheckCertificationResponseDto> findPwdCertification(CheckCertificationRequestDto dto, HttpSession session);

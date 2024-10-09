@@ -14,17 +14,21 @@ import com.multicampus.gangwonActivity.dto.response.auth.SignUpResponseDto;
 import com.multicampus.gangwonActivity.entity.User;
 import com.multicampus.gangwonActivity.provider.EmailProvider;
 import com.multicampus.gangwonActivity.provider.JwtProvider;
-import com.multicampus.gangwonActivity.repository.CertificationRepository;
 import com.multicampus.gangwonActivity.repository.UserRepository;
 import com.multicampus.gangwonActivity.service.AuthService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.concurrent.TimeUnit;
 
 
 @Service
@@ -35,8 +39,10 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-    private final CertificationRepository certificationRepository;
     private  final EmailProvider emailProvider;
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
+    private final Logger logger = LoggerFactory.getLogger(AuthServiceImpl.class);
 
 
     //회원가입 서비스 (JWT)
@@ -120,7 +126,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
 
-    public ResponseEntity<? super EmailCertificationResponseDto> emailCertification(EmailCertificationRequestDto dto, HttpSession session) {
+    public ResponseEntity<? super EmailCertificationResponseDto> emailCertification(EmailCertificationRequestDto dto) {
         try {
             String email = dto.getEmail();
             String certificationNumber = CertificationNumber.getCertificationNumber(); // 난수 생성
@@ -129,12 +135,9 @@ public class AuthServiceImpl implements AuthService {
             boolean isSuccessed = emailProvider.sendCertificationMail(email, certificationNumber);
             if (!isSuccessed) return EmailCertificationResponseDto.mailSendFail();
 
-            // 세션에 이메일과 인증 번호 저장
-            session.setAttribute("email", email);
-            session.setAttribute("certificationNumber", certificationNumber);
-//            System.out.println("session에 가장 처음 담는 작업 완료!");
-//            System.out.println("session-email : " + session.getAttribute("email"));
-//            System.out.println("session-certiNum : " + session.getAttribute("certificationNumber"));
+            //Redis에 이메일, 인증 번호 저장
+            redisTemplate.opsForValue().set(email, certificationNumber, 5, TimeUnit.MINUTES);
+            logger.info("Redis에 인증 번호 저장");
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.databaseError();
@@ -143,29 +146,20 @@ public class AuthServiceImpl implements AuthService {
         return EmailCertificationResponseDto.success();
     }
 
-    public ResponseEntity<? super CheckCertificationResponseDto> checkCertification(CheckCertificationRequestDto dto, HttpSession session) {
+    public ResponseEntity<? super CheckCertificationResponseDto> checkCertification(CheckCertificationRequestDto dto) {
         try {
             String email = dto.getEmail();
             String certificationNumber = dto.getCertificationNumber();
 
-            // 세션에서 저장된 인증번호와 이메일 가져오기
-            String storedEmail = (String) session.getAttribute("email");
-            String storedCertificationNumber = (String) session.getAttribute("certificationNumber");
-
-            // 세션 예외 처리
-            if (storedEmail == null || storedCertificationNumber == null) {
-                return CheckCertificationResponseDto.certificationFail();
-            }
+            //Redis에서 인증 번호 가져오기
+            String storedCertificationNumber = (String) redisTemplate.opsForValue().get(email);
 
             // 인증번호 확인
-            boolean isMatch = storedEmail.equals(email) && storedCertificationNumber.equals(certificationNumber);
+            boolean isMatch = storedCertificationNumber == null || !storedCertificationNumber.equals(certificationNumber);
             if (!isMatch) {
                 return CheckCertificationResponseDto.certificationFail();
             }
 
-            // 회원가입 판별
-            boolean checkFind = dto.getUserName() != null || dto.getUserId() != null;
-            if (!checkFind) session.invalidate();
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.databaseError();
