@@ -157,8 +157,8 @@ public class AuthServiceImpl implements AuthService {
             String certificationNumber = dto.getCertificationNumber();
 
             // 세션에서 저장된 이메일과 인증 번호 가져오기
-            String sessionEmail = (String) session.getAttribute("email");
-            String sessionCertificationNumber = (String) session.getAttribute("certificationNumber");
+            Object sessionEmail = session.getAttribute("email");
+            Object sessionCertificationNumber = session.getAttribute("certificationNumber");
 
             System.out.println("check Certification Session Email: " + sessionEmail);
             System.out.println("check Certification Session Certification Number: " + sessionCertificationNumber);
