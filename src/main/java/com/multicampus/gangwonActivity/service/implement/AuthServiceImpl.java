@@ -157,8 +157,8 @@ public class AuthServiceImpl implements AuthService {
             String certificationNumber = dto.getCertificationNumber();
 
             // 세션에서 저장된 이메일과 인증 번호 가져오기
-            Object sessionEmail = session.getAttribute("email");
-            Object sessionCertificationNumber = session.getAttribute("certificationNumber");
+            String sessionEmail = (String) session.getAttribute("email");
+            String sessionCertificationNumber = (String) session.getAttribute("certificationNumber");
 
             System.out.println("check Certification Session Email: " + sessionEmail);
             System.out.println("check Certification Session Certification Number: " + sessionCertificationNumber);
@@ -176,7 +176,7 @@ public class AuthServiceImpl implements AuthService {
 
             //회원가입 판별
             boolean checkFind = dto.getUserName() != null || dto.getUserId() != null;
-            if(!checkFind) session.invalidate();
+            if(checkFind) session.invalidate();
 
         } catch (Exception e) {
             e.printStackTrace();
