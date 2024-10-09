@@ -70,31 +70,19 @@ public class AuthController {
         return ResponseEntity.ok(isValid);
     }
 
-    //이메일 인증 서비스 호출
+    // 이메일 인증 서비스 호출
     @PostMapping("/email-certification")
     public ResponseEntity<? super EmailCertificationResponseDto> emailCertification(
             @RequestBody @Validated EmailCertificationRequestDto requestBody,
             HttpSession session) {
-        String email = requestBody.getEmail();
-        String certificationNumber = CertificationNumber.getCertificationNumber(); // 난수 생성
-
-        session.setAttribute("email", email);
-        session.setAttribute("certificationNumber", certificationNumber);
-
-        System.out.println("EmailRequest Body:" + email);
-        System.out.println("Controller/email-certification : " + session.getAttribute("certificationNumber"));
         return authService.emailCertification(requestBody, session);
     }
 
-    //인증번호 확인 서비스 호출
+    // 인증번호 확인 서비스 호출
     @PostMapping("/check-certification")
     public ResponseEntity<? super CheckCertificationResponseDto> checkCertification(
             @RequestBody @Validated CheckCertificationRequestDto requestBody,
             HttpSession session) {
-        System.out.println("CheckRequest Body: " + requestBody.getEmail());
-        System.out.println("CheckRequest Body: " + requestBody.getCertificationNumber());
-        System.out.println("Session mail: " + session.getAttribute("email"));
-        System.out.println("Session certificationNumber: " + session.getAttribute("certificationNumber"));
         return authService.checkCertification(requestBody, session);
     }
 

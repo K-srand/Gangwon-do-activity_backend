@@ -121,28 +121,20 @@ public class AuthServiceImpl implements AuthService {
 
 
     public ResponseEntity<? super EmailCertificationResponseDto> emailCertification(EmailCertificationRequestDto dto, HttpSession session) {
-
-
         try {
             String email = dto.getEmail();
-            String certificationNumber = CertificationNumber.getCertificationNumber();
+            String certificationNumber = CertificationNumber.getCertificationNumber(); // 난수 생성
 
-            //이메일 전송
+            // 이메일 전송
             boolean isSuccessed = emailProvider.sendCertificationMail(email, certificationNumber);
             if (!isSuccessed) return EmailCertificationResponseDto.mailSendFail();
 
             // 세션에 이메일과 인증 번호 저장
             session.setAttribute("email", email);
             session.setAttribute("certificationNumber", certificationNumber);
-            System.out.println("session에 가장 처음 담는 작업 완료!");
-            System.out.println("session-email : " + session.getAttribute("email"));
-            System.out.println("session-certiNum : " + session.getAttribute("certificationNumber"));
-            System.out.println("------------------------------------------------------------------------------");
-//            System.out.println(session.getAttribute("email"));
-//            System.out.println(session.getAttribute("certificationNumber"));
-
-
-
+//            System.out.println("session에 가장 처음 담는 작업 완료!");
+//            System.out.println("session-email : " + session.getAttribute("email"));
+//            System.out.println("session-certiNum : " + session.getAttribute("certificationNumber"));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.databaseError();
@@ -156,24 +148,24 @@ public class AuthServiceImpl implements AuthService {
             String email = dto.getEmail();
             String certificationNumber = dto.getCertificationNumber();
 
-            System.out.println("session-email : " + session.getAttribute("email"));
-            System.out.println("session-certiNum : " + session.getAttribute("certificationNumber"));
+            // 세션에서 저장된 인증번호와 이메일 가져오기
+            String storedEmail = (String) session.getAttribute("email");
+            String storedCertificationNumber = (String) session.getAttribute("certificationNumber");
 
-            //세션 예외 처리
-            if (session.getAttribute("email") == null || session.getAttribute("certificationNumber") == null) {
+            // 세션 예외 처리
+            if (storedEmail == null || storedCertificationNumber == null) {
                 return CheckCertificationResponseDto.certificationFail();
             }
 
-            //인증번호 확인
-            boolean isMatch = session.getAttribute("email").equals(email) && session.getAttribute("certificationNumber").equals(certificationNumber);
+            // 인증번호 확인
+            boolean isMatch = storedEmail.equals(email) && storedCertificationNumber.equals(certificationNumber);
             if (!isMatch) {
                 return CheckCertificationResponseDto.certificationFail();
             }
 
-            //회원가입 판별
+            // 회원가입 판별
             boolean checkFind = dto.getUserName() != null || dto.getUserId() != null;
-            if(!checkFind) session.invalidate();
-
+            if (!checkFind) session.invalidate();
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.databaseError();
