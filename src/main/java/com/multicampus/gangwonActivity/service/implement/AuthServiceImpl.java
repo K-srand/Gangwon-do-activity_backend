@@ -174,9 +174,9 @@ public class AuthServiceImpl implements AuthService {
                 return CheckCertificationResponseDto.certificationFail();
             }
 
-            //회원가입 판별
-            boolean checkFind = dto.getUserName() != null || dto.getUserId() != null;
-            if(checkFind) session.invalidate();
+//            //회원가입 판별
+//            boolean checkFind = dto.getUserName() != null || dto.getUserId() != null;
+//            if(!checkFind) session.invalidate();
 
         } catch (Exception e) {
             e.printStackTrace();
