@@ -53,7 +53,7 @@ public class WebSecurityConfig {
                 .csrf(CsrfConfigurer::disable)
                 .httpBasic(HttpBasicConfigurer::disable)
                 .sessionManagement(sessionManagement -> sessionManagement
-                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)) // 세션이 필요시 생성되도록 설정
+                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)) // 세션이 필요시 생성되도록 설정
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/",
                                 "/api/v1/auth/**",
@@ -122,5 +122,12 @@ public class WebSecurityConfig {
         }
     }
 
+    @Bean
+    public CookieSerializer cookieSerializer() {
+        DefaultCookieSerializer serializer = new DefaultCookieSerializer();
+        serializer.setSameSite("None");
+        serializer.setUseSecureCookie(false);
+        return serializer;
+    }
 
 }
