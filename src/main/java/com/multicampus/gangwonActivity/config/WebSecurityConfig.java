@@ -53,7 +53,7 @@ public class WebSecurityConfig {
                 .csrf(CsrfConfigurer::disable)
                 .httpBasic(HttpBasicConfigurer::disable)
                 .sessionManagement(sessionManagement -> sessionManagement
-                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)) // 세션이 항상 생성되도록 설정
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)) // 세션이 필요시 생성되도록 설정
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/",
                                 "/api/v1/auth/**",
