@@ -156,27 +156,24 @@ public class AuthServiceImpl implements AuthService {
             String email = dto.getEmail();
             String certificationNumber = dto.getCertificationNumber();
 
-            // 세션에서 저장된 이메일과 인증 번호 가져오기
-            String sessionEmail = (String) session.getAttribute("email");
-            String sessionCertificationNumber = (String) session.getAttribute("certificationNumber");
-
-            System.out.println("check Certification Session Email: " + sessionEmail);
-            System.out.println("check Certification Session Certification Number: " + sessionCertificationNumber);
+//            // 세션에서 저장된 이메일과 인증 번호 가져오기
+//            String sessionEmail = (String) session.getAttribute("email");
+//            String sessionCertificationNumber = (String) session.getAttribute("certificationNumber");
 
             //세션 예외 처리
-            if (sessionEmail == null || sessionCertificationNumber == null) {
+            if (session.getAttribute("email") == null || session.getAttribute("certificationNumber") == null) {
                 return CheckCertificationResponseDto.certificationFail();
             }
 
             //인증번호 확인
-            boolean isMatch = sessionEmail.equals(email) && sessionCertificationNumber.equals(certificationNumber);
+            boolean isMatch = session.getAttribute("email").equals(email) && session.getAttribute("certificationNumber").equals(certificationNumber);
             if (!isMatch) {
                 return CheckCertificationResponseDto.certificationFail();
             }
 
-//            //회원가입 판별
-//            boolean checkFind = dto.getUserName() != null || dto.getUserId() != null;
-//            if(!checkFind) session.invalidate();
+            //회원가입 판별
+            boolean checkFind = dto.getUserName() != null || dto.getUserId() != null;
+            if(!checkFind) session.invalidate();
 
         } catch (Exception e) {
             e.printStackTrace();
