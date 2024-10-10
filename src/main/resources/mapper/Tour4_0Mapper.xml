@@ -46,11 +46,30 @@
 
     <insert id="saveAll" useGeneratedKeys="true" keyProperty="placeNo" keyColumn="placeNo">
         INSERT INTO place (firstImage, firstImage2, mapx, mapy, addr1, addr2, cat1, tel, placeTitle, cat2, cat3, contentTypeId, rate)
-        VALUES
-        <foreach collection="list" item="item" separator=",">
-            (#{item.firstImage}, #{item.firstImage2}, #{item.mapx}, #{item.mapy}, #{item.addr1}, #{item.addr2}, #{item.cat1}, #{item.tel}, #{item.placeTitle}, #{item.cat2}, #{item.cat3}, #{item.contenttypeid}, #{item.rate})
+        SELECT
+        #{item.firstImage}, #{item.firstImage2}, #{item.mapx}, #{item.mapy},
+        #{item.addr1}, #{item.addr2}, #{item.cat1}, #{item.tel},
+        #{item.placeTitle}, #{item.cat2}, #{item.cat3}, #{item.contenttypeid}, #{item.rate}
+        FROM DUAL
+        WHERE NOT EXISTS (
+        SELECT 1
+        FROM place
+        WHERE placeTitle = #{item.placeTitle}
+        )
+        <foreach collection="list" item="item" separator="UNION ALL">
+            SELECT
+            #{item.firstImage}, #{item.firstImage2}, #{item.mapx}, #{item.mapy},
+            #{item.addr1}, #{item.addr2}, #{item.cat1}, #{item.tel},
+            #{item.placeTitle}, #{item.cat2}, #{item.cat3}, #{item.contenttypeid}, #{item.rate}
+            FROM DUAL
+            WHERE NOT EXISTS (
+            SELECT 1
+            FROM place
+            WHERE placeTitle = #{item.placeTitle}
+            )
         </foreach>
     </insert>
+
 
 
 
