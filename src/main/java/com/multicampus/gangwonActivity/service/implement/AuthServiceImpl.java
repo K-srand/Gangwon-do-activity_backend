@@ -150,10 +150,10 @@ public class AuthServiceImpl implements AuthService {
             String certificationNumber = dto.getCertificationNumber();
 
             //session에서 인증 번호 가져오기
-            String storedCertificationNumber = (String) session.getAttribute("email");
+            String storedCertificationNumber = (String) session.getAttribute("certificationNumber");
 
             // 인증번호 확인
-            boolean isMatch = storedCertificationNumber == null || !storedCertificationNumber.equals(certificationNumber);
+            boolean isMatch = storedCertificationNumber != null && storedCertificationNumber.equals(certificationNumber);
             if (!isMatch) {
                 return CheckCertificationResponseDto.certificationFail();
             }
