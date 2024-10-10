@@ -18,6 +18,12 @@ public class CheckCertificationResponseDto extends ResponseDto {
         return ResponseEntity.status(HttpStatus.OK).body(responsebody);
     }
 
+    public static ResponseEntity<ResponseDto> sessionNull(){
+        ResponseDto responsebody = new ResponseDto(ResponseCode.SESSION_NULL,ResponseMessage.SESSION_NULL);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responsebody);
+    }
+
+
     public static ResponseEntity<ResponseDto> certificationFail(){
         ResponseDto responsebody = new ResponseDto(ResponseCode.NUMBER_ERROR,ResponseMessage.NUMBER_ERROR);
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responsebody);

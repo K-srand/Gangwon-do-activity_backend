@@ -44,4 +44,7 @@ public interface ResponseCode {
 
     // 찜 중복
     String FAVORITE_EXISTS = "FE";
+
+    //세션 값 널
+    String SESSION_NULL = "SN";
 }

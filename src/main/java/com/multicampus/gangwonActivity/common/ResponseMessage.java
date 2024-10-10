@@ -54,5 +54,8 @@ public interface ResponseMessage {
     String COURSE_EXISTS = "Course already exists.";
 
     //찜 중복
-    String FAVORITE_EXISTS = "already favorited";
+    String FAVORITE_EXISTS = "Already favorited";
+
+    //세션 값 널
+    String SESSION_NULL = "Session null";
 }

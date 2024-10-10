@@ -135,6 +135,8 @@ public class AuthServiceImpl implements AuthService {
             //세션에 이메일, 인증 번호 저장
             session.setAttribute("email", email);
             session.setAttribute("certificationNumber", certificationNumber);
+            logger.info("email", session.getAttribute("email"));
+            logger.info("certificationNumber", certificationNumber);
             logger.info("인증 번호 저장");
         } catch (Exception e) {
             e.printStackTrace();
@@ -146,14 +148,19 @@ public class AuthServiceImpl implements AuthService {
 
     public ResponseEntity<? super CheckCertificationResponseDto> checkCertification(CheckCertificationRequestDto dto, HttpSession session) {
         try {
-            String email = dto.getEmail();
             String certificationNumber = dto.getCertificationNumber();
 
             //session에서 인증 번호 가져오기
             String storedCertificationNumber = (String) session.getAttribute("certificationNumber");
+            logger.info("certificationNumber", certificationNumber);
+
+            if(storedCertificationNumber == null) {
+                return CheckCertificationResponseDto.sessionNull();
+            }
 
             // 인증번호 확인
-            boolean isMatch = storedCertificationNumber != null && storedCertificationNumber.equals(certificationNumber);
+            boolean isMatch = storedCertificationNumber.equals(certificationNumber);
+
             if (!isMatch) {
                 return CheckCertificationResponseDto.certificationFail();
             }
