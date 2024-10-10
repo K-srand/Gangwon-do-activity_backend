@@ -122,12 +122,4 @@ public class WebSecurityConfig {
         }
     }
 
-    @Bean
-    public CookieSerializer cookieSerializer() {
-        DefaultCookieSerializer serializer = new DefaultCookieSerializer();
-        serializer.setSameSite("None");
-        serializer.setUseSecureCookie(false);
-        return serializer;
-    }
-
 }

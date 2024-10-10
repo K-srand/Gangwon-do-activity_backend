@@ -135,9 +135,7 @@ public class AuthServiceImpl implements AuthService {
             //세션에 이메일, 인증 번호 저장
             session.setAttribute("email", email);
             session.setAttribute("certificationNumber", certificationNumber);
-            logger.info("email : {}", session.getAttribute("email"));
-            logger.info("certificationNumber : {}", certificationNumber);
-            logger.info("인증 번호 저장");
+            logger.info("인증 번호 저장: email={}, certificationNumber={}", email, certificationNumber);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.databaseError();
@@ -148,22 +146,28 @@ public class AuthServiceImpl implements AuthService {
 
     public ResponseEntity<? super CheckCertificationResponseDto> checkCertification(CheckCertificationRequestDto dto, HttpSession session) {
         try {
+            String email = dto.getEmail();
             String certificationNumber = dto.getCertificationNumber();
 
-            //session에서 인증 번호 가져오기
-            String storedCertificationNumber = (String) session.getAttribute("certificationNumber");
-            logger.info("certificationNumber : {} ", certificationNumber);
+            // 세션에서 저장된 이메일과 인증 번호 가져오기
+            String sessionEmail = (String) session.getAttribute("email");
+            String sessionCertificationNumber = (String) session.getAttribute("certificationNumber");
+            logger.info("세션에서 가져온 email: {}, 인증 번호: {}", sessionEmail, sessionCertificationNumber);
 
-            if(storedCertificationNumber == null) {
+            if(sessionEmail == null || sessionCertificationNumber == null) {
                 return CheckCertificationResponseDto.sessionNull();
             }
 
             // 인증번호 확인
-            boolean isMatch = storedCertificationNumber.equals(certificationNumber);
+            boolean isMatch = sessionEmail.equals(email) && sessionCertificationNumber.equals(certificationNumber);
 
             if (!isMatch) {
                 return CheckCertificationResponseDto.certificationFail();
             }
+
+            //회원가입 판별
+            boolean checkFind = dto.getUserName() != null || dto.getUserId() != null;
+            if(!checkFind) session.invalidate();
 
         } catch (Exception e) {
             e.printStackTrace();
