@@ -20,8 +20,6 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -39,8 +37,9 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-    private  final EmailProvider emailProvider;
+    private final EmailProvider emailProvider;
     private final Logger logger = LoggerFactory.getLogger(AuthServiceImpl.class);
+
 
 
     //회원가입 서비스 (JWT)
