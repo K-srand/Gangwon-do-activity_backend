@@ -40,8 +40,6 @@ public class AuthServiceImpl implements AuthService {
     private final JwtProvider jwtProvider;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private  final EmailProvider emailProvider;
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
     private final Logger logger = LoggerFactory.getLogger(AuthServiceImpl.class);
 
 
@@ -126,7 +124,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
 
-    public ResponseEntity<? super EmailCertificationResponseDto> emailCertification(EmailCertificationRequestDto dto) {
+    public ResponseEntity<? super EmailCertificationResponseDto> emailCertification(EmailCertificationRequestDto dto, HttpSession session) {
         try {
             String email = dto.getEmail();
             String certificationNumber = CertificationNumber.getCertificationNumber(); // 난수 생성
@@ -135,9 +133,10 @@ public class AuthServiceImpl implements AuthService {
             boolean isSuccessed = emailProvider.sendCertificationMail(email, certificationNumber);
             if (!isSuccessed) return EmailCertificationResponseDto.mailSendFail();
 
-            //Redis에 이메일, 인증 번호 저장
-            redisTemplate.opsForValue().set(email, certificationNumber, 5, TimeUnit.MINUTES);
-            logger.info("Redis에 인증 번호 저장");
+            //세션에 이메일, 인증 번호 저장
+            session.setAttribute("email", email);
+            session.setAttribute("certificationNumber", certificationNumber);
+            logger.info("인증 번호 저장");
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.databaseError();
@@ -146,13 +145,13 @@ public class AuthServiceImpl implements AuthService {
         return EmailCertificationResponseDto.success();
     }
 
-    public ResponseEntity<? super CheckCertificationResponseDto> checkCertification(CheckCertificationRequestDto dto) {
+    public ResponseEntity<? super CheckCertificationResponseDto> checkCertification(CheckCertificationRequestDto dto, HttpSession session) {
         try {
             String email = dto.getEmail();
             String certificationNumber = dto.getCertificationNumber();
 
-            //Redis에서 인증 번호 가져오기
-            String storedCertificationNumber = (String) redisTemplate.opsForValue().get(email);
+            //session에서 인증 번호 가져오기
+            String storedCertificationNumber = (String) session.getAttribute("email");
 
             // 인증번호 확인
             boolean isMatch = storedCertificationNumber == null || !storedCertificationNumber.equals(certificationNumber);

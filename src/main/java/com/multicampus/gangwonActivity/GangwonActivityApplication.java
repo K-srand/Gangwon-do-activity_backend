@@ -12,27 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @SpringBootApplication
 @MapperScan("com.multicampus.gangwonActivity.mapper")
 public class GangwonActivityApplication {
-
-
-
 	public static void main(String[] args) {
 		SpringApplication.run(GangwonActivityApplication.class, args);
-
-
-
 	}
-
-//@Bean
-//public WebMvcConfigurer corsConfigurer() {
-//	return new WebMvcConfigurer() {
-//		@Override
-//		public void addCorsMappings(CorsRegistry registry) {
-//			registry.addMapping("/**")
-//					.allowedOrigins("http://3.36.27.202")
-//					.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 명시적 방법 설정
-//					.allowCredentials(true)
-//					.maxAge(3600);
-//		}
-//	};
-// }
 }

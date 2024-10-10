@@ -73,15 +73,17 @@ public class AuthController {
     // 이메일 인증 서비스 호출
     @PostMapping("/email-certification")
     public ResponseEntity<? super EmailCertificationResponseDto> emailCertification(
-            @RequestBody @Validated EmailCertificationRequestDto requestBody) {
-        return authService.emailCertification(requestBody);
+            @RequestBody @Validated EmailCertificationRequestDto requestBody,
+            HttpSession session) {
+        return authService.emailCertification(requestBody, session);
     }
 
     // 인증번호 확인 서비스 호출
     @PostMapping("/check-certification")
     public ResponseEntity<? super CheckCertificationResponseDto> checkCertification(
-            @RequestBody @Validated CheckCertificationRequestDto requestBody) {
-        return authService.checkCertification(requestBody);
+            @RequestBody @Validated CheckCertificationRequestDto requestBody,
+            HttpSession session) {
+        return authService.checkCertification(requestBody, session);
     }
 
 

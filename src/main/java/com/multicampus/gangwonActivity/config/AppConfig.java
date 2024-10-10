@@ -14,15 +14,6 @@ import java.util.List;
 @Configuration
 public class AppConfig {
 
-//    @Bean
-//    public RestTemplate restTemplate() {
-//        RestTemplate restTemplate = new RestTemplate();
-//        List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
-//        messageConverters.add(new MappingJackson2HttpMessageConverter());
-//        restTemplate.setMessageConverters(messageConverters);
-//        return restTemplate;
-//    }
-
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder.build();
