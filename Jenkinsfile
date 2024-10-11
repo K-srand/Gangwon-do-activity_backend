@@ -77,9 +77,7 @@ pipeline {
                     sh 'docker stop backend-app || true'
                     sh 'docker rm backend-app || true'
                 }
-
                 sh 'docker run -d -p 4040:4040 --name backend-app ksuji/backend-app:latest'
-
                 echo "Docker 컨테이너가 성공적으로 시작되었습니다."
             }
         }
