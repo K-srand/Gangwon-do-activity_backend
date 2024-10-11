@@ -135,7 +135,7 @@ public class AuthServiceImpl implements AuthService {
             //세션에 이메일, 인증 번호 저장
             session.setAttribute("email", email);
             session.setAttribute("certificationNumber", certificationNumber);
-            logger.info("인증 번호 저장: email={}, certificationNumber={}", email, certificationNumber);
+            logger.info("인증 번호 저장: email: {}, certificationNumber: {}", email, certificationNumber);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.databaseError();
