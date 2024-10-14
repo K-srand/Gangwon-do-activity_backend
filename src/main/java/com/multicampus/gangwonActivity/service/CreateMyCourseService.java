@@ -7,6 +7,8 @@ import com.multicampus.gangwonActivity.entity.MyFavoritesUserPlace;
 import java.util.List;
 
 public interface CreateMyCourseService {
+    //전체 찜 리스트
+    List<MyFavoritesUserPlace> getPlaceTotal(GetMyFavoritesDto getMyFavoritesDto);
 
     // 카테고리별 찜 리스트
     List<MyFavoritesUserPlace> getPlaceCat(GetMyFavoritesDto getMyFavoritesDto);

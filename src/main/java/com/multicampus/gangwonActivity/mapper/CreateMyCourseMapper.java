@@ -35,4 +35,6 @@ public interface CreateMyCourseMapper {
             @Param("placeNo3") Long placeNo3, @Param("orderNo3") int orderNo3,
             @Param("placeNo4") Long placeNo4, @Param("orderNo4") int orderNo4
     );
+
+    List<MyFavoritesUserPlace> selectMyFavoritesTotal(@Param("userId") String userId);
 }

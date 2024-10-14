@@ -62,4 +62,9 @@
             HAVING COUNT(*) = 4
         ) AS ischeck
     </select>
+
+    <select id="selectMyFavoritesTotal" resultType="map">
+        SELECT m.userNo, m.placeNo, p.placeTitle, p.cat1, p.cat3, p.firstImage, p.firstImage2, p.mapx, p.mapy
+        FROM myFavoritesUserPlace m JOIN place p ON m.placeNo = p.placeNo;
+    </select>
 </mapper>

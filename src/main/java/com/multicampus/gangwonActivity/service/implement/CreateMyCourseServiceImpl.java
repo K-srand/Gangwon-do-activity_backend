@@ -22,6 +22,13 @@ public class CreateMyCourseServiceImpl {
 
     private final CreateMyCourseMapper createMyCourseMapper;
 
+    //전체 찜 리스트
+    public List<MyFavoritesUserPlace> getPlaceTotal(String id) {
+        List<MyFavoritesUserPlace> results = new ArrayList<>();
+        results.addAll(createMyCourseMapper.selectMyFavoritesTotal(id));
+        return results;
+    }
+
     // 카테고리별 찜 리스트
     public List<MyFavoritesUserPlace> getPlaceCat(GetMyFavoritesDto getMyFavoritesDto) {
         String cat2 = getMyFavoritesDto.getPlaceCat();
