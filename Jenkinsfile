@@ -24,7 +24,9 @@ pipeline {
                 withCredentials([
                     [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS_CREDENTAIL', accessKeyVariable: 'AWS_ACCESS_KEY', secretKeyVariable: 'AWS_SECRET_KEY'],
                     usernamePassword(credentialsId: 'SPRING_MAIL_CREDENTAIL', usernameVariable: 'SPRING_MAIL_USERNAME', passwordVariable: 'SPRING_MAIL_PASSWORD'),
-                    string(credentialsId: 'SSL_KEY_PASSWORD', variable: 'SSL_KEY_PASSWORD')
+                    string(credentialsId: 'SSL_KEY_PASSWORD', variable: 'SSL_KEY_PASSWORD'),
+                    string(credentialsId: 'KAKAO_OAUTH2_ID', variable: 'KAKAO_OAUTH2_ID'),
+                    string(credentialsId: 'KAKAO_OAUTH2_SECRET', variable: 'KAKAO_OAUTH2_SECRET')
                 ]) {
                     sh """
                     sed -i 's#\\\${AWS_ACCESS_KEY}#${AWS_ACCESS_KEY}#g' src/main/resources/application.properties
@@ -32,6 +34,8 @@ pipeline {
                     sed -i 's#\\\${SPRING_MAIL_USERNAME}#${SPRING_MAIL_USERNAME}#g' src/main/resources/application.properties
                     sed -i 's#\\\${SPRING_MAIL_PASSWORD}#${SPRING_MAIL_PASSWORD}#g' src/main/resources/application.properties
                     sed -i 's#\\\${SSL_KEY_PASSWORD}#${SSL_KEY_PASSWORD}#g' src/main/resources/application.properties
+                    sed -i 's#\\\${KAKAO_OAUTH2_ID}#${KAKAO_OAUTH2_ID}#g' src/main/resources/application.properties
+                    sed -i 's#\\\${KAKAO_OAUTH2_SECRET}#${KAKAO_OAUTH2_SECRET}#g' src/main/resources/application.properties
                     """
                 }
             }

@@ -3,6 +3,7 @@ package com.multicampus.gangwonActivity.service.implement;
 import com.multicampus.gangwonActivity.dto.request.mycourse.GetMyCourseDto;
 import com.multicampus.gangwonActivity.dto.request.mycourse.GetMyCourseMappingDto;
 import com.multicampus.gangwonActivity.dto.request.mycourse.GetMyFavoritesDto;
+import com.multicampus.gangwonActivity.dto.request.mycourse.GetMyFavoritesTotalDto;
 import com.multicampus.gangwonActivity.dto.response.mycourse.GetCreateMyCourseResponseDto;
 import com.multicampus.gangwonActivity.entity.MyCourse;
 import com.multicampus.gangwonActivity.entity.MyCoursePlace;
