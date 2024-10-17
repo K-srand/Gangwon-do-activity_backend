@@ -23,7 +23,7 @@ public class SignUpRequestDto {
     private LocalDateTime userExitTime;
     private LocalDateTime userBanTime;
     private String userRole;
-
+    private String type;
 
 
 

@@ -2,6 +2,7 @@ package com.multicampus.gangwonActivity.config;
 
 
 import com.multicampus.gangwonActivity.filter.JwtAuthenticationFilter;
+import com.multicampus.gangwonActivity.handler.OAuth2SuccessHandler;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,8 +22,6 @@ import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserServ
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.session.web.http.CookieSerializer;
-import org.springframework.session.web.http.DefaultCookieSerializer;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -38,6 +37,7 @@ public class WebSecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final DefaultOAuth2UserService oAuth2UserService;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -71,17 +71,18 @@ public class WebSecurityConfig {
                                 "/api/v1/weather/**",
                                 "/resources/**",
                                 "/static/**",
-                                "/api/v1/admin/**",
                                 "/oauth2/**"
                                 ).permitAll()
                         .requestMatchers("/api/v1/user/**"
                         ).hasRole("USER")
-//                        .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
+                        .authorizationEndpoint(endpoint -> endpoint.baseUri("/api/v1/auth/oauth2"))
                         .redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
-                        .userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserService))
+                        .userInfoEndpoint(enpoint -> enpoint.userService(oAuth2UserService))
+                        .successHandler(oAuth2SuccessHandler)
                 )
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint(new FailedAuthenticationEntryPoint())

@@ -30,6 +30,7 @@ public class User {
     private LocalDateTime userBanTime;
     private String userRole;    //ROLE_USER or ROLE_ADMIN
     private LocalDateTime registerTime;
+    private String type;
 
 //    LocalDateTime now = LocalDateTime.now().format((DateTimeFormatter.ofPattern("yyyy-MM-dd HH:~~~~`")));
 
@@ -47,6 +48,22 @@ public class User {
         this.userBanTime = null;
         this.userRole = "ROLE_USER";
         this.registerTime = localDateTime;
+        this.type = "app";
+    }
+
+    public User(String userId, String email, String type) {
+        LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+
+        this.userName = "test";
+        this.userId = userId;
+        this.userEmail = email;
+        this.userPassword = "Passw0rd";
+        this.userNick = "test";
+        this.userExitTime = null;
+        this.userBanTime = null;
+        this.userRole = "ROLE_USER";
+        this.registerTime = localDateTime;
+        this.type = type;
     }
 
     public void ModifyPassword(String userPassword){

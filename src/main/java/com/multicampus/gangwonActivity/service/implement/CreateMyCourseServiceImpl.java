@@ -23,9 +23,12 @@ public class CreateMyCourseServiceImpl {
     private final CreateMyCourseMapper createMyCourseMapper;
 
     //전체 찜 리스트
-    public List<MyFavoritesUserPlace> getPlaceTotal(String id) {
+    public List<MyFavoritesUserPlace> getPlaceTotal(GetMyFavoritesTotalDto getMyFavoritesTotalDto) {
         List<MyFavoritesUserPlace> results = new ArrayList<>();
-        results.addAll(createMyCourseMapper.selectMyFavoritesTotal(id));
+
+        Long userNo = createMyCourseMapper.selectUserNo(getMyFavoritesTotalDto.getUserId());
+
+        results.addAll(createMyCourseMapper.selectMyFavoritesTotal(userNo));
         return results;
     }
 

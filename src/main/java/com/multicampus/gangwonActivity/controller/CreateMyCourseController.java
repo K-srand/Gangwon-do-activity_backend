@@ -2,11 +2,11 @@ package com.multicampus.gangwonActivity.controller;
 
 import com.multicampus.gangwonActivity.dto.request.mycourse.GetMyCourseDto;
 import com.multicampus.gangwonActivity.dto.request.mycourse.GetMyFavoritesDto;
+import com.multicampus.gangwonActivity.dto.request.mycourse.GetMyFavoritesTotalDto;
 import com.multicampus.gangwonActivity.entity.MyFavoritesUserPlace;
 import com.multicampus.gangwonActivity.service.implement.CreateMyCourseServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,8 +19,8 @@ public class CreateMyCourseController {
 
     //전체 플레이스 서비스 호출
     @PostMapping("/getplacetotal")
-    public List<MyFavoritesUserPlace> receivePlaceTotal(@AuthenticationPrincipal String id) {
-        return createMyCourseServiceImpl.getPlaceTotal(id);
+    public List<MyFavoritesUserPlace> receivePlaceTotal(@RequestBody GetMyFavoritesTotalDto getMyFavoritesTotalDto) {
+        return createMyCourseServiceImpl.getPlaceTotal(getMyFavoritesTotalDto);
     }
 
     //카테고리별 플레이스 서비스 호출

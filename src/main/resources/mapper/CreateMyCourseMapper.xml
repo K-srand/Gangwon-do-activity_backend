@@ -5,31 +5,31 @@
     <select id="selectMyFavoritesActivity" resultType="map">
         SELECT m.userNo, m.placeNo, p.placeTitle, p.cat1, p.cat3, p.firstImage, p.firstImage2, p.mapx, p.mapy
         FROM myFavoritesUserPlace m JOIN place p ON m.placeNo = p.placeNo
-        WHERE p.cat1 = 'A03';
+        WHERE p.cat1 = 'A03' AND m.userNo = #{userNo};
     </select>
 
     <select id="selectMyFavoritesRestaurant" resultType="map">
         SELECT m.userNo, m.placeNo, p.placeTitle, p.cat1, p.cat3, p.firstImage, p.firstImage2, p.mapx, p.mapy
         FROM myFavoritesUserPlace m JOIN place p ON m.placeNo = p.placeNo
-        WHERE p.cat1 = 'A05' AND p.cat3 != 'A05020900';
+        WHERE p.cat1 = 'A05' AND p.cat3 != 'A05020900' AND m.userNo = #{userNo};
     </select>
 
     <select id="selectMyFavoritesCafe" resultType="map">
         SELECT m.userNo, m.placeNo, p.placeTitle, p.cat1, p.cat3, p.firstImage, p.firstImage2, p.mapx, p.mapy
         FROM myFavoritesUserPlace m JOIN place p ON m.placeNo = p.placeNo
-        WHERE p.cat1 = 'A05' AND p.cat3 = 'A05020900';
+        WHERE p.cat1 = 'A05' AND p.cat3 = 'A05020900' AND m.userNo = #{userNo};
     </select>
 
     <select id="selectMyFavoritesTour" resultType="map">
         SELECT m.userNo, m.placeNo, p.placeTitle, p.cat1, p.cat3, p.firstImage, p.firstImage2, p.mapx, p.mapy
         FROM myFavoritesUserPlace m JOIN place p ON m.placeNo = p.placeNo
-        WHERE p.cat1 = 'A02';
+        WHERE p.cat1 = 'A02' AND m.userNo = #{userNo};
     </select>
 
     <select id="selectMyFavoritesAccommodation" resultType="map">
         SELECT m.userNo, m.placeNo, p.placeTitle, p.cat1, p.cat3, p.firstImage, p.firstImage2, p.mapx, p.mapy
         FROM myFavoritesUserPlace m JOIN place p ON m.placeNo = p.placeNo
-        WHERE p.cat1 = 'B02';
+        WHERE p.cat1 = 'B02' AND m.userNo = #{userNo};
     </select>
 
     <insert id="saveMyCourse" useGeneratedKeys="true" keyProperty="myCourseNo" keyColumn="myCourseNo">
@@ -65,6 +65,7 @@
 
     <select id="selectMyFavoritesTotal" resultType="map">
         SELECT m.userNo, m.placeNo, p.placeTitle, p.cat1, p.cat3, p.firstImage, p.firstImage2, p.mapx, p.mapy
-        FROM myFavoritesUserPlace m JOIN place p ON m.placeNo = p.placeNo;
+        FROM myFavoritesUserPlace m JOIN place p ON m.placeNo = p.placeNo
+        WHERE m.userNo = #{userNo};
     </select>
 </mapper>
