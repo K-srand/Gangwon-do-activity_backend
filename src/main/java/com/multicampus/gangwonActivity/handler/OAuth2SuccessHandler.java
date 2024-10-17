@@ -33,6 +33,6 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String token = jwtProvider.create(userId);
 
         logger.info("token : " + token);
-        response.sendRedirect("https://gangwonactivity/auth/oauth-response/" + token + "/3600");
+        response.sendRedirect("https://gangwonactivity.site/auth/oauth-response/" + token + "/3600");
     }
 }
