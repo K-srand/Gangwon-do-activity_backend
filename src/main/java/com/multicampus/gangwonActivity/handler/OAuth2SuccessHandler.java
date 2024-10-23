@@ -33,7 +33,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String token = jwtProvider.create(userId);
         long expirationTime = 3600;  // 토큰 만료 시간 (초 단위)
 
-        System.out.println("token : " + token);
+        logger.info("token : " + token);
 
         response.sendRedirect("https://gangwonactivity.site/auth/oauth-response/" + token + "/" + expirationTime);
     }
