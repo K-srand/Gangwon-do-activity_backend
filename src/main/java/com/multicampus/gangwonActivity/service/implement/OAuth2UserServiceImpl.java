@@ -1,6 +1,5 @@
 package com.multicampus.gangwonActivity.service.implement;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.multicampus.gangwonActivity.entity.CustomOAuth2User;
 import com.multicampus.gangwonActivity.entity.User;
 import com.multicampus.gangwonActivity.repository.UserRepository;
