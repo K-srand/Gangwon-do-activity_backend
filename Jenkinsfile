@@ -37,22 +37,22 @@ pipeline {
                     string(credentialsId: 'GOOGLE_API_KEY', variable: 'GOOGLE_API_KEY')
                 ]) {
                     sh """
-                    sed -i 's#\\\${AWS_ACCESS_KEY}#${AWS_ACCESS_KEY}#g' src/main/resources/application.properties
-                    sed -i 's#\\\${AWS_SECRET_KEY}#${AWS_SECRET_KEY}#g' src/main/resources/application.properties
-                    sed -i 's#\\\${SPRING_MAIL_USERNAME}#${SPRING_MAIL_USERNAME}#g' src/main/resources/application.properties
-                    sed -i 's#\\\${SPRING_MAIL_PASSWORD}#${SPRING_MAIL_PASSWORD}#g' src/main/resources/application.properties
-                    sed -i 's#\\\${SSL_KEY_PASSWORD}#${SSL_KEY_PASSWORD}#g' src/main/resources/application.properties
-                    sed -i 's#\\\${KAKAO_OAUTH2_ID}#${KAKAO_OAUTH2_ID}#g' src/main/resources/application.properties
-                    sed -i 's#\\\${KAKAO_OAUTH2_SECRET}#${KAKAO_OAUTH2_SECRET}#g' src/main/resources/application.properties
-                    sed -i 's#\\\${SPRING_DATASOURCE_URL}#${SPRING_DATASOURCE_URL//\&/%26}#g' src/main/resources/application.properties
-                    sed -i 's#\\\${SPRING_DATASOURCE_USERNAME}#${SPRING_DATASOURCE_USERNAME}#g' src/main/resources/application.properties
-                    sed -i 's#\\\${SPRING_DATASOURCE_PASSWORD}#${SPRING_DATASOURCE_PASSWORD}#g' src/main/resources/application.properties
-                    sed -i 's#\\\${JWT_SECRET_KEY}#${JWT_SECRET_KEY}#g' src/main/resources/application.properties
-                    sed -i 's#\\\${JSON_KEY}#${JSON_KEY}#g' src/main/resources/application.properties
-                    sed -i 's#\\\${NAVER_CLIENT_ID}#${NAVER_CLIENT_ID}#g' src/main/resources/application.properties
-                    sed -i 's#\\\${NAVER_CLIENT_SECRET}#${NAVER_CLIENT_SECRET}#g' src/main/resources/application.properties
-                    sed -i 's#\\\${TOUR_API_KEY}#${TOUR_API_KEY}#g' src/main/resources/application.properties
-                    sed -i 's#\\\${GOOGLE_API_KEY}#${GOOGLE_API_KEY}#g' src/main/resources/application.properties
+                        sed -i 's#\\\${AWS_ACCESS_KEY}#${AWS_ACCESS_KEY}#g' src/main/resources/application.properties
+                        sed -i 's#\\\${AWS_SECRET_KEY}#${AWS_SECRET_KEY}#g' src/main/resources/application.properties
+                        sed -i 's#\\\${SPRING_MAIL_USERNAME}#${SPRING_MAIL_USERNAME}#g' src/main/resources/application.properties
+                        sed -i 's#\\\${SPRING_MAIL_PASSWORD}#${SPRING_MAIL_PASSWORD}#g' src/main/resources/application.properties
+                        sed -i 's#\\\${SSL_KEY_PASSWORD}#${SSL_KEY_PASSWORD}#g' src/main/resources/application.properties
+                        sed -i 's#\\\${KAKAO_OAUTH2_ID}#${KAKAO_OAUTH2_ID}#g' src/main/resources/application.properties
+                        sed -i 's#\\\${KAKAO_OAUTH2_SECRET}#${KAKAO_OAUTH2_SECRET}#g' src/main/resources/application.properties
+                        sed -i 's#\\\${SPRING_DATASOURCE_URL}#${SPRING_DATASOURCE_URL//\&/%26}#g' src/main/resources/application.properties
+                        sed -i 's#\\\${SPRING_DATASOURCE_USERNAME}#${SPRING_DATASOURCE_USERNAME}#g' src/main/resources/application.properties
+                        sed -i 's#\\\${SPRING_DATASOURCE_PASSWORD}#${SPRING_DATASOURCE_PASSWORD}#g' src/main/resources/application.properties
+                        sed -i 's#\\\${JWT_SECRET_KEY}#${JWT_SECRET_KEY}#g' src/main/resources/application.properties
+                        sed -i 's#\\\${JSON_KEY}#${JSON_KEY}#g' src/main/resources/application.properties
+                        sed -i 's#\\\${NAVER_CLIENT_ID}#${NAVER_CLIENT_ID}#g' src/main/resources/application.properties
+                        sed -i 's#\\\${NAVER_CLIENT_SECRET}#${NAVER_CLIENT_SECRET}#g' src/main/resources/application.properties
+                        sed -i 's#\\\${TOUR_API_KEY}#${TOUR_API_KEY}#g' src/main/resources/application.properties
+                        sed -i 's#\\\${GOOGLE_API_KEY}#${GOOGLE_API_KEY}#g' src/main/resources/application.properties
                     """
                 }
                 sh 'cat src/main/resources/application.properties'
