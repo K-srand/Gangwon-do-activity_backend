@@ -33,7 +33,8 @@ pipeline {
                     string(credentialsId: 'JSON_KEY', variable: 'JSON_KEY'),
                     string(credentialsId: 'NAVER_CLIENT_ID', variable: 'NAVER_CLIENT_ID'),
                     string(credentialsId: 'NAVER_CLIENT_SECRET', variable: 'NAVER_CLIENT_SECRET'),
-                    string(credentialsId: 'TOUR_API_KEY', variable: 'TOUR_API_KEY')
+                    string(credentialsId: 'TOUR_API_KEY', variable: 'TOUR_API_KEY'),
+                    string(credentialsId: 'GOOGLE_API_KEY', variable: 'GOOGLE_API_KEY')
                 ]) {
                     sh """
                     sed -i 's#\\\${AWS_ACCESS_KEY}#${AWS_ACCESS_KEY}#g' src/main/resources/application.properties
@@ -51,6 +52,7 @@ pipeline {
                     sed -i 's#\\\${NAVER_CLIENT_ID}#${NAVER_CLIENT_ID}#g' src/main/resources/application.properties
                     sed -i 's#\\\${NAVER_CLIENT_SECRET}#${NAVER_CLIENT_SECRET}#g' src/main/resources/application.properties
                     sed -i 's#\\\${TOUR_API_KEY}#${TOUR_API_KEY}#g' src/main/resources/application.properties
+                    sed -i 's#\\\${GOOGLE_API_KEY}#${GOOGLE_API_KEY}#g' src/main/resources/application.properties
                     """
                 }
             }
