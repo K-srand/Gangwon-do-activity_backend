@@ -26,8 +26,9 @@ public class NaverMapController {
     }
 
     // GeoJSON 파일 제공
-    @GetMapping("/resources/json/gangwondo.json")
+    @GetMapping(value = "/resources/json/gangwondo.json", produces = "application/json")
     public Resource getGeoJson() {
         return new ClassPathResource("static/json/gangwondo.json");
     }
+
 }
