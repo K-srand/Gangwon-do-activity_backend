@@ -6,8 +6,8 @@ import com.multicampus.gangwonActivity.dto.response.auth.SignInResponseDto;
 import com.multicampus.gangwonActivity.dto.response.auth.SignUpResponseDto;
 import com.multicampus.gangwonActivity.service.AuthService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,17 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
-import com.multicampus.gangwonActivity.common.CertificationNumber;
 import com.multicampus.gangwonActivity.dto.request.auth.CheckCertificationRequestDto;
 import com.multicampus.gangwonActivity.dto.request.auth.EmailCertificationRequestDto;
 import com.multicampus.gangwonActivity.dto.response.auth.CheckCertificationResponseDto;
 import com.multicampus.gangwonActivity.dto.response.auth.EmailCertificationResponseDto;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
-
 
 @RestController
 @RequestMapping("/api/v1/auth")
