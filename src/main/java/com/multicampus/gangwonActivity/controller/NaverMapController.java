@@ -5,6 +5,8 @@ import com.multicampus.gangwonActivity.service.NaverMapService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -27,8 +29,10 @@ public class NaverMapController {
 
     // GeoJSON 파일 제공
     @GetMapping(value = "/resources/json/gangwondo.json", produces = "application/json")
-    public Resource getGeoJson() {
-        return new ClassPathResource("static/json/gangwondo.json");
+    public ResponseEntity<Resource> getGeoJson() {
+        Resource resource = new ClassPathResource("static/json/gangwondo.json");
+        return ResponseEntity.ok(resource);
     }
+
 
 }
