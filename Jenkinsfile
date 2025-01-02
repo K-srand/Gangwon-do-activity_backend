@@ -44,7 +44,7 @@ pipeline {
                     sed -i 's#\\\${SSL_KEY_PASSWORD}#${SSL_KEY_PASSWORD}#g' src/main/resources/application.properties
                     sed -i 's#\\\${KAKAO_OAUTH2_ID}#${KAKAO_OAUTH2_ID}#g' src/main/resources/application.properties
                     sed -i 's#\\\${KAKAO_OAUTH2_SECRET}#${KAKAO_OAUTH2_SECRET}#g' src/main/resources/application.properties
-                    sed -i 's#\\\${SPRING_DATASOURCE_URL}#${SPRING_DATASOURCE_URL.replaceAll('&', '%26')}#g' src/main/resources/application.properties
+                    sed -i 's#\\\${SPRING_DATASOURCE_URL}#${SPRING_DATASOURCE_URL}#g' src/main/resources/application.properties
                     sed -i 's#\\\${SPRING_DATASOURCE_USERNAME}#${SPRING_DATASOURCE_USERNAME}#g' src/main/resources/application.properties
                     sed -i 's#\\\${SPRING_DATASOURCE_PASSWORD}#${SPRING_DATASOURCE_PASSWORD}#g' src/main/resources/application.properties
                     sed -i 's#\\\${JWT_SECRET_KEY}#${JWT_SECRET_KEY}#g' src/main/resources/application.properties
