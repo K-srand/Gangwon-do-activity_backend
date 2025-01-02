@@ -11,6 +11,7 @@ import com.multicampus.gangwonActivity.mapper.Tour4_0Mapper;
 import com.multicampus.gangwonActivity.repository.Tour4_0Repository;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -18,11 +19,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
-
-//@Transactional
 @Service
 @RequiredArgsConstructor
 public class Tour4_0Service {
@@ -31,31 +31,43 @@ public class Tour4_0Service {
     private final Tour4_0Mapper tour40Mapper;
     private final AsyncGoogleService asyncGoogleService;
 
-    private double mapx;
-    private double mapy;
+    private double mapX;
+    private double mapY;
 
-    //강원도 API
-    public String save() throws IOException, InterruptedException {
-        int intTmp = 1;
+    @Value("${google.api.key}")
+    private String apiKey;
+    @Value("${tour.api.key}")
+    private String tourApiKey;
 
-        boolean check = true;
+    //강원도 API 데이터 호출
+    private String getTourData(int pageNo) throws IOException {
+        String apiKeyHeader = "https://apis.data.go.kr/B551011/KorService1/areaBasedList1?serviceKey=" +
+                tourApiKey +
+                "&numOfRows=1000" +
+                "&pageNo=";
+        String cntStr = String.valueOf(pageNo);
+        String apiKeyTail = "&MobileOS=ETC" +
+                "&MobileApp=AppTest" +
+                "&_type=json" +
+                "&arrange=A" +
+                "&areaCode=32" +
+                "&_type=json";
+        String apiKey = apiKeyHeader + cntStr + apiKeyTail;
+
+        URL url = new URL(apiKey);
+        BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8));
+
+        return br.readLine();
+    }
+
+    //강원도 API 저장
+    public String save() throws IOException {
+        int pageNo = 1;
+
         ObjectMapper objectMapper = new ObjectMapper();
 
-        while (check) {
-            String result = "";
-
-            String cntStr = String.valueOf(intTmp);
-
-            String apiKeyHeader = "https://apis.data.go.kr/B551011/KorService1/areaBasedList1?serviceKey=mzWVwvXH8qzITnKhZ39yP88AfyALFqD5x0iaWepPqERWAT9YivmAxmpgBarKqfOZQdBfSySdtczc%2BTO%2BAFKV0Q%3D%3D&numOfRows=1000&pageNo=";
-            String apiKeyTail = "&MobileOS=ETC&MobileApp=AppTest&_type=json&arrange=A&areaCode=32&_type=json";
-
-            String apiKey = apiKeyHeader + cntStr + apiKeyTail;
-
-            URL url = new URL(apiKey);
-            BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
-
-
-            result = br.readLine();
+        while (true) {
+            String result = getTourData(pageNo);
 
             // JSON 파싱
             JsonNode jsonNode = objectMapper.readTree(result);
@@ -73,19 +85,12 @@ public class Tour4_0Service {
             JsonNode array = parseItems.get("item");
 
             if (parseItems.isEmpty()) {
-
-//                check = false;
                 break;
             }
 
-
-            Thread.sleep(100);
-
-
-            intTmp++;
+            pageNo++;
 
             List<Tour4_0> list = new ArrayList<>();
-
 
             for (JsonNode tmp : array) {
                 Tour4_0Dto tour40Dto = new Tour4_0Dto();
@@ -130,8 +135,6 @@ public class Tour4_0Service {
         List<Tour4_0> allEntities = tour40Repository.findAll();
         List<CompletableFuture<Void>> futures = new ArrayList<>();
 
-        String apiKey = "AIzaSyByVjJx1n4fU1dtZRqXRqYUKqu1wa2-xz0";
-
         for (Tour4_0 ratelist : allEntities) {
             CompletableFuture<Void> future = asyncGoogleService.fetchRating(ratelist, apiKey)
                     .thenAccept(rating -> {
@@ -146,73 +149,6 @@ public class Tour4_0Service {
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
         return "rating";
     }
-//    public String rating() throws IOException, InterruptedException {
-//        String result = "";
-//
-//        List<Tour4_0> allEntities = tour40Repository.findAll();
-//        ObjectMapper objectMapper = new ObjectMapper();
-//
-//        for (Tour4_0 ratelist : allEntities) {
-//
-//            String placeTitle = "강원"+ratelist.getPlaceTitle();
-//
-//            // placeTitle이 null이거나 비어있는지 확인
-//            if (placeTitle == null || placeTitle.isEmpty()) {
-//                continue;
-//            }
-//
-//            String apiKey = "AIzaSyByVjJx1n4fU1dtZRqXRqYUKqu1wa2-xz0";
-//            String googleApiUrl = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input="
-//                    + URLEncoder.encode(placeTitle, "UTF-8")
-//                    + "&inputtype=textquery&fields=formatted_address,name,rating,opening_hours,geometry&key="
-//                    + apiKey;
-//
-//            URL url = new URL(googleApiUrl);
-//            BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream(), StandardCharsets.UTF_8));
-//
-//            StringBuilder sb = new StringBuilder();
-//            String line;
-//            while ((line = br.readLine()) != null) {
-//                sb.append(line);
-//            }
-//            result = sb.toString();
-//
-//            JsonNode jsonNode = objectMapper.readTree(result);
-//
-//            JsonNode candidates = jsonNode.get("candidates");
-//
-//            try {
-//                if (candidates.isArray() && !candidates.isEmpty()) {
-//                    JsonNode candidate = candidates.get(0);
-//
-//                    // 평점 설정
-//                    if (candidate.has("rating")) {
-//                        double rating = candidate.get("rating").asDouble();
-//                        ratelist.setRate(rating);
-//                    }
-//
-//                    // mapx와 mapy 설정
-////                    if (candidate.has("geometry")) {
-////                        JsonNode geometry = candidate.get("geometry");
-////                        if (geometry.has("location")) {
-////                            JsonNode location = geometry.get("location");
-////                            if (location.has("lat") && location.has("lng")) {
-////                                double mapy = location.get("lat").asDouble();
-////                                double mapx = location.get("lng").asDouble();
-////                                ratelist.setMapy(mapy);
-////                                ratelist.setMapx(mapx);
-////                            }
-////                        }
-////                    }
-//                }
-//                tour40Repository.save(ratelist);
-//            } catch (Exception e) {
-//                System.out.println("Error parsing Google API response for place: " + placeTitle + " Error: " + e.getMessage());
-//            }
-//            Thread.sleep(100);
-//        }
-//        return "rating";
-//    }
 
     //10개의 액티비티
     public List<Tour4_0> getPlace() {
@@ -226,8 +162,8 @@ public class Tour4_0Service {
     //액티비티 주변 추천 장소
     public String getPlaceTitle(GetPlaceTitleDto placeTitleDto) {
         String title = placeTitleDto.getPlaceTitle();
-        mapx = placeTitleDto.getPlaceMapx();
-        mapy = placeTitleDto.getPlaceMapy();
+        mapX = placeTitleDto.getPlaceMapx();
+        mapY = placeTitleDto.getPlaceMapy();
 
         return title;
     }
@@ -239,26 +175,26 @@ public class Tour4_0Service {
         List<Tour4_0> results = new ArrayList<>();
 
         if (cat2.equals("restaurant")) {
-            results.addAll(tour40Mapper.selectPlaceTitlesWithDistance(mapx, mapy));
+            results.addAll(tour40Mapper.selectPlaceTitlesWithDistance(mapX, mapY));
         }
         if (cat2.equals("activity")) {
-            results.addAll(tour40Mapper.selectPlaceActivityWithDistance(mapx, mapy));
+            results.addAll(tour40Mapper.selectPlaceActivityWithDistance(mapX, mapY));
         }
         if (cat2.equals("restaurant")) {
-            results.addAll(tour40Mapper.selectPlaceRestaurantWithDistance(mapx, mapy));
+            results.addAll(tour40Mapper.selectPlaceRestaurantWithDistance(mapX, mapY));
         }
         if (cat2.equals("cafe")) {
-            results.addAll(tour40Mapper.selectPlaceCafeWithDistance(mapx, mapy));
+            results.addAll(tour40Mapper.selectPlaceCafeWithDistance(mapX, mapY));
         }
         if (cat2.equals("tour")) {
-            results.addAll(tour40Mapper.selectPlaceTourWithDistance(mapx, mapy));
+            results.addAll(tour40Mapper.selectPlaceTourWithDistance(mapX, mapY));
         }
         if (cat2.equals("accommodation")) {
-            results.addAll(tour40Mapper.selectPlaceAccommodationWithDistance(mapx, mapy));
+            results.addAll(tour40Mapper.selectPlaceAccommodationWithDistance(mapX, mapY));
 
         }
 
         return results;
-        }
+    }
 
 }

@@ -23,10 +23,17 @@ pipeline {
                 echo 'application.properties 파일에 환경 변수 주입 중...'
                 withCredentials([
                     [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS_CREDENTAIL', accessKeyVariable: 'AWS_ACCESS_KEY', secretKeyVariable: 'AWS_SECRET_KEY'],
-                    usernamePassword(credentialsId: 'SPRING_MAIL_CREDENTAIL', usernameVariable: 'SPRING_MAIL_USERNAME', passwordVariable: 'SPRING_MAIL_PASSWORD'),
+                    usernamePassword(credentialsId: 'SPRING_MAIL_CREDENTIAL', usernameVariable: 'SPRING_MAIL_USERNAME', passwordVariable: 'SPRING_MAIL_PASSWORD'),
                     string(credentialsId: 'SSL_KEY_PASSWORD', variable: 'SSL_KEY_PASSWORD'),
                     string(credentialsId: 'KAKAO_OAUTH2_ID', variable: 'KAKAO_OAUTH2_ID'),
-                    string(credentialsId: 'KAKAO_OAUTH2_SECRET', variable: 'KAKAO_OAUTH2_SECRET')
+                    string(credentialsId: 'KAKAO_OAUTH2_SECRET', variable: 'KAKAO_OAUTH2_SECRET'),
+                    string(credentialsId: 'SPRING_DATASOURCE_URL', variable: 'SPRING_DATASOURCE_URL'),
+                    usernamePassword(credentialsId: 'SPRING_DATASOURCE_CREDENTIAL', usernameVariable: 'SPRING_DATASOURCE_USERNAME', passwordVariable: 'SPRING_DATASOURCE_PASSWORD'),
+                    string(credentialsId: 'JWT_SECRET_KEY', variable: 'JWT_SECRET_KEY'),
+                    string(credentialsId: 'JSON_KEY', variable: 'JSON_KEY'),
+                    string(credentialsId: 'NAVER_CLIENT_ID', variable: 'NAVER_CLIENT_ID'),
+                    string(credentialsId: 'NAVER_CLIENT_SECRET', variable: 'NAVER_CLIENT_SECRET'),
+                    string(credentialsId: 'TOUR_API_KEY', variable: 'TOUR_API_KEY')
                 ]) {
                     sh """
                     sed -i 's#\\\${AWS_ACCESS_KEY}#${AWS_ACCESS_KEY}#g' src/main/resources/application.properties
@@ -36,6 +43,14 @@ pipeline {
                     sed -i 's#\\\${SSL_KEY_PASSWORD}#${SSL_KEY_PASSWORD}#g' src/main/resources/application.properties
                     sed -i 's#\\\${KAKAO_OAUTH2_ID}#${KAKAO_OAUTH2_ID}#g' src/main/resources/application.properties
                     sed -i 's#\\\${KAKAO_OAUTH2_SECRET}#${KAKAO_OAUTH2_SECRET}#g' src/main/resources/application.properties
+                    sed -i 's#\\\${SPRING_DATASOURCE_URL}#${SPRING_DATASOURCE_URL}#g' src/main/resources/application.properties
+                    sed -i 's#\\\${SPRING_DATASOURCE_USERNAME}#${SPRING_DATASOURCE_USERNAME}#g' src/main/resources/application.properties
+                    sed -i 's#\\\${SPRING_DATASOURCE_PASSWORD}#${SPRING_DATASOURCE_PASSWORD}#g' src/main/resources/application.properties
+                    sed -i 's#\\\${JWT_SECRET_KEY}#${JWT_SECRET_KEY}#g' src/main/resources/application.properties
+                    sed -i 's#\\\${JSON_KEY}#${JSON_KEY}#g' src/main/resources/application.properties
+                    sed -i 's#\\\${NAVER_CLIENT_ID}#${NAVER_CLIENT_ID}#g' src/main/resources/application.properties
+                    sed -i 's#\\\${NAVER_CLIENT_SECRET}#${NAVER_CLIENT_SECRET}#g' src/main/resources/application.properties
+                    sed -i 's#\\\${TOUR_API_KEY}#${TOUR_API_KEY}#g' src/main/resources/application.properties
                     """
                 }
             }
@@ -44,47 +59,18 @@ pipeline {
         stage('Build') {
             steps {
                 echo '프로젝트 빌드 중...'
-                sh './gradlew build' // Gradle 빌드 실행
-                sh 'ls -al build/libs' // 빌드 결과 확인
+                sh './gradlew build'
+                sh 'ls -al build/libs'
             }
         }
 
-        stage('Docker Build') {
+        stage('Build & Deploy') {
             steps {
-                echo 'Docker 빌드 준비 중...'
-                script {
-                    sh 'docker --version' // Docker Buildx가 설치되었는지 확인
-                    echo "Docker를 사용하여 이미지 빌드 중..."
-                    sh 'docker build -t ksuji/backend-app -f Dockerfile .'
-                }
-            }
-        }
-
-        stage('Docker Push') {
-            steps {
-                echo 'Docker Hub에 로그인 중...'
-                withCredentials([
-                    string(credentialsId: 'docker-hub-username', variable: 'DOCKER_HUB_USERNAME'),
-                    string(credentialsId: 'docker-hub-password', variable: 'DOCKER_HUB_PASSWORD')
-                ]) {
-                    sh 'echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_USERNAME --password-stdin'
-                }
-                echo "Docker 이미지를 푸시 중..."
-                sh 'docker push ksuji/backend-app:latest'
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                echo '애플리케이션 배포 중...'
-                script {
-                    // 기존 컨테이너 중지 및 제거
-                    sh 'docker-compose down || true'
-                }
-                // Docker Compose를 사용하여 서비스 시작
+                echo '애플리케이션 빌드 및 배포 중...'
+                sh 'docker-compose down || true'
                 sh 'docker-compose up -d --build'
-                echo "Docker 컨테이너가 성공적으로 시작되었습니다."
             }
         }
+
     }
 }

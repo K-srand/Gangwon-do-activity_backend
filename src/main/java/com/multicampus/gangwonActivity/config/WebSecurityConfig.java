@@ -113,7 +113,7 @@ public class WebSecurityConfig {
         return source;
     }
 
-    class FailedAuthenticationEntryPoint implements AuthenticationEntryPoint {
+    static class FailedAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
         @Override
         public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
