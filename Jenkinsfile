@@ -46,7 +46,7 @@ pipeline {
                             "SSL_KEY_PASSWORD=${SSL_KEY_PASSWORD}",
                             "KAKAO_OAUTH2_ID=${KAKAO_OAUTH2_ID}",
                             "KAKAO_OAUTH2_SECRET=${KAKAO_OAUTH2_SECRET}",
-                            "SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}",
+                            "SPRING_DATASOURCE_URL=\"${SPRING_DATASOURCE_URL}\"",
                             "SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}",
                             "SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}",
                             "JWT_SECRET_KEY=${JWT_SECRET_KEY}",
@@ -68,6 +68,7 @@ pipeline {
                 }
             }
         }
+
 
         stage('Build') {
             steps {
