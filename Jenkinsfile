@@ -7,6 +7,7 @@ pipeline {
     }
 
     stages {
+
         stage('Inject Environment Variables') {
             steps {
                 echo 'Docker Compose 실행 시 젠킨스 자격 증명으로 환경 변수 주입 준비 중...'
@@ -46,6 +47,13 @@ pipeline {
                     echo "GOOGLE_API_KEY=${GOOGLE_API_KEY}" >> .env
                     """
                 }
+            }
+        }
+
+        stage('Clean Gradle Cache') {
+            steps {
+                echo 'Cleaning Gradle cache...'
+                sh 'rm -rf ~/.gradle/caches || true'
             }
         }
 
