@@ -20,7 +20,9 @@ jobs:
           distribution: 'corretto'
 
       - name: Build with Gradle
-        run: ./gradlew clean build
+        run: |
+          chmod +x ./gradlew
+          ./gradlew clean build
 
       - name: Copy file to remote server
         run: |
