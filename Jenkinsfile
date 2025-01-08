@@ -49,18 +49,20 @@ pipeline {
             }
         }
 
-         stage('Copy JAR to Build Context') {
+        stage('test') {
             steps {
-                sh 'cp /project/gangwonActivity-0.0.1-SNAPSHOT.jar .'
+                script {
+                    sh 'ls -lrt'
+                }
             }
         }
 
-        stage('Build & Deploy') {
-            steps {
-                echo '애플리케이션 빌드 및 배포 중...'
-                sh 'docker-compose down || true'
-                sh 'docker-compose --env-file .env up -d --build'
-            }
-        }
+//         stage('Build & Deploy') {
+//             steps {
+//                 echo '애플리케이션 빌드 및 배포 중...'
+//                 sh 'docker-compose down || true'
+//                 sh 'docker-compose --env-file .env up -d --build'
+//             }
+//         }
     }
 }
