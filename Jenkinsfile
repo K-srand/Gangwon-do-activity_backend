@@ -49,20 +49,21 @@ pipeline {
             }
         }
 
-        stage('test') {
+        stage('Project Build') {
             steps {
                 script {
-                    sh 'ls -lrt'
+                    sh './gradlew clean bootJar'
+                    sh 'ls -al build/libs'
                 }
             }
         }
 
-//         stage('Build & Deploy') {
-//             steps {
-//                 echo '애플리케이션 빌드 및 배포 중...'
-//                 sh 'docker-compose down || true'
-//                 sh 'docker-compose --env-file .env up -d --build'
-//             }
-//         }
+        stage('Docker Build & Deploy') {
+            steps {
+                echo '애플리케이션 빌드 및 배포 중...'
+                sh 'docker-compose down || true'
+                sh 'docker-compose --env-file .env up -d --build'
+            }
+        }
     }
 }
