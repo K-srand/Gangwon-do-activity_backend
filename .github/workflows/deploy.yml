@@ -26,5 +26,5 @@ jobs:
 
       - name: Copy file to remote server
         run: |
-          scp build/libs/gangwonActivity-0.0.1-SNAPSHOT.jar ${{ secrets.SSH_PRIVATE_KEY }}@${{ secrets.SERVER_IP }}:/root/
+          scp -i ${{ secrets.SSH_PRIVATE_KEY }} build/libs/gangwonActivity-0.0.1-SNAPSHOT.jar root@${{ secrets.SERVER_IP }}:/root/
 
