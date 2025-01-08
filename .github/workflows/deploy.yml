@@ -29,4 +29,4 @@ jobs:
           mkdir -p /home/runner/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > /home/runner/.ssh/id_rsa
           chmod 600 /home/runner/.ssh/id_rsa
-          scp -o StrictHostKeyChecking=no -i /home/runner/.ssh/id_rsa build/libs/gangwonActivity-0.0.1-SNAPSHOT.jar ${{ secrets.SERVER_ID}}@${{ secrets.SERVER_IP }}:/root/
+          scp -o StrictHostKeyChecking=no -i /home/runner/.ssh/id_rsa build/libs/gangwonActivity-0.0.1-SNAPSHOT.jar ${{ secrets.SERVER_ID}}@${{ secrets.SERVER_IP }}:/project/

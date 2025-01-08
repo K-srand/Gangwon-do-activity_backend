@@ -51,7 +51,7 @@ pipeline {
 
          stage('Copy JAR to Build Context') {
             steps {
-                sh 'cp /root/gangwonActivity-0.0.1-SNAPSHOT.jar .'
+                sh 'cp /project/gangwonActivity-0.0.1-SNAPSHOT.jar .'
             }
         }
 
