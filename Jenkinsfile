@@ -7,6 +7,23 @@ pipeline {
     }
 
     stages {
+        stage('Install Java') {
+            steps {
+                script {
+                    echo 'Installing Amazon Corretto 17...'
+                    sh '''
+                    if ! java -version >/dev/null 2>&1; then
+                        sudo yum update -y
+                        sudo amazon-linux-extras enable corretto17
+                        sudo yum install -y java-17-amazon-corretto
+                    else
+                        echo "Amazon Corretto 17 is already installed."
+                    fi
+                    '''
+                }
+            }
+        }
+
         stage('Inject Environment Variables') {
             steps {
                 echo 'Docker Compose 실행 시 젠킨스 자격 증명으로 환경 변수 주입 준비 중...'
