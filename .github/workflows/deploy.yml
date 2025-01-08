@@ -37,4 +37,3 @@ jobs:
       - name: Copy file to remote server
         run: |
           scp -i /home/runner/.ssh/id_rsa build/libs/gangwonActivity-0.0.1-SNAPSHOT.jar root@${{ secrets.SERVER_IP }}:/root/
-
