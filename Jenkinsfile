@@ -49,6 +49,12 @@ pipeline {
             }
         }
 
+         stage('Copy JAR to Build Context') {
+            steps {
+                sh 'cp /root/gangwonActivity-0.0.1-SNAPSHOT.jar .'
+            }
+        }
+
         stage('Build & Deploy') {
             steps {
                 echo '애플리케이션 빌드 및 배포 중...'
