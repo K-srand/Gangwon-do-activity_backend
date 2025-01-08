@@ -52,6 +52,7 @@ pipeline {
         stage('Project Build') {
             steps {
                 script {
+                    sh 'chmod +x ./gradlew'
                     sh './gradlew clean bootJar'
                     sh 'ls -al build/libs'
                 }
