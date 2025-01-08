@@ -12,19 +12,19 @@ pipeline {
                 echo 'Docker Compose 실행 시 젠킨스 자격 증명으로 환경 변수 주입 준비 중...'
 
                 withCredentials([
-                    [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS_CREDENTAIL'],
-                    usernamePassword(credentialsId: 'SPRING_MAIL_CREDENTIAL'),
-                    string(credentialsId: 'SSL_KEY_PASSWORD'),
-                    string(credentialsId: 'KAKAO_OAUTH2_ID'),
-                    string(credentialsId: 'KAKAO_OAUTH2_SECRET'),
-                    string(credentialsId: 'SPRING_DATASOURCE_URL'),
-                    usernamePassword(credentialsId: 'SPRING_DATASOURCE_CREDENTIAL'),
-                    string(credentialsId: 'JWT_SECRET_KEY'),
-                    string(credentialsId: 'JSON_KEY'),
-                    string(credentialsId: 'NAVER_CLIENT_ID'),
-                    string(credentialsId: 'NAVER_CLIENT_SECRET'),
-                    string(credentialsId: 'TOUR_API_KEY'),
-                    string(credentialsId: 'GOOGLE_API_KEY')
+                    [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS_CREDENTAIL', accessKeyVariable: 'AWS_ACCESS_KEY', secretKeyVariable: 'AWS_SECRET_KEY'],
+                    usernamePassword(credentialsId: 'SPRING_MAIL_CREDENTIAL', usernameVariable: 'SPRING_MAIL_USERNAME', passwordVariable: 'SPRING_MAIL_PASSWORD'),
+                    string(credentialsId: 'SSL_KEY_PASSWORD', variable: 'SSL_KEY_PASSWORD'),
+                    string(credentialsId: 'KAKAO_OAUTH2_ID', variable: 'KAKAO_OAUTH2_ID'),
+                    string(credentialsId: 'KAKAO_OAUTH2_SECRET', variable: 'KAKAO_OAUTH2_SECRET'),
+                    string(credentialsId: 'SPRING_DATASOURCE_URL', variable: 'SPRING_DATASOURCE_URL'),
+                    usernamePassword(credentialsId: 'SPRING_DATASOURCE_CREDENTIAL', usernameVariable: 'SPRING_DATASOURCE_USERNAME', passwordVariable: 'SPRING_DATASOURCE_PASSWORD'),
+                    string(credentialsId: 'JWT_SECRET_KEY', variable: 'JWT_SECRET_KEY'),
+                    string(credentialsId: 'JSON_KEY', variable: 'JSON_KEY'),
+                    string(credentialsId: 'NAVER_CLIENT_ID', variable: 'NAVER_CLIENT_ID'),
+                    string(credentialsId: 'NAVER_CLIENT_SECRET', variable: 'NAVER_CLIENT_SECRET'),
+                    string(credentialsId: 'TOUR_API_KEY', variable: 'TOUR_API_KEY'),
+                    string(credentialsId: 'GOOGLE_API_KEY', variable: 'GOOGLE_API_KEY')
                 ]) {
                     // 젠킨스의 환경 변수를 Docker Compose의 환경 변수 파일로 주입
                     sh """
