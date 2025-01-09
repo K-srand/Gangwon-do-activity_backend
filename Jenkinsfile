@@ -67,18 +67,6 @@ pipeline {
             }
         }
 
-        stage('Install Docker if not exists') {
-            steps {
-                echo 'Checking if Docker is installed...'
-                sh """
-                if ! command -v docker &> /dev/null; then
-                    echo "Docker not found, installing..."
-                    apt-get update && apt-get install -y docker.io
-                else
-                    echo "Docker is already installed."
-                fi
-                """
-            }
         }
 
         stage('Docker Build & Deploy') {
