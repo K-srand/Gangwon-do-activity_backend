@@ -67,8 +67,6 @@ pipeline {
             }
         }
 
-        }
-
         stage('Docker Build & Deploy') {
             steps {
                 echo '애플리케이션 빌드 및 배포 중...'
