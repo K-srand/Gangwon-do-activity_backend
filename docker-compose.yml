@@ -13,4 +13,3 @@ services:
       - /etc/letsencrypt/ssl-dhparams.pem:/etc/nginx/ssl/ssl-dhparams.pem
       - /etc/letsencrypt/options-ssl-nginx.conf:/etc/nginx/ssl/options-ssl-nginx.conf
       - /etc/nginx/ssl/keystore.p12:/etc/nginx/ssl/keystore.p12
-
